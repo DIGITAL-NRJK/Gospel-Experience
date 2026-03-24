@@ -32,50 +32,11 @@ interface SiteSettings {
   secondarySponsors?: { name: string; url?: string }[];
 }
 
-interface Event {
-  _id: string;
-  title: string;
-  eventType: string;
-  dateStart: string;
-  timeStart?: string;
-  timeEnd?: string;
-  venue: string;
-  ticketUrl?: string;
-}
-
-interface Testimonial {
-  _id: string;
-  quote: string;
-  personName: string;
-  personRole: string;
-}
-
-interface Partner {
-  _id: string;
-  name: string;
-  role: string;
-  photo?: { asset: { _ref: string } };
-  website?: string;
-  partnerDescription?: string;
-}
-
-interface Article {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  category: string;
-  publishedAt: string;
-  mainImage?: { asset: { _ref: string } };
-  readTime?: number;
-}
-
-interface GalleryItem {
-  _id: string;
-  title: string;
-  mediaType: "photo" | "video";
-  image?: { asset: { _ref: string } };
-  featured: boolean;
-}
+interface Event { _id: string; title: string; eventType: string; dateStart: string; timeStart?: string; timeEnd?: string; venue: string; ticketUrl?: string }
+interface Testimonial { _id: string; quote: string; personName: string; personRole: string }
+interface Partner { _id: string; name: string; role: string; photo?: { asset: { _ref: string } }; website?: string; partnerDescription?: string }
+interface Article { _id: string; title: string; slug: { current: string }; category: string; publishedAt: string; mainImage?: { asset: { _ref: string } }; readTime?: number }
+interface GalleryItem { _id: string; title: string; mediaType: "photo" | "video"; image?: { asset: { _ref: string } }; featured: boolean }
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   festival: { bg: "var(--color-coral)", text: "Festival" },
@@ -105,29 +66,28 @@ export default async function HomePage() {
   const ctaPrimaryUrl = settings?.ctaPrimary?.url || (isEcoleMode ? "/ecole" : "/festival#billetterie");
   const ctaSecondaryText = settings?.ctaSecondary?.text || (isEcoleMode ? "Prochain festival" : "Découvrir l'école");
   const ctaSecondaryUrl = settings?.ctaSecondary?.url || (isEcoleMode ? "/festival" : "/ecole");
-
   const hasHeroVideo = !!(settings?.heroVideoFileUrl || settings?.heroVideoUrl);
 
   return (
     <>
       <Header />
 
-      {/* ===== HERO ===== */}
-      <section className="relative min-h-[460px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
+      {/* HERO */}
+      <section className="relative min-h-[400px] md:min-h-[480px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
         {hasHeroVideo ? (
           <HeroVideo mp4Url={settings?.heroVideoFileUrl} youtubeUrl={settings?.heroVideoUrl} />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
-        <div className="relative z-10 text-center max-w-[600px] mx-auto px-6 py-14">
-          <span className="inline-flex items-center gap-2 text-[11px] tracking-[2px] uppercase text-white bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-5 border border-white/10">
+        <div className="relative z-10 text-center max-w-[640px] mx-auto px-5 py-12 md:py-16">
+          <span className="inline-flex items-center gap-2 text-[12px] tracking-[2px] uppercase text-white bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-5 border border-white/10">
             {settings?.currentSeason || "Saison 2026 – 2027"}
           </span>
-          <h1 className="font-serif text-[44px] font-bold leading-[1.12] text-white mb-4">
+          <h1 className="font-serif text-[34px] md:text-[48px] font-bold leading-[1.1] text-white mb-4">
             Vivez le <em className="italic text-[var(--color-peach-deep)] font-normal">Gospel</em><br />au cœur de Lyon
           </h1>
-          <p className="text-[15px] text-white/70 leading-relaxed mb-7">
+          <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-7">
             {settings?.heroSubtitle || "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans l'écrin sacré de la Basilique de Fourvière."}
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
@@ -135,22 +95,22 @@ export default async function HomePage() {
             <a href={ctaSecondaryUrl} className="btn-outline no-underline">{ctaSecondaryText}</a>
           </div>
           {settings?.heroVideoUrl && (
-            <a href={settings.heroVideoUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-[12px] text-white/80 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline cursor-pointer hover:bg-white/20 transition-colors">
+            <a href={settings.heroVideoUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-[13px] text-white/80 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline cursor-pointer hover:bg-white/20 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="9,6 18,12 9,18" /></svg>
               Voir la vidéo
             </a>
           )}
           {settings?.stats && (
-            <div className="flex gap-2 justify-center mt-9">
+            <div className="flex gap-2 justify-center flex-wrap mt-8">
               {[
                 [settings.stats.spectators, "Spectateurs"],
                 [settings.stats.editions, "Éditions"],
                 [settings.stats.artists, "Artistes"],
                 [settings.stats.since, "Depuis"],
               ].map(([num, label]) => (
-                <div key={label} className="bg-white/10 backdrop-blur rounded-2xl px-5 py-3.5 text-center min-w-[100px] border border-white/10">
-                  <div className="font-serif text-2xl font-bold text-[var(--color-gold)] leading-none">{num}</div>
-                  <div className="text-[10px] tracking-[1px] uppercase text-white/45 mt-1">{label}</div>
+                <div key={label} className="bg-white/10 backdrop-blur rounded-2xl px-4 md:px-5 py-3 text-center min-w-[90px] border border-white/10">
+                  <div className="font-serif text-xl md:text-2xl font-bold text-[var(--color-gold)] leading-none">{num}</div>
+                  <div className="text-[11px] tracking-[1px] uppercase text-white/45 mt-1">{label}</div>
                 </div>
               ))}
             </div>
@@ -158,30 +118,30 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== DEUX PÔLES ===== */}
-      <section className="py-14">
+      {/* DEUX PÔLES */}
+      <section className="py-12 md:py-16">
         <div className="site-container">
           <div className="section-tag text-[var(--color-coral)]">Nos deux pôles</div>
-          <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)] mb-1.5">Un écosystème gospel unique</h2>
-          <p className="text-[13px] text-[var(--color-text-muted)] leading-relaxed max-w-[480px]">GOSLYM porte deux projets complémentaires : le festival biennal et l&apos;école de gospel pour former les talents de demain.</p>
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="bg-gradient-to-br from-[#FFF0E6] via-[var(--color-coral-light)] to-[var(--color-peach)] rounded-[20px] p-7 border border-[rgba(216,90,48,0.12)] min-h-[210px] flex flex-col justify-end">
-              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2.5">Festival</div>
-              <h3 className="font-serif text-[22px] font-bold text-[var(--color-coral-dark)] mb-1.5">Gospel Expérience</h3>
-              <p className="text-[12px] text-[#8A5030] leading-relaxed mb-3.5">Le rendez-vous biennal du gospel dans la Crypte de Fourvière. Concerts, chorales et Masterclass.</p>
-              <a className="btn-coral self-start text-[11px] px-5 py-2 no-underline" href="/festival">Découvrir →</a>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-2">Un écosystème gospel unique</h2>
+          <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed max-w-[520px]">GOSLYM porte deux projets complémentaires : le festival biennal et l&apos;école de gospel pour former les talents de demain.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div className="bg-gradient-to-br from-[#FFF0E6] via-[var(--color-coral-light)] to-[var(--color-peach)] rounded-[20px] p-6 md:p-7 border border-[rgba(216,90,48,0.12)] min-h-[200px] flex flex-col justify-end">
+              <div className="text-[11px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2">Festival</div>
+              <h3 className="font-serif text-[22px] md:text-[24px] font-bold text-[var(--color-coral-dark)] mb-2">Gospel Expérience</h3>
+              <p className="text-[14px] text-[#8A5030] leading-relaxed mb-4">Le rendez-vous biennal du gospel dans la Crypte de Fourvière. Concerts, chorales et Masterclass.</p>
+              <a className="btn-coral self-start text-[13px] px-5 py-2.5 no-underline" href="/festival">Découvrir →</a>
             </div>
-            <div className="bg-gradient-to-br from-[#ECFAF3] via-[var(--color-teal-light)] to-[#B0E6D0] rounded-[20px] p-7 border border-[rgba(29,158,117,0.12)] min-h-[210px] flex flex-col justify-end">
-              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2.5">École</div>
-              <h3 className="font-serif text-[22px] font-bold text-[var(--color-teal-dark)] mb-1.5">GEI — Institute</h3>
-              <p className="text-[12px] text-[#1A6B4E] leading-relaxed mb-3.5">Ateliers chœur gospel un dimanche par mois avec Hazaële. Formation et valeurs humaines.</p>
-              <a className="btn-teal self-start text-[11px] px-5 py-2 no-underline" href="/ecole">Découvrir →</a>
+            <div className="bg-gradient-to-br from-[#ECFAF3] via-[var(--color-teal-light)] to-[#B0E6D0] rounded-[20px] p-6 md:p-7 border border-[rgba(29,158,117,0.12)] min-h-[200px] flex flex-col justify-end">
+              <div className="text-[11px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2">École</div>
+              <h3 className="font-serif text-[22px] md:text-[24px] font-bold text-[var(--color-teal-dark)] mb-2">GEI — Institute</h3>
+              <p className="text-[14px] text-[#1A6B4E] leading-relaxed mb-4">Ateliers chœur gospel un dimanche par mois avec Hazaële. Formation et valeurs humaines.</p>
+              <a className="btn-teal self-start text-[13px] px-5 py-2.5 no-underline" href="/ecole">Découvrir →</a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===== FLYER ===== */}
+      {/* FLYER */}
       {settings?.flyerImage && (
         <FlyerSection
           imageUrl={urlFor(settings.flyerImage).width(560).url()}
@@ -192,25 +152,25 @@ export default async function HomePage() {
         />
       )}
 
-      {/* ===== ÉDITIONS ===== */}
+      {/* ÉDITIONS */}
       <div className="site-container">
-        <div className="bg-[var(--color-indigo)] rounded-3xl py-10 px-8">
+        <div className="bg-[var(--color-indigo)] rounded-3xl py-8 md:py-10 px-5 md:px-8">
           <div className="section-tag text-[var(--color-gold)]">Rétrospective</div>
-          <h2 className="font-serif text-[26px] font-bold text-white mb-5">Les éditions précédentes</h2>
-          <div className="grid grid-cols-2 gap-3.5">
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-white mb-5">Les éditions précédentes</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { year: "2021", label: "1ère Édition — La Genèse", sub: "Née après la pandémie pour restaurer le lien social par la musique.", stats: [["1 500", "Spectateurs"], ["4", "Concerts"], ["2", "Jours"]], color: "var(--color-peach-deep)" },
               { year: "2024", label: "2e Édition — La Confirmation", sub: "4 jours avec le Gospel Philharmonic Experience et un quatuor à cordes.", stats: [["2 000+", "Spectateurs"], ["5", "Concerts"], ["4", "Jours"]], color: "var(--color-lavender)" },
             ].map(e => (
               <div key={e.year} className="bg-white/[0.06] border border-white/[0.08] rounded-2xl p-5">
-                <div className="font-serif text-[32px] font-bold mb-1" style={{ color: e.color }}>{e.year}</div>
-                <div className="text-[14px] font-bold text-white mb-1">{e.label}</div>
-                <div className="text-[11px] text-white/50 leading-relaxed mb-3">{e.sub}</div>
-                <div className="flex gap-4">
+                <div className="font-serif text-[30px] font-bold mb-1" style={{ color: e.color }}>{e.year}</div>
+                <div className="text-base font-bold text-white mb-1">{e.label}</div>
+                <div className="text-[13px] text-white/50 leading-relaxed mb-3">{e.sub}</div>
+                <div className="flex gap-5">
                   {e.stats.map(([n, l]) => (
                     <div key={l} className="text-center">
                       <div className="font-serif text-lg font-bold text-[var(--color-gold)]">{n}</div>
-                      <div className="text-[9px] tracking-[1px] uppercase text-white/40">{l}</div>
+                      <div className="text-[11px] tracking-[1px] uppercase text-white/40">{l}</div>
                     </div>
                   ))}
                 </div>
@@ -220,61 +180,59 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ===== ÉVÉNEMENTS ===== */}
-      <section className="py-14 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
+      {/* ÉVÉNEMENTS */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
         <div className="site-container">
-          <div className="flex justify-between items-end mb-5">
-            <div>
-              <div className="section-tag text-[var(--color-gold)]">Agenda</div>
-              <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)]">Prochains événements</h2>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2.5">
+          <div className="section-tag text-[var(--color-gold)]">Agenda</div>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">Prochains événements</h2>
+          <div className="flex flex-col gap-3">
             {events?.map((event) => {
               const date = new Date(event.dateStart);
               const day = date.getDate().toString().padStart(2, "0");
               const month = date.toLocaleDateString("fr-FR", { month: "short" });
               const isFestival = event.eventType === "festival" || event.eventType === "concert";
               return (
-                <div key={event._id} className="flex items-center gap-3.5 py-3.5 px-4.5 bg-white rounded-[14px] border border-[rgba(43,27,94,0.06)]">
-                  <div className={`rounded-xl px-3 py-2 text-center min-w-[52px] ${isFestival ? "bg-[var(--color-coral-light)]" : "bg-[var(--color-teal-light)]"}`}>
+                <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 md:px-5 bg-white rounded-2xl border border-[rgba(43,27,94,0.06)]">
+                  <div className={`rounded-xl px-3.5 py-2.5 text-center min-w-[56px] ${isFestival ? "bg-[var(--color-coral-light)]" : "bg-[var(--color-teal-light)]"}`}>
                     <div className={`font-serif text-xl font-bold leading-none ${isFestival ? "text-[var(--color-coral-dark)]" : "text-[var(--color-teal-dark)]"}`}>{day}</div>
-                    <div className={`text-[9px] tracking-[1px] uppercase ${isFestival ? "text-[var(--color-coral)]" : "text-[var(--color-teal)]"}`}>{month}</div>
+                    <div className={`text-[11px] tracking-[1px] uppercase ${isFestival ? "text-[var(--color-coral)]" : "text-[var(--color-teal)]"}`}>{month}</div>
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-[13px] font-bold text-[var(--color-indigo)] mb-0.5">{event.title}</h4>
-                    <p className="text-[11px] text-[var(--color-text-light)]">{event.venue}{event.timeStart && ` · ${event.timeStart}`}{event.timeEnd && ` - ${event.timeEnd}`}</p>
+                    <h4 className="text-[15px] font-bold text-[var(--color-indigo)] mb-0.5">{event.title}</h4>
+                    <p className="text-[13px] text-[var(--color-text-light)]">{event.venue}{event.timeStart && ` · ${event.timeStart}`}{event.timeEnd && ` - ${event.timeEnd}`}</p>
                   </div>
-                  <span className={isFestival ? "tag-festival" : "tag-ecole"}>{isFestival ? "Festival" : "École GEI"}</span>
-                  {event.ticketUrl && <a href={event.ticketUrl} className="text-[10px] font-bold no-underline" style={{ color: isFestival ? "var(--color-coral-dark)" : "var(--color-teal-dark)" }}>Réserver →</a>}
+                  <div className="flex items-center gap-3">
+                    <span className={isFestival ? "tag-festival" : "tag-ecole"}>{isFestival ? "Festival" : "École GEI"}</span>
+                    {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold no-underline" style={{ color: isFestival ? "var(--color-coral-dark)" : "var(--color-teal-dark)" }}>Réserver →</a>}
+                  </div>
                 </div>
               );
             })}
             {(!events || events.length === 0) && (
-              <p className="text-[13px] text-[var(--color-text-muted)] text-center py-8">Aucun événement à venir pour le moment.</p>
+              <p className="text-[15px] text-[var(--color-text-muted)] text-center py-8">Aucun événement à venir pour le moment.</p>
             )}
           </div>
         </div>
       </section>
 
-      {/* ===== TÉMOIGNAGES ===== */}
+      {/* TÉMOIGNAGES */}
       {testimonials && testimonials.length > 0 && (
-        <section className="py-14">
+        <section className="py-12 md:py-16">
           <div className="site-container">
             <div className="section-tag text-[var(--color-magenta)]">Témoignages</div>
-            <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)] mb-5">Ils ont vécu l&apos;expérience</h2>
-            <div className="grid grid-cols-3 gap-3.5">
+            <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">Ils ont vécu l&apos;expérience</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {testimonials.map((t, i) => {
                 const bgs = ["white", "var(--color-coral-light)", "var(--color-teal-light)"];
                 return (
-                  <div key={t._id} className="rounded-[20px] p-5 border border-[rgba(43,27,94,0.06)]" style={{ backgroundColor: bgs[i % 3] }}>
-                    <div className="text-[22px] text-[var(--color-gold)] font-serif mb-2">«</div>
-                    <p className="text-[13px] text-[var(--color-text-body)] leading-relaxed italic mb-3.5">{t.quote}</p>
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-[var(--color-lavender-light)] flex items-center justify-center font-bold text-[13px] text-[var(--color-indigo)]">{t.personName[0]}</div>
+                  <div key={t._id} className="rounded-[20px] p-5 md:p-6 border border-[rgba(43,27,94,0.06)]" style={{ backgroundColor: bgs[i % 3] }}>
+                    <div className="text-[24px] text-[var(--color-gold)] font-serif mb-2">«</div>
+                    <p className="text-[15px] text-[var(--color-text-body)] leading-relaxed italic mb-4">{t.quote}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[var(--color-lavender-light)] flex items-center justify-center font-bold text-[14px] text-[var(--color-indigo)]">{t.personName[0]}</div>
                       <div>
-                        <div className="text-[12px] font-bold text-[var(--color-indigo)]">{t.personName}</div>
-                        <div className="text-[10px] text-[var(--color-text-light)]">{t.personRole}</div>
+                        <div className="text-[14px] font-bold text-[var(--color-indigo)]">{t.personName}</div>
+                        <div className="text-[12px] text-[var(--color-text-light)]">{t.personRole}</div>
                       </div>
                     </div>
                   </div>
@@ -285,36 +243,36 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ===== PARTENAIRES PHARES ===== */}
+      {/* PARTENAIRES */}
       {partners && partners.length > 0 && (
         <div className="site-container pb-4">
-          <div className="bg-gradient-to-br from-[#FFF3E8] to-[var(--color-cream)] rounded-3xl py-10 px-8">
+          <div className="bg-gradient-to-br from-[#FFF3E8] to-[var(--color-cream)] rounded-3xl py-8 md:py-10 px-5 md:px-8">
             <div className="section-tag text-[var(--color-gold)]">Partenaires phares</div>
-            <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)] mb-5">Ils portent le projet avec nous</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">Ils portent le projet avec nous</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {partners.map((p) => (
-                <div key={p._id} className="bg-white rounded-[20px] p-6 border border-[rgba(43,27,94,0.06)] flex gap-4">
+                <div key={p._id} className="bg-white rounded-[20px] p-5 md:p-6 border border-[rgba(43,27,94,0.06)] flex gap-4">
                   <div className="w-16 h-16 rounded-2xl shrink-0 overflow-hidden bg-gradient-to-br from-[var(--color-lavender-light)] to-[#D4C4F0]">
                     {p.photo && <img src={urlFor(p.photo).width(128).height(128).url()} alt={p.name} className="w-full h-full object-cover" />}
                   </div>
                   <div>
-                    <h4 className="font-serif text-base font-bold text-[var(--color-indigo)] mb-0.5">{p.name}</h4>
-                    <div className="text-[11px] text-[var(--color-text-light)] mb-2">{p.role}</div>
-                    <p className="text-[12px] text-[var(--color-text-muted)] leading-relaxed">{p.partnerDescription}</p>
-                    {p.website && <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold text-[var(--color-coral)] no-underline mt-2 inline-block">Découvrir →</a>}
+                    <h4 className="font-serif text-[17px] font-bold text-[var(--color-indigo)] mb-0.5">{p.name}</h4>
+                    <div className="text-[13px] text-[var(--color-text-light)] mb-2">{p.role}</div>
+                    <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed">{p.partnerDescription}</p>
+                    {p.website && <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-[13px] font-bold text-[var(--color-coral)] no-underline mt-2 inline-block">Découvrir →</a>}
                   </div>
                 </div>
               ))}
             </div>
             {settings?.secondarySponsors && settings.secondarySponsors.length > 0 && (
               <div className="mt-8 text-center">
-                <div className="text-[10px] tracking-[2px] uppercase text-[var(--color-text-light)] mb-3">Ils nous soutiennent également</div>
-                <div className="flex justify-center gap-6 flex-wrap">
+                <div className="text-[12px] tracking-[2px] uppercase text-[var(--color-text-light)] mb-3">Ils nous soutiennent également</div>
+                <div className="flex justify-center gap-4 md:gap-6 flex-wrap">
                   {settings.secondarySponsors.map((s) => (
                     s.url ? (
-                      <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="text-[14px] text-[var(--color-text-muted)] no-underline hover:text-[var(--color-indigo)] transition-colors">{s.name}</a>
+                      <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="text-[15px] text-[var(--color-text-muted)] no-underline hover:text-[var(--color-indigo)] transition-colors">{s.name}</a>
                     ) : (
-                      <span key={s.name} className="text-[14px] text-[var(--color-text-muted)]">{s.name}</span>
+                      <span key={s.name} className="text-[15px] text-[var(--color-text-muted)]">{s.name}</span>
                     )
                   ))}
                 </div>
@@ -324,30 +282,30 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* ===== GALERIE PREVIEW ===== */}
+      {/* GALERIE PREVIEW */}
       {gallery && gallery.length > 0 && (
-        <section className="py-14">
+        <section className="py-12 md:py-16">
           <div className="site-container">
             <div className="flex justify-between items-end mb-5">
               <div>
                 <div className="section-tag text-[var(--color-magenta)]">Médiathèque</div>
-                <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)]">Photos & vidéos</h2>
+                <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)]">Photos & vidéos</h2>
               </div>
-              <a href="/galerie" className="text-[11px] text-[var(--color-coral)] font-bold no-underline">Voir tout →</a>
+              <a href="/galerie" className="text-[13px] text-[var(--color-coral)] font-bold no-underline">Voir tout →</a>
             </div>
-            <div className="grid grid-cols-3 gap-3" style={{ gridAutoRows: "180px" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" style={{ gridAutoRows: "200px" }}>
               {gallery.map((g, i) => {
                 const fallback = ["from-[var(--color-indigo)] to-[#4A2E8A]", "from-[var(--color-peach-deep)] to-[var(--color-peach)]", "from-[var(--color-teal)] to-[#5DCAA5]", "from-[var(--color-magenta)] to-[#ED93B1]", "from-[var(--color-gold-light)] to-[var(--color-peach)]"];
                 return (
                   <div key={g._id} className={`rounded-2xl relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center ${!g.image ? `bg-gradient-to-br ${fallback[i % fallback.length]}` : ""}`} style={{ gridRow: g.featured ? "span 2" : undefined }}>
-                    {g.image && <img src={urlFor(g.image).width(g.featured ? 800 : 500).height(g.featured ? 720 : 360).url()} alt={g.title} className="absolute inset-0 w-full h-full object-cover" />}
+                    {g.image && <img src={urlFor(g.image).width(g.featured ? 800 : 500).height(g.featured ? 720 : 400).url()} alt={g.title} className="absolute inset-0 w-full h-full object-cover" />}
                     {g.mediaType === "video" && (
-                      <div className="relative z-10 w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--color-indigo)"><polygon points="9,6 18,12 9,18" /></svg>
+                      <div className="relative z-10 w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-indigo)"><polygon points="9,6 18,12 9,18" /></svg>
                       </div>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                    <span className="absolute bottom-3 left-4 text-[11px] text-white font-bold z-10">{g.title}</span>
+                    <span className="absolute bottom-3 left-4 text-[13px] text-white font-bold z-10">{g.title}</span>
                   </div>
                 );
               })}
@@ -356,30 +314,30 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ===== ARTICLES PREVIEW ===== */}
+      {/* ARTICLES PREVIEW */}
       {articles && articles.length > 0 && (
-        <section className="py-14 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
+        <section className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
           <div className="site-container">
             <div className="flex justify-between items-end mb-5">
               <div>
                 <div className="section-tag text-[var(--color-indigo)]">Actualités</div>
-                <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)]">Derniers articles</h2>
+                <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)]">Derniers articles</h2>
               </div>
-              <a href="/actualites" className="text-[11px] text-[var(--color-coral)] font-bold no-underline">Tous les articles →</a>
+              <a href="/actualites" className="text-[13px] text-[var(--color-coral)] font-bold no-underline">Tous les articles →</a>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {articles.map((a, i) => {
                 const cat = categoryColors[a.category] || categoryColors.coulisses;
                 const date = new Date(a.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
                 return (
                   <div key={a._id} className="bg-white rounded-2xl overflow-hidden border border-[rgba(43,27,94,0.06)] cursor-pointer hover:shadow-sm transition-shadow">
-                    <div className={`h-[140px] bg-gradient-to-br ${gradients[i % gradients.length]} relative overflow-hidden`}>
-                      {a.mainImage && <img src={urlFor(a.mainImage).width(500).height(280).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
-                      <span className="absolute top-3 left-3 text-[9px] tracking-[1px] uppercase font-bold px-3 py-1 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
+                    <div className={`h-[160px] bg-gradient-to-br ${gradients[i % gradients.length]} relative overflow-hidden`}>
+                      {a.mainImage && <img src={urlFor(a.mainImage).width(500).height(320).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
+                      <span className="absolute top-3 left-3 text-[11px] tracking-[1px] uppercase font-bold px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
                     </div>
                     <div className="p-5">
-                      <h4 className="text-[14px] font-bold text-[var(--color-indigo)] leading-snug mb-2">{a.title}</h4>
-                      <div className="text-[10px] text-[var(--color-text-light)]">{date}{a.readTime && ` · ${a.readTime} min`}</div>
+                      <h4 className="text-[16px] font-bold text-[var(--color-indigo)] leading-snug mb-2">{a.title}</h4>
+                      <div className="text-[13px] text-[var(--color-text-light)]">{date}{a.readTime && ` · ${a.readTime} min`}</div>
                     </div>
                   </div>
                 );
@@ -389,17 +347,17 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ===== NEWSLETTER ===== */}
+      {/* NEWSLETTER */}
       <div className="site-container py-10">
-        <div className="p-7 bg-white rounded-[20px] border border-[rgba(43,27,94,0.06)] flex items-center gap-5">
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[var(--color-peach)] to-[var(--color-lavender)] shrink-0" />
-          <div className="flex-1">
-            <h3 className="font-serif text-[17px] font-bold text-[var(--color-indigo)] mb-1">Accès préventes exclusives</h3>
-            <p className="text-[12px] text-[var(--color-text-muted)]">Rejoignez la communauté et réservez vos places avant l&apos;ouverture au grand public.</p>
+        <div className="p-5 md:p-7 bg-white rounded-[20px] border border-[rgba(43,27,94,0.06)] flex flex-col md:flex-row items-center gap-5">
+          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[var(--color-peach)] to-[var(--color-lavender)] shrink-0 hidden md:block" />
+          <div className="flex-1 text-center md:text-left">
+            <h3 className="font-serif text-[18px] font-bold text-[var(--color-indigo)] mb-1">Accès préventes exclusives</h3>
+            <p className="text-[14px] text-[var(--color-text-muted)]">Rejoignez la communauté et réservez vos places avant l&apos;ouverture au grand public.</p>
           </div>
-          <div className="flex gap-2 shrink-0">
-            <input type="email" placeholder="votre@email.com" className="bg-[var(--color-cream)] border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-2.5 text-[12px] text-[var(--color-text-body)] min-w-[160px] outline-none" />
-            <button className="bg-[var(--color-indigo)] text-white text-[11px] font-bold px-5 py-2.5 rounded-[20px] border-none cursor-pointer">S&apos;inscrire</button>
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0 w-full md:w-auto">
+            <input type="email" placeholder="votre@email.com" className="bg-[var(--color-cream)] border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] text-[var(--color-text-body)] min-w-[180px] outline-none" />
+            <button className="bg-[var(--color-indigo)] text-white text-[13px] font-bold px-5 py-3 rounded-[20px] border-none cursor-pointer">S&apos;inscrire</button>
           </div>
         </div>
       </div>

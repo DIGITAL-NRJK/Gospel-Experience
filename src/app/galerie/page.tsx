@@ -17,18 +17,18 @@ export default async function GaleriePage() {
   return (
     <>
       <Header />
-      <section className="py-14">
+      <section className="py-12 md:py-16">
         <div className="site-container">
           <div className="section-tag text-[var(--color-magenta)]">Médiathèque</div>
-          <h1 className="font-serif text-[30px] font-bold text-[var(--color-indigo)] mb-1.5">Photos & vidéos</h1>
-          <p className="text-[13px] text-[var(--color-text-muted)] mb-8">Revivez les moments forts des éditions précédentes, des Masterclass et de l&apos;école GEI.</p>
+          <h1 className="font-serif text-[26px] md:text-[32px] font-bold text-[var(--color-indigo)] mb-2">Photos & vidéos</h1>
+          <p className="text-[15px] text-[var(--color-text-muted)] mb-8">Revivez les moments forts des éditions précédentes, des Masterclass et de l&apos;école GEI.</p>
 
           {items && items.length > 0 ? (
             <GalleryFilter items={items} />
           ) : (
             <div className="text-center py-16">
-              <p className="text-[15px] text-[var(--color-text-muted)]">La galerie est en cours de préparation.</p>
-              <p className="text-[13px] text-[var(--color-text-light)] mt-2">Les photos et vidéos seront ajoutées depuis le Studio Sanity.</p>
+              <p className="text-base text-[var(--color-text-muted)]">La galerie est en cours de préparation.</p>
+              <p className="text-[15px] text-[var(--color-text-light)] mt-2">Les photos et vidéos seront ajoutées depuis le Studio Sanity.</p>
             </div>
           )}
         </div>

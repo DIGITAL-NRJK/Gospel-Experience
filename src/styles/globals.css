@@ -21,93 +21,98 @@
   --color-text-muted: #6B5E8A;
   --color-text-light: #9A8FB5;
   --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-cream);
   color: var(--color-text-body);
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .site-container {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-.site-container-wide {
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+@media (min-width: 768px) {
+  .site-container { padding-left: 32px; padding-right: 32px; }
 }
 
+/* Buttons */
 .btn-coral {
   background-color: var(--color-coral);
   color: white;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 13px 28px;
+  padding: 14px 30px;
   border-radius: 28px;
   border: none;
   cursor: pointer;
-  letter-spacing: 0.3px;
   transition: transform 0.15s ease, opacity 0.15s ease;
+  display: inline-block;
 }
 .btn-coral:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .btn-teal {
   background-color: var(--color-teal);
   color: white;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 13px 28px;
+  padding: 14px 30px;
   border-radius: 28px;
   border: none;
   cursor: pointer;
   transition: transform 0.15s ease, opacity 0.15s ease;
+  display: inline-block;
 }
 .btn-teal:hover { opacity: 0.9; transform: translateY(-1px); }
 
 .btn-outline {
   background-color: transparent;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  padding: 12px 28px;
+  padding: 13px 30px;
   border-radius: 28px;
   border: 2px solid var(--color-teal);
   color: var(--color-teal);
   cursor: pointer;
   transition: background-color 0.2s ease;
+  display: inline-block;
 }
 .btn-outline:hover { background-color: var(--color-teal-light); }
 
 .tag-festival {
   background-color: var(--color-coral-light);
   color: var(--color-coral-dark);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .tag-ecole {
   background-color: var(--color-teal-light);
   color: var(--color-teal-dark);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .section-tag {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
   font-weight: 700;

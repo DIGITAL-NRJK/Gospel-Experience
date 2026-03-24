@@ -37,20 +37,19 @@ export default function Footer() {
   return (
     <footer className="bg-[var(--color-cream)]">
       <div className="site-container">
-        <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr] gap-7 pt-9 pb-5 border-t border-[rgba(43,27,94,0.06)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 pt-10 pb-6 border-t border-[rgba(43,27,94,0.06)]">
           <div>
-            <div className="font-serif text-base font-bold text-[var(--color-indigo)] mb-1.5">
+            <div className="font-serif text-lg font-bold text-[var(--color-indigo)] mb-2">
               Gospel Expérience
-              <span className="block text-[9px] font-normal tracking-[3px] uppercase text-[var(--color-gold)]">
+              <span className="block text-[10px] font-normal tracking-[3px] uppercase text-[var(--color-gold)]">
                 Lyon Fourvière
               </span>
             </div>
-            <p className="text-[11px] text-[var(--color-text-muted)] leading-relaxed">
+            <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed">
               Association GOSLYM — Gospel Lyon Métropole. Promouvoir le gospel,
-              rassembler les talents, transmettre des valeurs de joie et de
-              fraternité.
+              rassembler les talents, transmettre des valeurs de joie et de fraternité.
             </p>
-            <div className="flex gap-2 mt-2.5">
+            <div className="flex gap-2 mt-3">
               {[
                 { label: "Ig", bg: "var(--color-coral)" },
                 { label: "Fb", bg: "var(--color-indigo)" },
@@ -58,7 +57,7 @@ export default function Footer() {
               ].map(({ label, bg }) => (
                 <div
                   key={label}
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold text-white"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold text-white"
                   style={{ backgroundColor: bg }}
                 >
                   {label}
@@ -70,7 +69,7 @@ export default function Footer() {
           {Object.values(footerLinks).map((section) => (
             <div key={section.title}>
               <h5
-                className="text-[10px] tracking-[2px] uppercase font-bold mb-2.5"
+                className="text-[11px] tracking-[2px] uppercase font-bold mb-3"
                 style={{ color: section.color }}
               >
                 {section.title}
@@ -79,7 +78,7 @@ export default function Footer() {
                 <Link
                   key={label}
                   href={href}
-                  className="block text-[12px] text-[var(--color-text-muted)] no-underline mb-1.5"
+                  className="block text-[14px] text-[var(--color-text-muted)] no-underline mb-2"
                 >
                   {label}
                 </Link>
@@ -88,7 +87,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex justify-between py-3 border-t border-[rgba(43,27,94,0.04)] text-[10px] text-[var(--color-text-light)]">
+        <div className="flex flex-col sm:flex-row justify-between py-4 border-t border-[rgba(43,27,94,0.04)] text-[12px] text-[var(--color-text-light)] gap-2">
           <span>© 2026 GOSLYM — Gospel Lyon Métropole</span>
           <span>
             <Link href="/mentions-legales" className="no-underline text-inherit">

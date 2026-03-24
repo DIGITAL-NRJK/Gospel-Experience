@@ -17,29 +17,29 @@ export default function FlyerSection({ imageUrl, fullImageUrl, title, descriptio
   return (
     <>
       <div className="site-container pb-10">
-        <div className="bg-gradient-to-br from-[var(--color-teal-light)] to-[#ECFAF3] rounded-3xl p-8 flex gap-8 items-center">
-          <div className="w-[280px] shrink-0">
+        <div className="bg-gradient-to-br from-[var(--color-teal-light)] to-[#ECFAF3] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center">
+          <div className="w-full md:w-[280px] shrink-0">
             <img
               src={imageUrl}
               alt={title}
-              className="w-full rounded-2xl shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
+              className="w-full max-w-[320px] mx-auto md:max-w-none rounded-2xl shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
               onClick={() => setShowLightbox(true)}
               title="Cliquer pour agrandir"
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 text-center md:text-left">
             <div className="section-tag text-[var(--color-teal-dark)]">École de gospel</div>
-            <h2 className="font-serif text-[26px] font-bold text-[var(--color-teal-dark)] mb-3">{title}</h2>
+            <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-teal-dark)] mb-3">{title}</h2>
             {description && (
-              <p className="text-[13px] text-[var(--color-teal-dark)] opacity-70 leading-relaxed mb-5">{description}</p>
+              <p className="text-[15px] text-[var(--color-teal-dark)] opacity-70 leading-relaxed mb-5">{description}</p>
             )}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
               {link && (
-                <a href={link} className="btn-teal no-underline">S&apos;inscrire →</a>
+                <a href={link} className="btn-teal no-underline text-center">S&apos;inscrire →</a>
               )}
               <button
                 onClick={() => setShowLightbox(true)}
-                className="btn-outline text-[11px] px-5 py-2 cursor-pointer"
+                className="btn-outline text-[13px] px-5 py-2 cursor-pointer"
               >
                 Voir le flyer en grand
               </button>
