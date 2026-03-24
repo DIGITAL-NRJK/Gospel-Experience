@@ -7,16 +7,10 @@ export const client = createClient({
   useCdn: true,
 });
 
-// ============================
-// SITE SETTINGS
-// ============================
-
+// ===== SITE SETTINGS =====
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]`;
 
-// ============================
-// EVENTS
-// ============================
-
+// ===== EVENTS =====
 export const UPCOMING_EVENTS_QUERY = `
   *[_type == "event" && dateStart >= now()] | order(dateStart asc) [0...4] {
     _id, title, slug, eventType, dateStart, dateEnd,
@@ -37,25 +31,18 @@ export const ALL_EVENTS_QUERY = `
 export const FESTIVAL_EVENTS_QUERY = `
   *[_type == "event" && eventType in ["festival", "concert", "masterclass"]] | order(dateStart asc) {
     _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, price, ticketUrl,
-    image, featured
+    timeStart, timeEnd, venue, price, ticketUrl, image, featured
   }
 `;
 
-// ============================
-// TESTIMONIALS
-// ============================
-
+// ===== TESTIMONIALS =====
 export const FEATURED_TESTIMONIALS_QUERY = `
   *[_type == "testimonial" && featured == true] | order(_createdAt desc) [0...3] {
     _id, quote, personName, personRole, photo, rating, category
   }
 `;
 
-// ============================
-// ARTISTS & PARTNERS
-// ============================
-
+// ===== ARTISTS & PARTNERS =====
 export const ALL_ARTISTS_QUERY = `
   *[_type == "artist"] | order(name asc) {
     _id, name, slug, role, photo, biography, website, socials,
@@ -69,10 +56,7 @@ export const FEATURED_PARTNERS_QUERY = `
   }
 `;
 
-// ============================
-// FORMATIONS
-// ============================
-
+// ===== FORMATIONS =====
 export const ALL_FORMATIONS_QUERY = `
   *[_type == "formation"] | order(title asc) {
     _id, title, slug, targetAudience, schedule, price,
@@ -81,10 +65,7 @@ export const ALL_FORMATIONS_QUERY = `
   }
 `;
 
-// ============================
-// ARTICLES (BLOG)
-// ============================
-
+// ===== ARTICLES =====
 export const ALL_ARTICLES_QUERY = `
   *[_type == "article"] | order(publishedAt desc) {
     _id, title, slug, category, publishedAt, excerpt,
@@ -92,25 +73,22 @@ export const ALL_ARTICLES_QUERY = `
   }
 `;
 
-export const ARTICLES_BY_CATEGORY_QUERY = `
-  *[_type == "article" && category == $category] | order(publishedAt desc) {
+export const RECENT_ARTICLES_QUERY = `
+  *[_type == "article"] | order(publishedAt desc) [0...3] {
     _id, title, slug, category, publishedAt, excerpt,
     mainImage, readTime
   }
 `;
 
-// ============================
-// GALLERY
-// ============================
-
+// ===== GALLERY =====
 export const ALL_GALLERY_QUERY = `
   *[_type == "galleryItem"] | order(order asc, _createdAt desc) {
     _id, title, category, mediaType, image, videoUrl, featured, order
   }
 `;
 
-export const GALLERY_BY_CATEGORY_QUERY = `
-  *[_type == "galleryItem" && category == $category] | order(order asc) {
+export const RECENT_GALLERY_QUERY = `
+  *[_type == "galleryItem"] | order(order asc, _createdAt desc) [0...5] {
     _id, title, category, mediaType, image, videoUrl, featured, order
   }
 `;

@@ -8,6 +8,7 @@ export const siteSettings = defineType({
   icon: CogIcon,
   groups: [
     { name: "general", title: "Général", default: true },
+    { name: "cta", title: "Boutons & Flyer" },
     { name: "about", title: "Page À propos" },
     { name: "festival", title: "Festival (tarifs & lieu)" },
     { name: "contact", title: "Contact" },
@@ -82,6 +83,73 @@ export const siteSettings = defineType({
       ],
     }),
 
+    // ===== BOUTONS & FLYER =====
+    defineField({
+      name: "ctaPrimary",
+      title: "Bouton principal du Hero",
+      type: "object",
+      group: "cta",
+      fields: [
+        defineField({ name: "text", title: "Texte", type: "string", initialValue: "Réserver ma place" }),
+        defineField({ name: "url", title: "Lien", type: "string", initialValue: "/festival#billetterie" }),
+      ],
+    }),
+    defineField({
+      name: "ctaSecondary",
+      title: "Bouton secondaire du Hero",
+      type: "object",
+      group: "cta",
+      fields: [
+        defineField({ name: "text", title: "Texte", type: "string", initialValue: "Découvrir l'école" }),
+        defineField({ name: "url", title: "Lien", type: "string", initialValue: "/ecole" }),
+      ],
+    }),
+    defineField({
+      name: "flyerImage",
+      title: "Flyer à afficher sur la homepage",
+      type: "image",
+      group: "cta",
+      options: { hotspot: true },
+      description: "Image du flyer (ex: flyer GEI). Apparaît en section dédiée sur la homepage.",
+    }),
+    defineField({
+      name: "flyerTitle",
+      title: "Titre de la section flyer",
+      type: "string",
+      group: "cta",
+      initialValue: "Rejoignez l'école de gospel",
+    }),
+    defineField({
+      name: "flyerDescription",
+      title: "Description sous le flyer",
+      type: "text",
+      rows: 2,
+      group: "cta",
+    }),
+    defineField({
+      name: "flyerLink",
+      title: "Lien du flyer (inscription, etc.)",
+      type: "string",
+      group: "cta",
+    }),
+    defineField({
+      name: "secondarySponsors",
+      title: "Sponsors secondaires (logos / noms)",
+      type: "array",
+      group: "cta",
+      description: "Affichés sous les partenaires phares : 'Ils nous soutiennent également'",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({ name: "name", title: "Nom", type: "string" }),
+            defineField({ name: "url", title: "Lien (optionnel)", type: "url" }),
+          ],
+          preview: { select: { title: "name" } },
+        },
+      ],
+    }),
+
     // ===== PAGE À PROPOS =====
     defineField({
       name: "aboutIntro",
@@ -89,7 +157,7 @@ export const siteSettings = defineType({
       type: "text",
       rows: 4,
       group: "about",
-      initialValue: "Gospel Lyon Métropole (GOSLYM) a pour mission la promotion du chant gospel à Lyon et dans la métropole lyonnaise. L'association croit profondément que le gospel peut faire grandir grâce aux valeurs qu'il porte : fraternité, solidarité, communion, joie.",
+      initialValue: "Gospel Lyon Métropole (GOSLYM) a pour mission la promotion du chant gospel à Lyon et dans la métropole lyonnaise.",
     }),
     defineField({
       name: "aboutStats",
@@ -103,9 +171,7 @@ export const siteSettings = defineType({
             defineField({ name: "value", title: "Valeur", type: "string" }),
             defineField({ name: "label", title: "Label", type: "string" }),
           ],
-          preview: {
-            select: { title: "value", subtitle: "label" },
-          },
+          preview: { select: { title: "value", subtitle: "label" } },
         },
       ],
     }),
@@ -115,7 +181,6 @@ export const siteSettings = defineType({
       type: "text",
       rows: 4,
       group: "about",
-      initialValue: "Un festival biennal avec des grands concerts professionnels, offrant une scène aux chorales régionales, et des Masterclass pour permettre aux chanteurs de progresser dans leur art.",
     }),
     defineField({
       name: "missionEcole",
@@ -123,7 +188,6 @@ export const siteSettings = defineType({
       type: "text",
       rows: 4,
       group: "about",
-      initialValue: "À plus long terme, un lieu d'éducation et de professionnalisation pour les jeunes. Le gospel comme chemin vers l'épanouissement, l'apprentissage du travail en groupe et la confiance en soi.",
     }),
     defineField({
       name: "socialActions",
@@ -137,14 +201,12 @@ export const siteSettings = defineType({
             defineField({ name: "title", title: "Titre", type: "string" }),
             defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
           ],
-          preview: {
-            select: { title: "title", subtitle: "description" },
-          },
+          preview: { select: { title: "title" } },
         },
       ],
     }),
 
-    // ===== FESTIVAL (TARIFS & LIEU) =====
+    // ===== FESTIVAL =====
     defineField({
       name: "festivalTarifs",
       title: "Tarifs du festival",
@@ -157,11 +219,9 @@ export const siteSettings = defineType({
             defineField({ name: "name", title: "Nom du pass", type: "string" }),
             defineField({ name: "price", title: "Prix", type: "string" }),
             defineField({ name: "description", title: "Description", type: "string" }),
-            defineField({ name: "popular", title: "Populaire (mis en avant)", type: "boolean", initialValue: false }),
+            defineField({ name: "popular", title: "Populaire", type: "boolean", initialValue: false }),
           ],
-          preview: {
-            select: { title: "name", subtitle: "price" },
-          },
+          preview: { select: { title: "name", subtitle: "price" } },
         },
       ],
     }),
@@ -171,7 +231,6 @@ export const siteSettings = defineType({
       type: "text",
       rows: 4,
       group: "festival",
-      initialValue: "Située sous la Basilique Notre-Dame de Fourvière, la crypte offre un cadre unique avec une acoustique remarquable. Ses voûtes basses et pierres apparentes créent une atmosphère intimiste propice aux concerts gospel.",
     }),
     defineField({
       name: "festivalVenueStats",
@@ -185,40 +244,15 @@ export const siteSettings = defineType({
             defineField({ name: "value", title: "Valeur", type: "string" }),
             defineField({ name: "label", title: "Label", type: "string" }),
           ],
-          preview: {
-            select: { title: "value", subtitle: "label" },
-          },
+          preview: { select: { title: "value", subtitle: "label" } },
         },
       ],
     }),
 
     // ===== CONTACT =====
-    defineField({
-      name: "contactEmail",
-      title: "Email de contact",
-      type: "string",
-      group: "contact",
-      initialValue: "goslym69@gmail.com",
-    }),
-    defineField({
-      name: "contactPhone",
-      title: "Téléphone",
-      type: "string",
-      group: "contact",
-      initialValue: "07 88 51 96 52",
-    }),
-    defineField({
-      name: "address",
-      title: "Adresse",
-      type: "text",
-      rows: 3,
-      group: "contact",
-      initialValue: "Carré Fourvière\n5 place de Fourvière\n69005 Lyon",
-    }),
+    defineField({ name: "contactEmail", title: "Email", type: "string", group: "contact", initialValue: "goslym69@gmail.com" }),
+    defineField({ name: "contactPhone", title: "Téléphone", type: "string", group: "contact", initialValue: "07 88 51 96 52" }),
+    defineField({ name: "address", title: "Adresse", type: "text", rows: 3, group: "contact", initialValue: "Carré Fourvière\n5 place de Fourvière\n69005 Lyon" }),
   ],
-  preview: {
-    prepare() {
-      return { title: "Réglages du site" };
-    },
-  },
+  preview: { prepare() { return { title: "Réglages du site" }; } },
 });
