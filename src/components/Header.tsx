@@ -7,7 +7,7 @@ import { useState } from "react";
 const navItems = [
   { href: "/", label: "Accueil" },
   { href: "/festival", label: "Festival" },
-  { href: "/ecole", label: "École GEI" },
+  { href: "/ecole", label: "Académie GEI" },
   { href: "/actualites", label: "Actualités" },
   { href: "/galerie", label: "Galerie" },
   { href: "/a-propos", label: "À propos" },

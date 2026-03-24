@@ -16,7 +16,7 @@ import FlyerSection from "@/components/FlyerSection";
 export const revalidate = 60;
 
 interface SiteSettings {
-  siteMode: "festival" | "ecole" | "general";
+  siteMode: "festival" | "académie" | "general";
   heroVideoFileUrl?: string;
   heroVideoUrl?: string;
   heroTitle: string;
@@ -60,10 +60,10 @@ export default async function HomePage() {
     client.fetch<GalleryItem[]>(RECENT_GALLERY_QUERY),
   ]);
 
-  const isEcoleMode = settings?.siteMode === "ecole";
-  const ctaPrimaryText = settings?.ctaPrimary?.text || (isEcoleMode ? "S'inscrire à l'école" : "Réserver ma place");
+  const isEcoleMode = settings?.siteMode === "académie";
+  const ctaPrimaryText = settings?.ctaPrimary?.text || (isEcoleMode ? "S'inscrire à la GEI" : "Réserver ma place");
   const ctaPrimaryUrl = settings?.ctaPrimary?.url || (isEcoleMode ? "/ecole" : "/festival#billetterie");
-  const ctaSecondaryText = settings?.ctaSecondary?.text || (isEcoleMode ? "Prochain festival" : "Découvrir l'école");
+  const ctaSecondaryText = settings?.ctaSecondary?.text || (isEcoleMode ? "Prochain festival" : "Découvrir la GEI");
   const ctaSecondaryUrl = settings?.ctaSecondary?.url || (isEcoleMode ? "/festival" : "/ecole");
   const hasHeroVideo = !!(settings?.heroVideoFileUrl || settings?.heroVideoUrl);
 
@@ -117,17 +117,17 @@ export default async function HomePage() {
         <div className="site-container">
           <div className="section-tag text-[var(--color-coral)]">Nos deux pôles</div>
           <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-2">Un écosystème gospel unique</h2>
-          <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed max-w-[520px]">GOSLYM porte deux projets complémentaires : le festival biennal et l&apos;école de gospel pour former les talents de demain.</p>
+          <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed max-w-[520px]">GOSLYM porte deux projets complémentaires : le festival biennal et l&apos;académie de gospel pour former les talents de demain.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className="bg-gradient-to-br from-[#FFF0E6] via-[var(--color-coral-light)] to-[var(--color-peach)] rounded-[20px] p-6 md:p-7 border border-[rgba(216,90,48,0.12)] min-h-[200px] flex flex-col justify-end">
               <div className="text-[11px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2">Festival</div>
-              <h3 className="font-serif text-[22px] md:text-[24px] font-bold text-[var(--color-coral-dark)] mb-2">Gospel Expérience</h3>
+              <h3 className="font-serif text-[22px] md:text-[24px] font-bold text-[var(--color-coral-dark)] mb-2">Le Fourvière Gospel Expérience</h3>
               <p className="text-[14px] text-[#8A5030] leading-relaxed mb-4">Le rendez-vous biennal du gospel dans la Crypte de Fourvière. Concerts, chorales et Masterclass.</p>
               <a className="btn-coral self-start text-[13px] px-5 py-2.5 no-underline" href="/festival">Découvrir →</a>
             </div>
             <div className="bg-gradient-to-br from-[#ECFAF3] via-[var(--color-teal-light)] to-[#B0E6D0] rounded-[20px] p-6 md:p-7 border border-[rgba(29,158,117,0.12)] min-h-[200px] flex flex-col justify-end">
-              <div className="text-[11px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2">École</div>
-              <h3 className="font-serif text-[22px] md:text-[24px] font-bold text-[var(--color-teal-dark)] mb-2">GEI — Institute</h3>
+              <div className="text-[11px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2">Académie</div>
+              <h3 className="font-serif text-[22px] md:text-[24px] font-bold text-[var(--color-teal-dark)] mb-2">Le Gospel Experience Institute </h3>
               <p className="text-[14px] text-[#1A6B4E] leading-relaxed mb-4">Ateliers chœur gospel un dimanche par mois avec Hazaële. Formation et valeurs humaines.</p>
               <a className="btn-teal self-start text-[13px] px-5 py-2.5 no-underline" href="/ecole">Découvrir →</a>
             </div>
@@ -140,7 +140,7 @@ export default async function HomePage() {
         <FlyerSection
           imageUrl={urlFor(settings.flyerImage).width(560).url()}
           fullImageUrl={urlFor(settings.flyerImage).width(1600).url()}
-          title={settings.flyerTitle || "Rejoignez l'école de gospel"}
+          title={settings.flyerTitle || "Rejoignez le Gospel Experience Institute"}
           description={settings.flyerDescription}
           link={settings.flyerLink}
         />
@@ -150,7 +150,7 @@ export default async function HomePage() {
       <div className="site-container">
         <div className="bg-[var(--color-indigo)] rounded-3xl py-8 md:py-10 px-5 md:px-8">
           <div className="section-tag text-[var(--color-gold)]">Rétrospective</div>
-          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-white mb-5">Les éditions précédentes</h2>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-white mb-5">Les éditions précédentes du FGE</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { year: "2021", label: "1ère Édition — La Genèse", sub: "Née après la pandémie pour restaurer le lien social par la musique.", stats: [["1 500", "Spectateurs"], ["4", "Concerts"], ["2", "Jours"]], color: "var(--color-peach-deep)" },
