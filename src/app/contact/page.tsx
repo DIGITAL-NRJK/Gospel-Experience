@@ -4,6 +4,9 @@ import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import type { Metadata } from "next";
 
+// Revalide le contenu toutes les 60 secondes
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Contact",
   description: "Contactez l'association GOSLYM — Gospel Lyon Métropole. Billetterie, inscription école GEI, partenariats, presse.",

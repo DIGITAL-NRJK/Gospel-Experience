@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
+// Revalide le contenu toutes les 60 secondes
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "École GEI — Gospel Experience Institute",
   description: "Ateliers chœur gospel un dimanche par mois au Carré Fourvière. Jeunes (16-18 ans) et adultes. Dirigé par Hazaële.",

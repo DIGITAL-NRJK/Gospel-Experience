@@ -7,6 +7,10 @@ import {
 } from "@/lib/sanity.client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HeroVideo from "@/components/HeroVideo";
+
+// Revalide le contenu toutes les 60 secondes
+export const revalidate = 60;
 
 interface SiteSettings {
   siteMode: "festival" | "ecole" | "general";
@@ -54,14 +58,24 @@ export default async function HomePage() {
     client.fetch<Partner[]>(FEATURED_PARTNERS_QUERY),
   ]);
 
+  const isFestivalMode = settings?.siteMode === "festival";
+  const isEcoleMode = settings?.siteMode === "ecole";
+
   return (
     <>
       <Header />
 
-      {/* HERO — full width background, contained content */}
+      {/* HERO — full width background with optional YouTube video */}
       <section className="relative min-h-[460px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.5)] via-[rgba(30,20,50,0.7)] to-[rgba(30,20,50,0.85)]" />
+        {/* Background: video YouTube si configurée, sinon gradient */}
+        {settings?.heroVideoUrl ? (
+          <HeroVideo url={settings.heroVideoUrl} />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />
+        )}
+        {/* Overlay sombre par-dessus la vidéo ou le gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
+
         <div className="relative z-10 text-center max-w-[600px] mx-auto px-6 py-14">
           <span className="inline-flex items-center gap-2 text-[11px] tracking-[2px] uppercase text-white bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-5 border border-white/10">
             {settings?.currentSeason || "Saison 2026 – 2027"}
@@ -76,18 +90,34 @@ export default async function HomePage() {
               "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans l'écrin sacré de la Basilique de Fourvière."}
           </p>
           <div className="flex gap-3 justify-center flex-wrap items-center">
-            {settings?.siteMode === "ecole" ? (
+            {isEcoleMode ? (
               <>
-                <button className="btn-teal">S&apos;inscrire à l&apos;école</button>
-                <button className="btn-outline">Prochain festival</button>
+                <a href="/ecole" className="btn-teal no-underline">S&apos;inscrire à l&apos;école</a>
+                <a href="/festival" className="btn-outline no-underline">Prochain festival</a>
+              </>
+            ) : isFestivalMode ? (
+              <>
+                <a href="/festival#billetterie" className="btn-coral no-underline">Réserver ma place</a>
+                <a href="/ecole" className="btn-outline no-underline">Découvrir l&apos;école</a>
               </>
             ) : (
               <>
-                <button className="btn-coral">Réserver ma place</button>
-                <button className="btn-outline">Découvrir l&apos;école</button>
+                <a href="/festival#billetterie" className="btn-coral no-underline">Réserver ma place</a>
+                <a href="/ecole" className="btn-outline no-underline">Découvrir l&apos;école</a>
               </>
             )}
           </div>
+          {settings?.heroVideoUrl && (
+  <a
+    href={settings.heroVideoUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-5 inline-flex items-center gap-2 text-[12px] text-white/80 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline cursor-pointer hover:bg-white/20 transition-colors"
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="9,6 18,12 9,18" /></svg>
+    Voir la vidéo
+  </a>
+)}
           {settings?.stats && (
             <div className="flex gap-2 justify-center mt-9">
               {[
@@ -116,14 +146,14 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-2 gap-4 mt-6">
             <div className="bg-gradient-to-br from-[#FFF0E6] via-[var(--color-coral-light)] to-[var(--color-peach)] rounded-[20px] p-7 border border-[rgba(216,90,48,0.12)] min-h-[210px] flex flex-col justify-end">
-              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2.5">Le Festival</div>
-              <h3 className="font-serif text-[22px] font-bold text-[var(--color-coral-dark)] mb-1.5">Fourvière Gospel Expérience</h3>
+              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2.5">Festival</div>
+              <h3 className="font-serif text-[22px] font-bold text-[var(--color-coral-dark)] mb-1.5">Gospel Expérience</h3>
               <p className="text-[12px] text-[#8A5030] leading-relaxed mb-3.5">Le rendez-vous biennal du gospel dans la Crypte de Fourvière. Concerts, chorales et Masterclass.</p>
               <a className="btn-coral self-start text-[11px] px-5 py-2 no-underline" href="/festival">Découvrir →</a>
             </div>
             <div className="bg-gradient-to-br from-[#ECFAF3] via-[var(--color-teal-light)] to-[#B0E6D0] rounded-[20px] p-7 border border-[rgba(29,158,117,0.12)] min-h-[210px] flex flex-col justify-end">
-              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2.5">L'École</div>
-              <h3 className="font-serif text-[22px] font-bold text-[var(--color-teal-dark)] mb-1.5">Gospel Experience Institute — GEI</h3>
+              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2.5">École</div>
+              <h3 className="font-serif text-[22px] font-bold text-[var(--color-teal-dark)] mb-1.5">GEI — Institute</h3>
               <p className="text-[12px] text-[#1A6B4E] leading-relaxed mb-3.5">Ateliers chœur gospel un dimanche par mois avec Hazaële. Formation et valeurs humaines.</p>
               <a className="btn-teal self-start text-[11px] px-5 py-2 no-underline" href="/ecole">Découvrir →</a>
             </div>
@@ -153,7 +183,7 @@ export default async function HomePage() {
                     </div>
                   ))}
                 </div>
-                <span className="inline-block mt-2 text-[11px] text-[var(--color-gold)] font-bold cursor-pointer">Voir les photos →</span>
+                <a href="/galerie" className="inline-block mt-2 text-[11px] text-[var(--color-gold)] font-bold no-underline">Voir les photos →</a>
               </div>
             ))}
           </div>

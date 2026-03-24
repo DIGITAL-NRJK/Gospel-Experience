@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
+// Revalide le contenu toutes les 60 secondes
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Festival Gospel Expérience",
   description: "Festival biennal de gospel dans la Crypte de la Basilique de Fourvière à Lyon. Concerts professionnels, chorales régionales, Masterclass.",

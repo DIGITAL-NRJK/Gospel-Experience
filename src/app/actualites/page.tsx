@@ -4,6 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
+// Revalide le contenu toutes les 60 secondes
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Actualités",
   description: "Interviews, retours sur les événements, vie de l'association GOSLYM et coulisses du gospel à Lyon.",

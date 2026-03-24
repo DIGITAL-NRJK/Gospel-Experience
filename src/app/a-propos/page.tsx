@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 
+// Revalide le contenu toutes les 60 secondes
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "À propos",
   description: "Gospel Lyon Métropole (GOSLYM) : association dédiée à la promotion du chant gospel à Lyon. Festival, école, dimension sociale.",
