@@ -9,6 +9,7 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!;
 export default defineConfig({
   name: "gospel-experience-studio",
   title: "Gospel Expérience",
+  basePath: "/studio",
   projectId,
   dataset,
   plugins: [
