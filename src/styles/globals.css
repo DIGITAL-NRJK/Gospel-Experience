@@ -1,12 +1,6 @@
 @import "tailwindcss";
 
-/* ============================
-   DESIGN SYSTEM — Gospel Expérience
-   Palette extraite des affiches du festival et de GEI
-   ============================ */
-
 @theme {
-  /* Couleurs principales */
   --color-cream: #FFF8F0;
   --color-peach: #F7DCC8;
   --color-peach-deep: #E8A67C;
@@ -23,20 +17,12 @@
   --color-gold-light: #F9F0DB;
   --color-magenta: #D4537E;
   --color-magenta-light: #FBEAF0;
-
-  /* Textes */
   --color-text-body: #2B1B5E;
   --color-text-muted: #6B5E8A;
   --color-text-light: #9A8FB5;
-
-  /* Fonts */
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "DM Sans", system-ui, sans-serif;
 }
-
-/* ============================
-   BASE
-   ============================ */
 
 body {
   font-family: var(--font-sans);
@@ -44,11 +30,20 @@ body {
   color: var(--color-text-body);
 }
 
-/* ============================
-   COMPOSANTS RÉUTILISABLES
-   ============================ */
+.site-container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
 
-/* Boutons arrondis (pill) */
+.site-container-wide {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .btn-coral {
   background-color: var(--color-coral);
   color: white;
@@ -89,7 +84,6 @@ body {
 }
 .btn-outline:hover { background-color: var(--color-teal-light); }
 
-/* Tags événements */
 .tag-festival {
   background-color: var(--color-coral-light);
   color: var(--color-coral-dark);
@@ -112,7 +106,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Section tag (petit label au-dessus des titres) */
 .section-tag {
   font-size: 11px;
   letter-spacing: 3px;
@@ -121,7 +114,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* Cards arrondies */
 .card {
   background-color: white;
   border-radius: 16px;
@@ -131,7 +123,6 @@ body {
 }
 .card:hover { transform: translateY(-2px); }
 
-/* Sticky header */
 .header-sticky {
   position: sticky;
   top: 0;
