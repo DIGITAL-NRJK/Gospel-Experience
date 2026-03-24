@@ -34,7 +34,7 @@ interface SiteSettings {
 
 interface Event { _id: string; title: string; eventType: string; dateStart: string; timeStart?: string; timeEnd?: string; venue: string; ticketUrl?: string }
 interface Testimonial { _id: string; quote: string; personName: string; personRole: string }
-interface Partner { _id: string; name: string; role: string; photo?: { asset: { _ref: string } }; website?: string; partnerDescription?: string }
+interface Partner { _id: string; name: string; logo?: { asset: { _ref: string } }; role: string; description?: string; website?: string }
 interface Article { _id: string; title: string; slug: { current: string }; category: string; publishedAt: string; mainImage?: { asset: { _ref: string } }; readTime?: number }
 interface GalleryItem { _id: string; title: string; mediaType: "photo" | "video"; image?: { asset: { _ref: string } }; featured: boolean }
 
@@ -44,7 +44,6 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   interview: { bg: "var(--color-indigo)", text: "Interview" },
   coulisses: { bg: "var(--color-text-muted)", text: "Coulisses" },
 };
-
 const gradients = [
   "from-[var(--color-peach)] to-[var(--color-coral-light)]",
   "from-[var(--color-teal-light)] to-[#ECFAF3]",
@@ -102,12 +101,7 @@ export default async function HomePage() {
           )}
           {settings?.stats && (
             <div className="flex gap-2 justify-center flex-wrap mt-8">
-              {[
-                [settings.stats.spectators, "Spectateurs"],
-                [settings.stats.editions, "Éditions"],
-                [settings.stats.artists, "Artistes"],
-                [settings.stats.since, "Depuis"],
-              ].map(([num, label]) => (
+              {[[settings.stats.spectators, "Spectateurs"], [settings.stats.editions, "Éditions"], [settings.stats.artists, "Artistes"], [settings.stats.since, "Depuis"]].map(([num, label]) => (
                 <div key={label} className="bg-white/10 backdrop-blur rounded-2xl px-4 md:px-5 py-3 text-center min-w-[90px] border border-white/10">
                   <div className="font-serif text-xl md:text-2xl font-bold text-[var(--color-gold)] leading-none">{num}</div>
                   <div className="text-[11px] tracking-[1px] uppercase text-white/45 mt-1">{label}</div>
@@ -208,9 +202,7 @@ export default async function HomePage() {
                 </div>
               );
             })}
-            {(!events || events.length === 0) && (
-              <p className="text-[15px] text-[var(--color-text-muted)] text-center py-8">Aucun événement à venir pour le moment.</p>
-            )}
+            {(!events || events.length === 0) && <p className="text-[15px] text-[var(--color-text-muted)] text-center py-8">Aucun événement à venir pour le moment.</p>}
           </div>
         </div>
       </section>
@@ -243,7 +235,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* PARTENAIRES */}
+      {/* PARTENAIRES PHARES — nouveau design avec logos */}
       {partners && partners.length > 0 && (
         <div className="site-container pb-4">
           <div className="bg-gradient-to-br from-[#FFF3E8] to-[var(--color-cream)] rounded-3xl py-8 md:py-10 px-5 md:px-8">
@@ -251,15 +243,24 @@ export default async function HomePage() {
             <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">Ils portent le projet avec nous</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {partners.map((p) => (
-                <div key={p._id} className="bg-white rounded-[20px] p-5 md:p-6 border border-[rgba(43,27,94,0.06)] flex gap-4">
-                  <div className="w-16 h-16 rounded-2xl shrink-0 overflow-hidden bg-gradient-to-br from-[var(--color-lavender-light)] to-[#D4C4F0]">
-                    {p.photo && <img src={urlFor(p.photo).width(128).height(128).url()} alt={p.name} className="w-full h-full object-cover" />}
+                <div key={p._id} className="bg-white rounded-[20px] p-5 md:p-6 border border-[rgba(43,27,94,0.06)] flex gap-5 items-start">
+                  {/* Logo — rectangle adaptatif, pas un cercle */}
+                  <div className="w-20 h-20 rounded-2xl shrink-0 overflow-hidden bg-[var(--color-cream)] flex items-center justify-center p-2">
+                    {p.logo ? (
+                      <img src={urlFor(p.logo).width(160).height(160).fit("max").url()} alt={p.name} className="w-full h-full object-contain" />
+                    ) : (
+                      <span className="font-serif text-[20px] font-bold text-[var(--color-indigo)] opacity-30">{p.name[0]}</span>
+                    )}
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <h4 className="font-serif text-[17px] font-bold text-[var(--color-indigo)] mb-0.5">{p.name}</h4>
                     <div className="text-[13px] text-[var(--color-text-light)] mb-2">{p.role}</div>
-                    <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed">{p.partnerDescription}</p>
-                    {p.website && <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-[13px] font-bold text-[var(--color-coral)] no-underline mt-2 inline-block">Découvrir →</a>}
+                    {p.description && <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed">{p.description}</p>}
+                    {p.website && (
+                      <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-[13px] font-bold text-[var(--color-coral)] no-underline mt-2 inline-block">
+                        Découvrir →
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -299,11 +300,7 @@ export default async function HomePage() {
                 return (
                   <div key={g._id} className={`rounded-2xl relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center ${!g.image ? `bg-gradient-to-br ${fallback[i % fallback.length]}` : ""}`} style={{ gridRow: g.featured ? "span 2" : undefined }}>
                     {g.image && <img src={urlFor(g.image).width(g.featured ? 800 : 500).height(g.featured ? 720 : 400).url()} alt={g.title} className="absolute inset-0 w-full h-full object-cover" />}
-                    {g.mediaType === "video" && (
-                      <div className="relative z-10 w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-indigo)"><polygon points="9,6 18,12 9,18" /></svg>
-                      </div>
-                    )}
+                    {g.mediaType === "video" && <div className="relative z-10 w-14 h-14 rounded-full bg-white/90 flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-indigo)"><polygon points="9,6 18,12 9,18" /></svg></div>}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     <span className="absolute bottom-3 left-4 text-[13px] text-white font-bold z-10">{g.title}</span>
                   </div>

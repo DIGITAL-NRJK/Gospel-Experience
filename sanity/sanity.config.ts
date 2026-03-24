@@ -31,6 +31,7 @@ export default defineConfig({
             S.documentTypeListItem("formation").title("Formations"),
             S.documentTypeListItem("testimonial").title("Témoignages"),
             S.divider(),
+            S.documentTypeListItem("partner").title("Partenaires"),
             S.documentTypeListItem("article").title("Articles (Blog)"),
             S.documentTypeListItem("galleryItem").title("Galerie (Médias)"),
           ]),

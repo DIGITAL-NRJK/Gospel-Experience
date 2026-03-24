@@ -7,7 +7,7 @@ export const client = createClient({
   useCdn: true,
 });
 
-// ===== SITE SETTINGS (with file URL resolution) =====
+// ===== SITE SETTINGS =====
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
   ...,
   "heroVideoFileUrl": heroVideoFile.asset->url
@@ -26,8 +26,7 @@ export const UPCOMING_EVENTS_QUERY = `
 export const ALL_EVENTS_QUERY = `
   *[_type == "event"] | order(dateStart desc) {
     _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, price, ticketUrl,
-    image, featured
+    timeStart, timeEnd, venue, price, ticketUrl, image, featured
   }
 `;
 
@@ -45,17 +44,23 @@ export const FEATURED_TESTIMONIALS_QUERY = `
   }
 `;
 
-// ===== ARTISTS & PARTNERS =====
+// ===== ARTISTS =====
 export const ALL_ARTISTS_QUERY = `
   *[_type == "artist"] | order(name asc) {
-    _id, name, slug, role, photo, biography, website, socials,
-    isFeaturedPartner, partnerDescription
+    _id, name, slug, role, photo, biography, website, socials
   }
 `;
 
+// ===== PARTNERS (new dedicated type) =====
 export const FEATURED_PARTNERS_QUERY = `
-  *[_type == "artist" && isFeaturedPartner == true] {
-    _id, name, slug, role, photo, website, partnerDescription
+  *[_type == "partner" && featured == true] | order(order asc) {
+    _id, name, logo, role, description, website, order
+  }
+`;
+
+export const ALL_PARTNERS_QUERY = `
+  *[_type == "partner"] | order(order asc) {
+    _id, name, logo, role, description, website, featured, order
   }
 `;
 
@@ -71,15 +76,13 @@ export const ALL_FORMATIONS_QUERY = `
 // ===== ARTICLES =====
 export const ALL_ARTICLES_QUERY = `
   *[_type == "article"] | order(publishedAt desc) {
-    _id, title, slug, category, publishedAt, excerpt,
-    mainImage, readTime
+    _id, title, slug, category, publishedAt, excerpt, mainImage, readTime
   }
 `;
 
 export const RECENT_ARTICLES_QUERY = `
   *[_type == "article"] | order(publishedAt desc) [0...3] {
-    _id, title, slug, category, publishedAt, excerpt,
-    mainImage, readTime
+    _id, title, slug, category, publishedAt, excerpt, mainImage, readTime
   }
 `;
 

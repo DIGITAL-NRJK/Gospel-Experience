@@ -10,7 +10,7 @@ export const siteSettings = defineType({
     { name: "general", title: "Général", default: true },
     { name: "cta", title: "Boutons & Flyer" },
     { name: "about", title: "Page À propos" },
-    { name: "festival", title: "Festival (tarifs & lieu)" },
+    { name: "festival", title: "Page Festival" },
     { name: "contact", title: "Contact" },
   ],
   fields: [
@@ -37,14 +37,13 @@ export const siteSettings = defineType({
       type: "file",
       group: "general",
       options: { accept: "video/mp4" },
-      description: "Upload un fichier MP4 (max 1 min, idéalement 10-30 Mo). Qualité parfaite, pas de buffering. Prioritaire sur le lien YouTube.",
+      description: "Upload un fichier MP4 (max 1 min). Prioritaire sur le lien YouTube.",
     }),
     defineField({
       name: "heroVideoUrl",
       title: "Vidéo Hero (lien YouTube) — Fallback",
       type: "url",
       group: "general",
-      description: "Utilisé uniquement si aucun fichier MP4 n'est uploadé ci-dessus.",
     }),
     defineField({
       name: "heroTitle",
@@ -59,7 +58,6 @@ export const siteSettings = defineType({
       type: "text",
       rows: 2,
       group: "general",
-      initialValue: "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans l'écrin sacré de la Basilique de Fourvière.",
     }),
     defineField({
       name: "currentSeason",
@@ -119,44 +117,24 @@ export const siteSettings = defineType({
       type: "image",
       group: "cta",
       options: { hotspot: true },
-      description: "Image du flyer (ex: flyer GEI). Cliquable en plein écran sur le site.",
     }),
-    defineField({
-      name: "flyerTitle",
-      title: "Titre de la section flyer",
-      type: "string",
-      group: "cta",
-      initialValue: "Rejoignez l'école de gospel",
-    }),
-    defineField({
-      name: "flyerDescription",
-      title: "Description sous le flyer",
-      type: "text",
-      rows: 2,
-      group: "cta",
-    }),
-    defineField({
-      name: "flyerLink",
-      title: "Lien du flyer (inscription, etc.)",
-      type: "string",
-      group: "cta",
-    }),
+    defineField({ name: "flyerTitle", title: "Titre de la section flyer", type: "string", group: "cta" }),
+    defineField({ name: "flyerDescription", title: "Description sous le flyer", type: "text", rows: 2, group: "cta" }),
+    defineField({ name: "flyerLink", title: "Lien du flyer", type: "string", group: "cta" }),
     defineField({
       name: "secondarySponsors",
       title: "Sponsors secondaires",
       type: "array",
       group: "cta",
       description: "Affichés sous les partenaires phares",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "name", title: "Nom", type: "string" }),
-            defineField({ name: "url", title: "Lien (optionnel)", type: "url" }),
-          ],
-          preview: { select: { title: "name" } },
-        },
-      ],
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "name", title: "Nom", type: "string" }),
+          defineField({ name: "url", title: "Lien (optionnel)", type: "url" }),
+        ],
+        preview: { select: { title: "name" } },
+      }],
     }),
 
     // ===== PAGE À PROPOS =====
@@ -192,27 +170,33 @@ export const siteSettings = defineType({
       }],
     }),
 
-    // ===== FESTIVAL =====
+    // ===== PAGE FESTIVAL =====
     defineField({
-      name: "festivalTarifs",
-      title: "Tarifs du festival",
-      type: "array",
+      name: "festivalIntro",
+      title: "Texte de présentation du festival",
+      type: "text",
+      rows: 6,
       group: "festival",
-      of: [{
-        type: "object",
-        fields: [
-          defineField({ name: "name", title: "Nom", type: "string" }),
-          defineField({ name: "price", title: "Prix", type: "string" }),
-          defineField({ name: "description", title: "Description", type: "string" }),
-          defineField({ name: "popular", title: "Populaire", type: "boolean", initialValue: false }),
-        ],
-        preview: { select: { title: "name", subtitle: "price" } },
-      }],
+      description: "Texte long décrivant le festival, sa mission, son histoire.",
     }),
-    defineField({ name: "festivalVenue", title: "Description du lieu", type: "text", rows: 4, group: "festival" }),
+    defineField({
+      name: "festivalCrypteImage",
+      title: "Photo de la Crypte",
+      type: "image",
+      group: "festival",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "festivalCrypteText",
+      title: "Description de la Crypte",
+      type: "text",
+      rows: 4,
+      group: "festival",
+      initialValue: "Située sous la Basilique Notre-Dame de Fourvière, la crypte offre un cadre unique avec une acoustique remarquable. Ses voûtes basses et pierres apparentes créent une atmosphère intimiste propice aux concerts gospel.",
+    }),
     defineField({
       name: "festivalVenueStats",
-      title: "Chiffres du lieu",
+      title: "Chiffres du lieu (Crypte)",
       type: "array",
       group: "festival",
       of: [{
@@ -223,6 +207,21 @@ export const siteSettings = defineType({
         ],
         preview: { select: { title: "value", subtitle: "label" } },
       }],
+    }),
+    defineField({
+      name: "festivalBasiliqueImage",
+      title: "Photo de la Basilique",
+      type: "image",
+      group: "festival",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "festivalBasiliqueText",
+      title: "Description de la Basilique",
+      type: "text",
+      rows: 4,
+      group: "festival",
+      initialValue: "La Basilique Notre-Dame de Fourvière, monument emblématique de Lyon classé au patrimoine mondial de l'UNESCO, domine la ville depuis la colline de Fourvière. Son esplanade offre une vue panoramique exceptionnelle sur Lyon et les Alpes.",
     }),
 
     // ===== CONTACT =====

@@ -4,6 +4,7 @@ import { formation } from "./formation";
 import { testimonial } from "./testimonial";
 import { article } from "./article";
 import { galleryItem } from "./galleryItem";
+import { partner } from "./partner";
 import { siteSettings } from "./siteSettings";
 
 export const schemaTypes = [
@@ -13,5 +14,6 @@ export const schemaTypes = [
   testimonial,
   article,
   galleryItem,
+  partner,
   siteSettings,
 ];
