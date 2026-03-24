@@ -1,3 +1,4 @@
+import { client, SITE_SETTINGS_QUERY } from "@/lib/sanity.client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
@@ -8,7 +9,19 @@ export const metadata: Metadata = {
   description: "Contactez l'association GOSLYM — Gospel Lyon Métropole. Billetterie, inscription école GEI, partenariats, presse.",
 };
 
-export default function ContactPage() {
+interface Settings {
+  contactEmail?: string;
+  contactPhone?: string;
+  address?: string;
+}
+
+export default async function ContactPage() {
+  const settings = await client.fetch<Settings>(SITE_SETTINGS_QUERY);
+
+  const phone = settings?.contactPhone || "07 88 51 96 52";
+  const email = settings?.contactEmail || "goslym69@gmail.com";
+  const address = settings?.address || "Carré Fourvière\n5 place de Fourvière\n69005 Lyon";
+
   return (
     <>
       <Header />
@@ -25,9 +38,9 @@ export default function ContactPage() {
               <div className="bg-[var(--color-indigo)] rounded-[20px] p-7 mb-4">
                 <h3 className="font-serif text-lg font-bold text-white mb-4">Informations</h3>
                 {[
-                  ["Téléphone", "07 88 51 96 52"],
-                  ["Email", "goslym69@gmail.com"],
-                  ["Adresse", "Carré Fourvière\n5 place de Fourvière\n69005 Lyon"],
+                  ["Téléphone", phone],
+                  ["Email", email],
+                  ["Adresse", address],
                 ].map(([label, value]) => (
                   <div key={label} className="mb-3.5">
                     <div className="text-[10px] tracking-[1px] uppercase text-[var(--color-gold)] font-bold mb-0.5">{label}</div>

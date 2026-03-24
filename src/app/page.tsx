@@ -116,14 +116,14 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-2 gap-4 mt-6">
             <div className="bg-gradient-to-br from-[#FFF0E6] via-[var(--color-coral-light)] to-[var(--color-peach)] rounded-[20px] p-7 border border-[rgba(216,90,48,0.12)] min-h-[210px] flex flex-col justify-end">
-              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2.5">Festival</div>
-              <h3 className="font-serif text-[22px] font-bold text-[var(--color-coral-dark)] mb-1.5">Gospel Expérience</h3>
+              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-coral-dark)] mb-2.5">Le Festival</div>
+              <h3 className="font-serif text-[22px] font-bold text-[var(--color-coral-dark)] mb-1.5">Fourvière Gospel Expérience</h3>
               <p className="text-[12px] text-[#8A5030] leading-relaxed mb-3.5">Le rendez-vous biennal du gospel dans la Crypte de Fourvière. Concerts, chorales et Masterclass.</p>
               <a className="btn-coral self-start text-[11px] px-5 py-2 no-underline" href="/festival">Découvrir →</a>
             </div>
             <div className="bg-gradient-to-br from-[#ECFAF3] via-[var(--color-teal-light)] to-[#B0E6D0] rounded-[20px] p-7 border border-[rgba(29,158,117,0.12)] min-h-[210px] flex flex-col justify-end">
-              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2.5">École</div>
-              <h3 className="font-serif text-[22px] font-bold text-[var(--color-teal-dark)] mb-1.5">GEI — Institute</h3>
+              <div className="text-[9px] tracking-[2px] uppercase font-bold text-[var(--color-teal-dark)] mb-2.5">L'École</div>
+              <h3 className="font-serif text-[22px] font-bold text-[var(--color-teal-dark)] mb-1.5">Gospel Experience Institute — GEI</h3>
               <p className="text-[12px] text-[#1A6B4E] leading-relaxed mb-3.5">Ateliers chœur gospel un dimanche par mois avec Hazaële. Formation et valeurs humaines.</p>
               <a className="btn-teal self-start text-[11px] px-5 py-2 no-underline" href="/ecole">Découvrir →</a>
             </div>

@@ -1,4 +1,4 @@
-import { client, ALL_EVENTS_QUERY, ALL_ARTISTS_QUERY } from "@/lib/sanity.client";
+import { client, FESTIVAL_EVENTS_QUERY, SITE_SETTINGS_QUERY } from "@/lib/sanity.client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
@@ -8,20 +8,62 @@ export const metadata: Metadata = {
   description: "Festival biennal de gospel dans la Crypte de la Basilique de Fourvière à Lyon. Concerts professionnels, chorales régionales, Masterclass.",
 };
 
+interface Event {
+  _id: string;
+  title: string;
+  dateStart: string;
+  venue: string;
+  timeStart?: string;
+  timeEnd?: string;
+  eventType: string;
+  ticketUrl?: string;
+}
+
+interface Tarif {
+  name: string;
+  price: string;
+  description: string;
+  popular: boolean;
+}
+
+interface VenueStat {
+  value: string;
+  label: string;
+}
+
+interface Settings {
+  festivalTarifs?: Tarif[];
+  festivalVenue?: string;
+  festivalVenueStats?: VenueStat[];
+}
+
+const defaultTarifs: Tarif[] = [
+  { name: "Concert solo", price: "15€", description: "1 concert au choix", popular: false },
+  { name: "Pass Festival", price: "35€", description: "3 concerts + carré OR", popular: true },
+  { name: "Pass Masterclass", price: "90€", description: "Pass Festival + Masterclass + scène", popular: false },
+];
+
+const defaultVenueStats: VenueStat[] = [
+  { value: "800", label: "Places" },
+  { value: "1884", label: "Construction" },
+  { value: "UNESCO", label: "Patrimoine" },
+  { value: "Lyon 5e", label: "Localisation" },
+];
+
 export default async function FestivalPage() {
-  const [events] = await Promise.all([
-    client.fetch(ALL_EVENTS_QUERY),
+  const [events, settings] = await Promise.all([
+    client.fetch<Event[]>(FESTIVAL_EVENTS_QUERY),
+    client.fetch<Settings>(SITE_SETTINGS_QUERY),
   ]);
 
-  const festivalEvents = events?.filter(
-    (e: { eventType: string }) => e.eventType === "festival" || e.eventType === "concert" || e.eventType === "masterclass"
-  );
+  const tarifs = settings?.festivalTarifs?.length ? settings.festivalTarifs : defaultTarifs;
+  const venueDesc = settings?.festivalVenue || "Située sous la Basilique Notre-Dame de Fourvière, la crypte offre un cadre unique avec une acoustique remarquable. Ses voûtes basses et pierres apparentes créent une atmosphère intimiste propice aux concerts gospel.";
+  const venueStats = settings?.festivalVenueStats?.length ? settings.festivalVenueStats : defaultVenueStats;
 
   return (
     <>
       <Header />
 
-      {/* HERO full width */}
       <section className="relative min-h-[380px] bg-gradient-to-br from-[#3D1E10] to-[var(--color-indigo)] flex items-center overflow-hidden">
         <div className="absolute w-[400px] h-[400px] rounded-full bg-[var(--color-coral)] opacity-[0.06] -top-[100px] -right-[50px]" />
         <div className="site-container relative z-10 py-16">
@@ -39,14 +81,13 @@ export default async function FestivalPage() {
         </div>
       </section>
 
-      {/* PROGRAMMATION */}
       <section className="py-14">
         <div className="site-container">
           <div className="section-tag text-[var(--color-coral)]">Programmation</div>
           <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)] mb-1.5">Prochaine édition</h2>
           <p className="text-[13px] text-[var(--color-text-muted)] leading-relaxed mb-6">4 jours de concerts, Masterclass et ateliers dans la Crypte de Fourvière.</p>
           <div className="flex flex-col gap-2.5">
-            {festivalEvents?.map((event: { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string; ticketUrl?: string }) => {
+            {events && events.length > 0 ? events.map((event) => {
               const date = new Date(event.dateStart);
               const day = date.getDate().toString().padStart(2, "0");
               const month = date.toLocaleDateString("fr-FR", { month: "short" });
@@ -64,12 +105,13 @@ export default async function FestivalPage() {
                   {event.ticketUrl && <a href={event.ticketUrl} className="text-[10px] font-bold text-[var(--color-coral-dark)] no-underline">Réserver →</a>}
                 </div>
               );
-            })}
+            }) : (
+              <p className="text-[13px] text-[var(--color-text-muted)] text-center py-8">La programmation sera annoncée prochainement.</p>
+            )}
           </div>
         </div>
       </section>
 
-      {/* LIEU */}
       <section className="py-14 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
         <div className="site-container">
           <div className="section-tag text-[var(--color-indigo)]">Le lieu</div>
@@ -77,12 +119,12 @@ export default async function FestivalPage() {
           <div className="grid grid-cols-2 gap-5">
             <div className="bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A] rounded-[20px] min-h-[220px]" />
             <div>
-              <p className="text-[13px] text-[var(--color-text-muted)] leading-[1.7] mb-4">Située sous la Basilique Notre-Dame de Fourvière, la crypte offre un cadre unique avec une acoustique remarquable. Ses voûtes basses et pierres apparentes créent une atmosphère intimiste propice aux concerts gospel.</p>
+              <p className="text-[13px] text-[var(--color-text-muted)] leading-[1.7] mb-4">{venueDesc}</p>
               <div className="grid grid-cols-2 gap-2.5">
-                {[["800", "Places"], ["1884", "Construction"], ["UNESCO", "Patrimoine"], ["Lyon 5e", "Localisation"]].map(([n, l]) => (
-                  <div key={l} className="bg-white rounded-xl px-4 py-3 border border-[rgba(43,27,94,0.06)]">
-                    <div className="font-serif text-xl font-bold text-[var(--color-indigo)]">{n}</div>
-                    <div className="text-[10px] text-[var(--color-text-light)] uppercase tracking-[1px]">{l}</div>
+                {venueStats.map((s) => (
+                  <div key={s.label} className="bg-white rounded-xl px-4 py-3 border border-[rgba(43,27,94,0.06)]">
+                    <div className="font-serif text-xl font-bold text-[var(--color-indigo)]">{s.value}</div>
+                    <div className="text-[10px] text-[var(--color-text-light)] uppercase tracking-[1px]">{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -91,23 +133,18 @@ export default async function FestivalPage() {
         </div>
       </section>
 
-      {/* BILLETTERIE */}
       <section id="billetterie" className="py-14">
         <div className="site-container">
           <div className="section-tag text-[var(--color-gold)]">Billetterie</div>
           <h2 className="font-serif text-[26px] font-bold text-[var(--color-indigo)] mb-5">Tarifs & Pass</h2>
           <div className="grid grid-cols-3 gap-3.5">
-            {[
-              { name: "Concert solo", price: "15€", desc: "1 concert au choix", accent: false },
-              { name: "Pass Festival", price: "35€", desc: "3 concerts + carré OR", accent: true },
-              { name: "Pass Masterclass", price: "90€", desc: "Pass Festival + Masterclass + scène", accent: false },
-            ].map(t => (
-              <div key={t.name} className={`rounded-[20px] p-6 text-center ${t.accent ? "bg-[var(--color-coral-light)] border-2 border-[var(--color-coral)]" : "bg-white border border-[rgba(43,27,94,0.06)]"}`}>
-                {t.accent && <div className="text-[9px] tracking-[1px] uppercase font-bold text-[var(--color-coral)] mb-2">Populaire</div>}
+            {tarifs.map((t) => (
+              <div key={t.name} className={`rounded-[20px] p-6 text-center ${t.popular ? "bg-[var(--color-coral-light)] border-2 border-[var(--color-coral)]" : "bg-white border border-[rgba(43,27,94,0.06)]"}`}>
+                {t.popular && <div className="text-[9px] tracking-[1px] uppercase font-bold text-[var(--color-coral)] mb-2">Populaire</div>}
                 <div className="font-serif text-[28px] font-bold text-[var(--color-indigo)]">{t.price}</div>
                 <div className="text-[14px] font-bold text-[var(--color-indigo)] mt-1">{t.name}</div>
-                <div className="text-[12px] text-[var(--color-text-muted)] mt-1 mb-4">{t.desc}</div>
-                <button className={t.accent ? "btn-coral" : "btn-teal"}>Réserver</button>
+                <div className="text-[12px] text-[var(--color-text-muted)] mt-1 mb-4">{t.description}</div>
+                <button className={t.popular ? "btn-coral" : "btn-teal"}>Réserver</button>
               </div>
             ))}
           </div>

@@ -8,10 +8,14 @@ export const client = createClient({
 });
 
 // ============================
-// GROQ Queries
+// SITE SETTINGS
 // ============================
 
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]`;
+
+// ============================
+// EVENTS
+// ============================
 
 export const UPCOMING_EVENTS_QUERY = `
   *[_type == "event" && dateStart >= now()] | order(dateStart asc) [0...4] {
@@ -30,11 +34,27 @@ export const ALL_EVENTS_QUERY = `
   }
 `;
 
+export const FESTIVAL_EVENTS_QUERY = `
+  *[_type == "event" && eventType in ["festival", "concert", "masterclass"]] | order(dateStart asc) {
+    _id, title, slug, eventType, dateStart, dateEnd,
+    timeStart, timeEnd, venue, price, ticketUrl,
+    image, featured
+  }
+`;
+
+// ============================
+// TESTIMONIALS
+// ============================
+
 export const FEATURED_TESTIMONIALS_QUERY = `
   *[_type == "testimonial" && featured == true] | order(_createdAt desc) [0...3] {
     _id, quote, personName, personRole, photo, rating, category
   }
 `;
+
+// ============================
+// ARTISTS & PARTNERS
+// ============================
 
 export const ALL_ARTISTS_QUERY = `
   *[_type == "artist"] | order(name asc) {
@@ -49,6 +69,10 @@ export const FEATURED_PARTNERS_QUERY = `
   }
 `;
 
+// ============================
+// FORMATIONS
+// ============================
+
 export const ALL_FORMATIONS_QUERY = `
   *[_type == "formation"] | order(title asc) {
     _id, title, slug, targetAudience, schedule, price,
@@ -57,11 +81,36 @@ export const ALL_FORMATIONS_QUERY = `
   }
 `;
 
-export const EVENT_BY_SLUG_QUERY = `
-  *[_type == "event" && slug.current == $slug][0] {
-    _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, address, price, ticketUrl,
-    image, description, featured,
-    "artists": artists[]->{ _id, name, slug, role, photo, biography }
+// ============================
+// ARTICLES (BLOG)
+// ============================
+
+export const ALL_ARTICLES_QUERY = `
+  *[_type == "article"] | order(publishedAt desc) {
+    _id, title, slug, category, publishedAt, excerpt,
+    mainImage, readTime
+  }
+`;
+
+export const ARTICLES_BY_CATEGORY_QUERY = `
+  *[_type == "article" && category == $category] | order(publishedAt desc) {
+    _id, title, slug, category, publishedAt, excerpt,
+    mainImage, readTime
+  }
+`;
+
+// ============================
+// GALLERY
+// ============================
+
+export const ALL_GALLERY_QUERY = `
+  *[_type == "galleryItem"] | order(order asc, _createdAt desc) {
+    _id, title, category, mediaType, image, videoUrl, featured, order
+  }
+`;
+
+export const GALLERY_BY_CATEGORY_QUERY = `
+  *[_type == "galleryItem" && category == $category] | order(order asc) {
+    _id, title, category, mediaType, image, videoUrl, featured, order
   }
 `;
