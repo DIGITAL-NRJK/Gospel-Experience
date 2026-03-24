@@ -11,11 +11,13 @@ import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroVideo from "@/components/HeroVideo";
+import FlyerSection from "@/components/FlyerSection";
 
 export const revalidate = 60;
 
 interface SiteSettings {
   siteMode: "festival" | "ecole" | "general";
+  heroVideoFileUrl?: string;
   heroVideoUrl?: string;
   heroTitle: string;
   heroSubtitle: string;
@@ -104,14 +106,16 @@ export default async function HomePage() {
   const ctaSecondaryText = settings?.ctaSecondary?.text || (isEcoleMode ? "Prochain festival" : "Découvrir l'école");
   const ctaSecondaryUrl = settings?.ctaSecondary?.url || (isEcoleMode ? "/festival" : "/ecole");
 
+  const hasHeroVideo = !!(settings?.heroVideoFileUrl || settings?.heroVideoUrl);
+
   return (
     <>
       <Header />
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-[460px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
-        {settings?.heroVideoUrl ? (
-          <HeroVideo url={settings.heroVideoUrl} />
+        {hasHeroVideo ? (
+          <HeroVideo mp4Url={settings?.heroVideoFileUrl} youtubeUrl={settings?.heroVideoUrl} />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />
         )}
@@ -177,31 +181,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== FLYER GEI ===== */}
+      {/* ===== FLYER ===== */}
       {settings?.flyerImage && (
-        <div className="site-container pb-10">
-          <div className="bg-gradient-to-br from-[var(--color-teal-light)] to-[#ECFAF3] rounded-3xl p-8 flex gap-8 items-center">
-            <div className="w-[280px] shrink-0">
-              <img
-                src={urlFor(settings.flyerImage).width(560).url()}
-                alt={settings.flyerTitle || "Flyer"}
-                className="w-full rounded-2xl shadow-lg"
-              />
-            </div>
-            <div className="flex-1">
-              <div className="section-tag text-[var(--color-teal-dark)]">École de gospel</div>
-              <h2 className="font-serif text-[26px] font-bold text-[var(--color-teal-dark)] mb-3">
-                {settings.flyerTitle || "Rejoignez l'école de gospel"}
-              </h2>
-              {settings.flyerDescription && (
-                <p className="text-[13px] text-[var(--color-teal-dark)] opacity-70 leading-relaxed mb-5">{settings.flyerDescription}</p>
-              )}
-              {settings.flyerLink && (
-                <a href={settings.flyerLink} className="btn-teal no-underline">S&apos;inscrire →</a>
-              )}
-            </div>
-          </div>
-        </div>
+        <FlyerSection
+          imageUrl={urlFor(settings.flyerImage).width(560).url()}
+          fullImageUrl={urlFor(settings.flyerImage).width(1600).url()}
+          title={settings.flyerTitle || "Rejoignez l'école de gospel"}
+          description={settings.flyerDescription}
+          link={settings.flyerLink}
+        />
       )}
 
       {/* ===== ÉDITIONS ===== */}
@@ -307,25 +295,17 @@ export default async function HomePage() {
               {partners.map((p) => (
                 <div key={p._id} className="bg-white rounded-[20px] p-6 border border-[rgba(43,27,94,0.06)] flex gap-4">
                   <div className="w-16 h-16 rounded-2xl shrink-0 overflow-hidden bg-gradient-to-br from-[var(--color-lavender-light)] to-[#D4C4F0]">
-                    {p.photo && (
-                      <img src={urlFor(p.photo).width(128).height(128).url()} alt={p.name} className="w-full h-full object-cover" />
-                    )}
+                    {p.photo && <img src={urlFor(p.photo).width(128).height(128).url()} alt={p.name} className="w-full h-full object-cover" />}
                   </div>
                   <div>
                     <h4 className="font-serif text-base font-bold text-[var(--color-indigo)] mb-0.5">{p.name}</h4>
                     <div className="text-[11px] text-[var(--color-text-light)] mb-2">{p.role}</div>
                     <p className="text-[12px] text-[var(--color-text-muted)] leading-relaxed">{p.partnerDescription}</p>
-                    {p.website && (
-                      <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold text-[var(--color-coral)] no-underline mt-2 inline-block">
-                        Découvrir →
-                      </a>
-                    )}
+                    {p.website && <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-[11px] font-bold text-[var(--color-coral)] no-underline mt-2 inline-block">Découvrir →</a>}
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* Sponsors secondaires */}
             {settings?.secondarySponsors && settings.secondarySponsors.length > 0 && (
               <div className="mt-8 text-center">
                 <div className="text-[10px] tracking-[2px] uppercase text-[var(--color-text-light)] mb-3">Ils nous soutiennent également</div>
@@ -357,13 +337,7 @@ export default async function HomePage() {
             </div>
             <div className="grid grid-cols-3 gap-3" style={{ gridAutoRows: "180px" }}>
               {gallery.map((g, i) => {
-                const fallback = [
-                  "from-[var(--color-indigo)] to-[#4A2E8A]",
-                  "from-[var(--color-peach-deep)] to-[var(--color-peach)]",
-                  "from-[var(--color-teal)] to-[#5DCAA5]",
-                  "from-[var(--color-magenta)] to-[#ED93B1]",
-                  "from-[var(--color-gold-light)] to-[var(--color-peach)]",
-                ];
+                const fallback = ["from-[var(--color-indigo)] to-[#4A2E8A]", "from-[var(--color-peach-deep)] to-[var(--color-peach)]", "from-[var(--color-teal)] to-[#5DCAA5]", "from-[var(--color-magenta)] to-[#ED93B1]", "from-[var(--color-gold-light)] to-[var(--color-peach)]"];
                 return (
                   <div key={g._id} className={`rounded-2xl relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center ${!g.image ? `bg-gradient-to-br ${fallback[i % fallback.length]}` : ""}`} style={{ gridRow: g.featured ? "span 2" : undefined }}>
                     {g.image && <img src={urlFor(g.image).width(g.featured ? 800 : 500).height(g.featured ? 720 : 360).url()} alt={g.title} className="absolute inset-0 w-full h-full object-cover" />}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { urlFor } from "@/lib/sanity.image";
+import Lightbox from "@/components/Lightbox";
 
 interface GalleryItem {
   _id: string;
@@ -35,10 +36,29 @@ const fallbackGradients = [
 
 export default function GalleryFilter({ items }: { items: GalleryItem[] }) {
   const [activeFilter, setActiveFilter] = useState("all");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Extract unique categories from items
   const categories = Array.from(new Set(items.map((i) => i.category)));
   const filtered = activeFilter === "all" ? items : items.filter((i) => i.category === activeFilter);
+
+  // Build lightbox images array from filtered photos only
+  const photoItems = filtered.filter((i) => i.mediaType === "photo" && i.image);
+  const lightboxImages = photoItems.map((i) => ({
+    src: urlFor(i.image!).width(1600).url(),
+    alt: i.title,
+  }));
+
+  function handleClick(item: GalleryItem, filteredIndex: number) {
+    if (item.mediaType === "video" && item.videoUrl) {
+      window.open(item.videoUrl, "_blank");
+      return;
+    }
+    if (item.image) {
+      // Find index in photoItems array
+      const photoIndex = photoItems.findIndex((p) => p._id === item._id);
+      if (photoIndex !== -1) setLightboxIndex(photoIndex);
+    }
+  }
 
   return (
     <>
@@ -78,6 +98,7 @@ export default function GalleryFilter({ items }: { items: GalleryItem[] }) {
           {filtered.map((g, i) => (
             <div
               key={g._id}
+              onClick={() => handleClick(g, i)}
               className={`rounded-2xl relative flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity overflow-hidden ${
                 !g.image ? `bg-gradient-to-br ${fallbackGradients[i % fallbackGradients.length]}` : ""
               }`}
@@ -111,6 +132,15 @@ export default function GalleryFilter({ items }: { items: GalleryItem[] }) {
         <div className="text-center py-16">
           <p className="text-[15px] text-[var(--color-text-muted)]">Aucun média dans cette catégorie.</p>
         </div>
+      )}
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && lightboxImages.length > 0 && (
+        <Lightbox
+          images={lightboxImages}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
       )}
     </>
   );

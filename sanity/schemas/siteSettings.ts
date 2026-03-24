@@ -32,10 +32,19 @@ export const siteSettings = defineType({
       initialValue: "general",
     }),
     defineField({
+      name: "heroVideoFile",
+      title: "Vidéo Hero (fichier MP4) — Prioritaire",
+      type: "file",
+      group: "general",
+      options: { accept: "video/mp4" },
+      description: "Upload un fichier MP4 (max 1 min, idéalement 10-30 Mo). Qualité parfaite, pas de buffering. Prioritaire sur le lien YouTube.",
+    }),
+    defineField({
       name: "heroVideoUrl",
-      title: "Vidéo Hero (URL YouTube)",
+      title: "Vidéo Hero (lien YouTube) — Fallback",
       type: "url",
       group: "general",
+      description: "Utilisé uniquement si aucun fichier MP4 n'est uploadé ci-dessus.",
     }),
     defineField({
       name: "heroTitle",
@@ -110,7 +119,7 @@ export const siteSettings = defineType({
       type: "image",
       group: "cta",
       options: { hotspot: true },
-      description: "Image du flyer (ex: flyer GEI). Apparaît en section dédiée sur la homepage.",
+      description: "Image du flyer (ex: flyer GEI). Cliquable en plein écran sur le site.",
     }),
     defineField({
       name: "flyerTitle",
@@ -134,10 +143,10 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: "secondarySponsors",
-      title: "Sponsors secondaires (logos / noms)",
+      title: "Sponsors secondaires",
       type: "array",
       group: "cta",
-      description: "Affichés sous les partenaires phares : 'Ils nous soutiennent également'",
+      description: "Affichés sous les partenaires phares",
       of: [
         {
           type: "object",
@@ -151,59 +160,36 @@ export const siteSettings = defineType({
     }),
 
     // ===== PAGE À PROPOS =====
-    defineField({
-      name: "aboutIntro",
-      title: "Texte d'introduction",
-      type: "text",
-      rows: 4,
-      group: "about",
-      initialValue: "Gospel Lyon Métropole (GOSLYM) a pour mission la promotion du chant gospel à Lyon et dans la métropole lyonnaise.",
-    }),
+    defineField({ name: "aboutIntro", title: "Texte d'introduction", type: "text", rows: 4, group: "about" }),
     defineField({
       name: "aboutStats",
       title: "Chiffres de l'association",
       type: "array",
       group: "about",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "value", title: "Valeur", type: "string" }),
-            defineField({ name: "label", title: "Label", type: "string" }),
-          ],
-          preview: { select: { title: "value", subtitle: "label" } },
-        },
-      ],
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "value", title: "Valeur", type: "string" }),
+          defineField({ name: "label", title: "Label", type: "string" }),
+        ],
+        preview: { select: { title: "value", subtitle: "label" } },
+      }],
     }),
-    defineField({
-      name: "missionFestival",
-      title: "Mission — Le Festival",
-      type: "text",
-      rows: 4,
-      group: "about",
-    }),
-    defineField({
-      name: "missionEcole",
-      title: "Mission — L'École de Gospel",
-      type: "text",
-      rows: 4,
-      group: "about",
-    }),
+    defineField({ name: "missionFestival", title: "Mission — Le Festival", type: "text", rows: 4, group: "about" }),
+    defineField({ name: "missionEcole", title: "Mission — L'École", type: "text", rows: 4, group: "about" }),
     defineField({
       name: "socialActions",
       title: "Actions sociales",
       type: "array",
       group: "about",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "title", title: "Titre", type: "string" }),
-            defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
-          ],
-          preview: { select: { title: "title" } },
-        },
-      ],
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "title", title: "Titre", type: "string" }),
+          defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
+        ],
+        preview: { select: { title: "title" } },
+      }],
     }),
 
     // ===== FESTIVAL =====
@@ -212,41 +198,31 @@ export const siteSettings = defineType({
       title: "Tarifs du festival",
       type: "array",
       group: "festival",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "name", title: "Nom du pass", type: "string" }),
-            defineField({ name: "price", title: "Prix", type: "string" }),
-            defineField({ name: "description", title: "Description", type: "string" }),
-            defineField({ name: "popular", title: "Populaire", type: "boolean", initialValue: false }),
-          ],
-          preview: { select: { title: "name", subtitle: "price" } },
-        },
-      ],
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "name", title: "Nom", type: "string" }),
+          defineField({ name: "price", title: "Prix", type: "string" }),
+          defineField({ name: "description", title: "Description", type: "string" }),
+          defineField({ name: "popular", title: "Populaire", type: "boolean", initialValue: false }),
+        ],
+        preview: { select: { title: "name", subtitle: "price" } },
+      }],
     }),
-    defineField({
-      name: "festivalVenue",
-      title: "Description du lieu",
-      type: "text",
-      rows: 4,
-      group: "festival",
-    }),
+    defineField({ name: "festivalVenue", title: "Description du lieu", type: "text", rows: 4, group: "festival" }),
     defineField({
       name: "festivalVenueStats",
       title: "Chiffres du lieu",
       type: "array",
       group: "festival",
-      of: [
-        {
-          type: "object",
-          fields: [
-            defineField({ name: "value", title: "Valeur", type: "string" }),
-            defineField({ name: "label", title: "Label", type: "string" }),
-          ],
-          preview: { select: { title: "value", subtitle: "label" } },
-        },
-      ],
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "value", title: "Valeur", type: "string" }),
+          defineField({ name: "label", title: "Label", type: "string" }),
+        ],
+        preview: { select: { title: "value", subtitle: "label" } },
+      }],
     }),
 
     // ===== CONTACT =====

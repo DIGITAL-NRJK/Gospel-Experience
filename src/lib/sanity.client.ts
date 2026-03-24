@@ -7,8 +7,11 @@ export const client = createClient({
   useCdn: true,
 });
 
-// ===== SITE SETTINGS =====
-export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]`;
+// ===== SITE SETTINGS (with file URL resolution) =====
+export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
+  ...,
+  "heroVideoFileUrl": heroVideoFile.asset->url
+}`;
 
 // ===== EVENTS =====
 export const UPCOMING_EVENTS_QUERY = `
