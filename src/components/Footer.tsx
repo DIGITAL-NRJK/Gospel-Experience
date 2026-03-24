@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { client, SITE_SETTINGS_QUERY } from "@/lib/sanity.client";
 
 const footerLinks = {
   festival: {
@@ -6,7 +7,6 @@ const footerLinks = {
     color: "var(--color-coral)",
     links: [
       { label: "Programme", href: "/festival" },
-      { label: "Billetterie", href: "/festival#billetterie" },
       { label: "Artistes", href: "/festival#artistes" },
       { label: "Le lieu", href: "/festival#lieu" },
     ],
@@ -17,8 +17,7 @@ const footerLinks = {
     links: [
       { label: "Formations", href: "/ecole" },
       { label: "Inscription", href: "/ecole#inscription" },
-      { label: "Pédagogie", href: "/ecole#pedagogie" },
-      { label: "Témoignages", href: "/ecole#temoignages" },
+      { label: "Dates", href: "/ecole#dates" },
     ],
   },
   asso: {
@@ -26,14 +25,34 @@ const footerLinks = {
     color: "var(--color-indigo)",
     links: [
       { label: "À propos", href: "/a-propos" },
-      { label: "Partenaires", href: "/a-propos#partenaires" },
-      { label: "Presse", href: "/contact?sujet=presse" },
+      { label: "Actualités", href: "/actualites" },
+      { label: "Galerie", href: "/galerie" },
       { label: "Contact", href: "/contact" },
     ],
   },
 };
 
-export default function Footer() {
+interface Socials {
+  instagram?: string;
+  facebook?: string;
+  youtube?: string;
+}
+
+export default async function Footer() {
+  let socials: Socials = {};
+  try {
+    const settings = await client.fetch<{ socials?: Socials }>(SITE_SETTINGS_QUERY);
+    socials = settings?.socials || {};
+  } catch {
+    // Sanity unavailable - use empty socials
+  }
+
+  const socialItems = [
+    { key: "instagram", label: "Instagram", icon: "Ig", bg: "var(--color-coral)", url: socials.instagram },
+    { key: "facebook", label: "Facebook", icon: "Fb", bg: "var(--color-indigo)", url: socials.facebook },
+    { key: "youtube", label: "YouTube", icon: "Yt", bg: "var(--color-magenta)", url: socials.youtube },
+  ].filter((s) => s.url);
+
   return (
     <footer className="bg-[var(--color-cream)]">
       <div className="site-container">
@@ -49,21 +68,23 @@ export default function Footer() {
               Association GOSLYM — Gospel Lyon Métropole. Promouvoir le gospel,
               rassembler les talents, transmettre des valeurs de joie et de fraternité.
             </p>
-            <div className="flex gap-2 mt-3">
-              {[
-                { label: "Ig", bg: "var(--color-coral)" },
-                { label: "Fb", bg: "var(--color-indigo)" },
-                { label: "Yt", bg: "var(--color-magenta)" },
-              ].map(({ label, bg }) => (
-                <div
-                  key={label}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold text-white"
-                  style={{ backgroundColor: bg }}
-                >
-                  {label}
-                </div>
-              ))}
-            </div>
+            {socialItems.length > 0 && (
+              <div className="flex gap-2 mt-3">
+                {socialItems.map((s) => (
+                  <a
+                    key={s.key}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold text-white no-underline hover:opacity-80 transition-opacity"
+                    style={{ backgroundColor: s.bg }}
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {Object.values(footerLinks).map((section) => (
@@ -78,7 +99,7 @@ export default function Footer() {
                 <Link
                   key={label}
                   href={href}
-                  className="block text-[14px] text-[var(--color-text-muted)] no-underline mb-2"
+                  className="block text-[14px] text-[var(--color-text-muted)] no-underline mb-2 hover:text-[var(--color-indigo)] transition-colors"
                 >
                   {label}
                 </Link>
@@ -88,14 +109,14 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between py-4 border-t border-[rgba(43,27,94,0.04)] text-[12px] text-[var(--color-text-light)] gap-2">
-          <span>© 2026 GOSLYM — Gospel Lyon Métropole</span>
+          <span>© {new Date().getFullYear()} GOSLYM — Gospel Lyon Métropole</span>
           <span>
-            <Link href="/mentions-legales" className="no-underline text-inherit">
+            <Link href="/mentions-legales" className="no-underline text-inherit hover:text-[var(--color-indigo)]">
               Mentions légales
             </Link>
             {" · "}
-            <Link href="/confidentialite" className="no-underline text-inherit">
-              Politique de confidentialité
+            <Link href="/confidentialite" className="no-underline text-inherit hover:text-[var(--color-indigo)]">
+              Confidentialité
             </Link>
           </span>
         </div>

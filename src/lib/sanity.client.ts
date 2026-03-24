@@ -51,7 +51,7 @@ export const ALL_ARTISTS_QUERY = `
   }
 `;
 
-// ===== PARTNERS (new dedicated type) =====
+// ===== PARTNERS =====
 export const FEATURED_PARTNERS_QUERY = `
   *[_type == "partner" && featured == true] | order(order asc) {
     _id, name, logo, role, description, website, order
@@ -86,6 +86,17 @@ export const RECENT_ARTICLES_QUERY = `
   }
 `;
 
+export const ARTICLE_BY_SLUG_QUERY = `
+  *[_type == "article" && slug.current == $slug][0] {
+    _id, title, slug, category, publishedAt, excerpt,
+    mainImage, body, readTime
+  }
+`;
+
+export const ALL_ARTICLE_SLUGS_QUERY = `
+  *[_type == "article" && defined(slug.current)] { "slug": slug.current }
+`;
+
 // ===== GALLERY =====
 export const ALL_GALLERY_QUERY = `
   *[_type == "galleryItem"] | order(order asc, _createdAt desc) {
@@ -96,5 +107,13 @@ export const ALL_GALLERY_QUERY = `
 export const RECENT_GALLERY_QUERY = `
   *[_type == "galleryItem"] | order(order asc, _createdAt desc) [0...5] {
     _id, title, category, mediaType, image, videoUrl, featured, order
+  }
+`;
+
+// ===== SITEMAP HELPERS =====
+export const SITEMAP_ARTICLES_QUERY = `
+  *[_type == "article" && defined(slug.current)] {
+    "slug": slug.current,
+    _updatedAt
   }
 `;

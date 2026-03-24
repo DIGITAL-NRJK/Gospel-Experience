@@ -16,6 +16,8 @@ const nunito = Nunito({
   weight: ["400", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fourvieregospelexperience.com";
+
 export const metadata: Metadata = {
   title: {
     default: "Gospel Expérience Lyon | Festival & École Gospel Fourvière",
@@ -30,19 +32,88 @@ export const metadata: Metadata = {
     "Gospel Experience Institute",
     "GEI",
     "GOSLYM",
+    "masterclass gospel",
+    "chorale gospel Lyon",
   ],
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: process.env.NEXT_PUBLIC_SITE_URL,
+    url: siteUrl,
     siteName: "Gospel Expérience Lyon",
     title: "Gospel Expérience Lyon | Festival & École Gospel Fourvière",
     description:
       "Vivez le gospel au cœur de Lyon. Festival biennal, école de gospel GEI, concerts dans la Crypte de Fourvière.",
   },
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://fourvieregospelexperience.com"
-  ),
+  twitter: {
+    card: "summary_large_image",
+    title: "Gospel Expérience Lyon",
+    description: "Festival & École de Gospel à Lyon Fourvière",
+  },
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: siteUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+// Schema.org structured data
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "GOSLYM — Gospel Lyon Métropole",
+  alternateName: "Gospel Expérience Lyon",
+  url: siteUrl,
+  description: "Association dédiée à la promotion du chant gospel à Lyon. Festival biennal et école de gospel.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "5 place de Fourvière",
+    addressLocality: "Lyon",
+    postalCode: "69005",
+    addressCountry: "FR",
+  },
+  telephone: "+33788519652",
+  email: "goslym69@gmail.com",
+};
+
+const festivalSchema = {
+  "@context": "https://schema.org",
+  "@type": "MusicFestival",
+  name: "Festival Gospel Expérience",
+  description: "Festival biennal de gospel dans la Crypte de la Basilique de Fourvière à Lyon.",
+  url: `${siteUrl}/festival`,
+  location: {
+    "@type": "Place",
+    name: "Crypte de la Basilique de Fourvière",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "5 place de Fourvière",
+      addressLocality: "Lyon",
+      postalCode: "69005",
+      addressCountry: "FR",
+    },
+  },
+  organizer: {
+    "@type": "Organization",
+    name: "GOSLYM — Gospel Lyon Métropole",
+  },
+};
+
+const schoolSchema = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Gospel Experience Institute (GEI)",
+  description: "École de gospel à Lyon. Ateliers chœur un dimanche par mois au Carré Fourvière.",
+  url: `${siteUrl}/ecole`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "5 place de Fourvière",
+    addressLocality: "Lyon",
+    postalCode: "69005",
+    addressCountry: "FR",
+  },
 };
 
 export default function RootLayout({
@@ -52,6 +123,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${playfair.variable} ${nunito.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(festivalSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }}
+        />
+      </head>
       <body className="antialiased">{children}</body>
     </html>
   );

@@ -2,6 +2,7 @@ import { client, ALL_ARTICLES_QUERY } from "@/lib/sanity.client";
 import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -11,7 +12,16 @@ export const metadata: Metadata = {
   description: "Interviews, retours sur les événements, vie de l'association GOSLYM et coulisses du gospel à Lyon.",
 };
 
-interface Article { _id: string; title: string; slug: { current: string }; category: string; publishedAt: string; excerpt?: string; mainImage?: { asset: { _ref: string } }; readTime?: number }
+interface Article {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  category: string;
+  publishedAt: string;
+  excerpt?: string;
+  mainImage?: { asset: { _ref: string } };
+  readTime?: number;
+}
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   festival: { bg: "rgba(216,90,48,0.85)", text: "Festival" },
@@ -37,6 +47,12 @@ export default async function ActualitesPage() {
       <Header />
       <section className="py-12 md:py-16">
         <div className="site-container">
+          <nav className="text-[13px] text-[var(--color-text-light)] mb-6">
+            <Link href="/" className="no-underline text-inherit hover:text-[var(--color-indigo)]">Accueil</Link>
+            <span className="mx-2">›</span>
+            <span className="text-[var(--color-text-body)]">Actualités</span>
+          </nav>
+
           <div className="section-tag text-[var(--color-indigo)]">Blog</div>
           <h1 className="font-serif text-[26px] md:text-[32px] font-bold text-[var(--color-indigo)] mb-2">Toutes les actualités</h1>
           <p className="text-[15px] text-[var(--color-text-muted)] mb-8">Interviews, retours sur les événements, vie de l&apos;association et coulisses du gospel.</p>
@@ -47,7 +63,11 @@ export default async function ActualitesPage() {
                 const cat = categoryColors[a.category] || categoryColors.coulisses;
                 const date = new Date(a.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
                 return (
-                  <div key={a._id} className="bg-white rounded-2xl overflow-hidden border border-[rgba(43,27,94,0.06)] flex flex-col sm:flex-row cursor-pointer hover:shadow-sm transition-shadow">
+                  <Link
+                    key={a._id}
+                    href={`/actualites/${a.slug.current}`}
+                    className="bg-white rounded-2xl overflow-hidden border border-[rgba(43,27,94,0.06)] flex flex-col sm:flex-row cursor-pointer hover:shadow-sm transition-shadow no-underline"
+                  >
                     <div className={`w-full sm:w-[180px] h-[160px] sm:h-auto bg-gradient-to-br ${gradients[i % gradients.length]} shrink-0 relative`}>
                       {a.mainImage && <img src={urlFor(a.mainImage).width(360).height(300).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
                       <span className="absolute top-3 left-3 text-[11px] tracking-[1px] uppercase font-bold px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
@@ -58,7 +78,7 @@ export default async function ActualitesPage() {
                       <div className="text-[13px] text-[var(--color-text-light)]">{date}{a.readTime && ` · ${a.readTime} min`}</div>
                       <span className="text-[13px] font-bold text-[var(--color-coral)] mt-3">Lire l&apos;article →</span>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
