@@ -51,7 +51,7 @@ export const event = defineType({
       name: "timeStart",
       title: "Heure de début",
       type: "string",
-      description: "Ex: 19h00, 14h00",
+      description: "Ex: 20h30, 14h00",
     }),
     defineField({
       name: "timeEnd",
@@ -70,7 +70,6 @@ export const event = defineType({
       name: "address",
       title: "Adresse complète",
       type: "string",
-      description: "Ex: 5 place de Fourvière, 69005 Lyon",
     }),
     defineField({
       name: "price",
@@ -80,9 +79,8 @@ export const event = defineType({
     }),
     defineField({
       name: "ticketUrl",
-      title: "Lien billetterie",
+      title: "Lien billetterie / inscription",
       type: "url",
-      description: "URL HelloAsso ou autre plateforme de billetterie",
     }),
     defineField({
       name: "image",
@@ -98,15 +96,29 @@ export const event = defineType({
     }),
     defineField({
       name: "artists",
-      title: "Artistes liés",
+      title: "Artistes / Groupes",
       type: "array",
       of: [{ type: "reference", to: [{ type: "artist" }] }],
+      description: "Artistes ou groupes qui se produisent lors de cet événement.",
+    }),
+    defineField({
+      name: "artistNames",
+      title: "Noms d'artistes (texte libre)",
+      type: "string",
+      description: "Si l'artiste n'est pas dans la base. Ex: Gospel Academy de Lyon, One Step Gospel",
     }),
     defineField({
       name: "featured",
       title: "Mettre en avant sur la homepage",
       type: "boolean",
       initialValue: false,
+    }),
+    defineField({
+      name: "archived",
+      title: "Archivé",
+      type: "boolean",
+      initialValue: false,
+      description: "Les événements archivés n'apparaissent pas sur la homepage ni dans la liste principale, mais restent visibles sur la page Archives.",
     }),
   ],
   preview: {
@@ -115,26 +127,19 @@ export const event = defineType({
       date: "dateStart",
       type: "eventType",
       media: "image",
+      archived: "archived",
     },
-    prepare({ title, date, type, media }) {
+    prepare({ title, date, type, media, archived }) {
       const d = date ? new Date(date).toLocaleDateString("fr-FR") : "";
       return {
-        title,
+        title: `${archived ? "📦 " : ""}${title}`,
         subtitle: `${type} — ${d}`,
         media,
       };
     },
   },
   orderings: [
-    {
-      title: "Date (plus récent)",
-      name: "dateDesc",
-      by: [{ field: "dateStart", direction: "desc" }],
-    },
-    {
-      title: "Date (plus ancien)",
-      name: "dateAsc",
-      by: [{ field: "dateStart", direction: "asc" }],
-    },
+    { title: "Date (plus récent)", name: "dateDesc", by: [{ field: "dateStart", direction: "desc" }] },
+    { title: "Date (plus ancien)", name: "dateAsc", by: [{ field: "dateStart", direction: "asc" }] },
   ],
 });

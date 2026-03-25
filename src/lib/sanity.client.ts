@@ -7,37 +7,58 @@ export const client = createClient({
   useCdn: true,
 });
 
-// ===== SITE SETTINGS =====
+// ===== SITE SETTINGS (resolves video URLs for all hero modes) =====
 export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
   ...,
-  "heroVideoFileUrl": heroVideoFile.asset->url
+  "heroFestivalVideoFileUrl": heroFestivalVideoFile.asset->url,
+  "heroEcoleVideoFileUrl": heroEcoleVideoFile.asset->url,
+  "heroGeneralVideoFileUrl": heroGeneralVideoFile.asset->url,
+  "headerLogoUrl": headerLogo.asset->url
 }`;
 
 // ===== EVENTS =====
 export const UPCOMING_EVENTS_QUERY = `
-  *[_type == "event" && dateStart >= now()] | order(dateStart asc) [0...4] {
+  *[_type == "event" && dateStart >= now() && archived != true] | order(dateStart asc) [0...4] {
     _id, title, slug, eventType, dateStart, dateEnd,
     timeStart, timeEnd, venue, price, ticketUrl,
-    image, featured,
+    image, featured, artistNames,
     "artists": artists[]->{ _id, name, slug, role, photo }
   }
 `;
 
 export const ALL_EVENTS_QUERY = `
-  *[_type == "event"] | order(dateStart desc) {
+  *[_type == "event" && archived != true] | order(dateStart desc) {
     _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, price, ticketUrl, image, featured
+    timeStart, timeEnd, venue, price, ticketUrl,
+    image, featured, artistNames,
+    "artists": artists[]->{ _id, name, slug, role, photo }
+  }
+`;
+
+export const ARCHIVED_EVENTS_QUERY = `
+  *[_type == "event" && archived == true] | order(dateStart desc) {
+    _id, title, slug, eventType, dateStart, dateEnd,
+    timeStart, timeEnd, venue, price, image, artistNames,
+    "artists": artists[]->{ _id, name }
   }
 `;
 
 export const FESTIVAL_EVENTS_QUERY = `
-  *[_type == "event" && eventType in ["festival", "concert", "masterclass"]] | order(dateStart asc) {
+  *[_type == "event" && eventType in ["festival", "concert", "masterclass"] && archived != true] | order(dateStart asc) {
     _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, price, ticketUrl, image, featured
+    timeStart, timeEnd, venue, price, ticketUrl, image, featured, artistNames,
+    "artists": artists[]->{ _id, name, slug, role, photo }
   }
 `;
 
-// ===== TESTIMONIALS (with video support) =====
+// Next event for countdown bar
+export const NEXT_EVENT_QUERY = `
+  *[_type == "event" && dateStart >= now() && archived != true] | order(dateStart asc) [0] {
+    _id, title, eventType, dateStart, ticketUrl
+  }
+`;
+
+// ===== TESTIMONIALS =====
 export const FEATURED_TESTIMONIALS_QUERY = `
   *[_type == "testimonial" && featured == true] | order(_createdAt desc) [0...6] {
     _id, quote, personName, personRole, photo, rating, category, videoUrl
