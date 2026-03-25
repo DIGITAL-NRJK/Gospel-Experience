@@ -35,6 +35,12 @@ export const testimonial = defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: "videoUrl",
+      title: "Témoignage vidéo (URL YouTube)",
+      type: "url",
+      description: "Si renseigné, un bouton play s'affichera pour visionner le témoignage en vidéo.",
+    }),
+    defineField({
       name: "rating",
       title: "Note (1-5)",
       type: "number",

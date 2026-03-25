@@ -37,10 +37,10 @@ export const FESTIVAL_EVENTS_QUERY = `
   }
 `;
 
-// ===== TESTIMONIALS =====
+// ===== TESTIMONIALS (with video support) =====
 export const FEATURED_TESTIMONIALS_QUERY = `
-  *[_type == "testimonial" && featured == true] | order(_createdAt desc) [0...3] {
-    _id, quote, personName, personRole, photo, rating, category
+  *[_type == "testimonial" && featured == true] | order(_createdAt desc) [0...6] {
+    _id, quote, personName, personRole, photo, rating, category, videoUrl
   }
 `;
 
@@ -110,7 +110,7 @@ export const RECENT_GALLERY_QUERY = `
   }
 `;
 
-// ===== SITEMAP HELPERS =====
+// ===== SITEMAP =====
 export const SITEMAP_ARTICLES_QUERY = `
   *[_type == "article" && defined(slug.current)] {
     "slug": slug.current,
