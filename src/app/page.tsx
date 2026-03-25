@@ -66,107 +66,99 @@ export default async function HomePage() {
     <>
       <Header />
 
-      {/* ===== HERO — photo/vidéo plein écran ===== */}
-      <section className="relative min-h-[420px] md:min-h-[520px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
+      {/* ===== HERO — original avec stats et pill ===== */}
+      <section className="relative min-h-[400px] md:min-h-[480px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
         {hasHeroVideo ? (
           <HeroVideo mp4Url={settings?.heroVideoFileUrl} youtubeUrl={settings?.heroVideoUrl} />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.5)] via-[rgba(30,20,50,0.7)] to-[rgba(30,20,50,0.9)]" />
-        <div className="relative z-10 text-center max-w-[640px] mx-auto px-5 py-14 md:py-20">
-          <span className="inline-flex items-center text-[12px] tracking-[2px] uppercase text-white/80 bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-6 border border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
+        <div className="relative z-10 text-center max-w-[640px] mx-auto px-5 py-12 md:py-16">
+          <span className="inline-flex items-center gap-2 text-[12px] tracking-[2px] uppercase text-white/80 bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-6 border border-white/10">
             {settings?.currentSeason || "Saison 2026 – 2027"}
           </span>
-          <h1 className="font-serif text-[36px] md:text-[52px] font-bold leading-[1.08] text-white mb-5">
+          <h1 className="font-serif text-[34px] md:text-[48px] font-bold leading-[1.08] text-white mb-5">
             Vivez le <em className="italic text-[var(--color-peach-deep)] font-normal">Gospel</em><br />au cœur de Lyon
           </h1>
-          <p className="text-[16px] md:text-[18px] text-white/65 leading-relaxed mb-8 max-w-[480px] mx-auto">
-            {settings?.heroSubtitle || "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans la Basilique de Fourvière."}
+          <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-8 max-w-[480px] mx-auto">
+            {settings?.heroSubtitle || "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans l'écrin sacré de la Basilique de Fourvière."}
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <a href={ctaPrimaryUrl} className={`${isEcoleMode ? "btn-teal" : "btn-coral"} no-underline`}>{ctaPrimaryText}</a>
             <a href={ctaSecondaryUrl} className="btn-outline border-white/40 text-white no-underline">{ctaSecondaryText}</a>
           </div>
           {settings?.heroVideoUrl && (
-            <a href={settings.heroVideoUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-[13px] text-white/70 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline hover:bg-white/20 transition-colors">
+            <a href={settings.heroVideoUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-[13px] text-white/80 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline cursor-pointer hover:bg-white/20 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><polygon points="9,6 18,12 9,18" /></svg>
               Voir la vidéo
             </a>
           )}
-        </div>
-      </section>
-
-      {/* ===== STATS — bande horizontale sobre ===== */}
-      {settings?.stats && (
-        <div className="border-b border-[rgba(43,27,94,0.06)]">
-          <div className="site-container">
-            <div className="grid grid-cols-2 md:grid-cols-4">
+          {settings?.stats && (
+            <div className="flex gap-2 justify-center flex-wrap mt-8">
               {[
-                [settings.stats.spectators, "spectateurs"],
-                [settings.stats.editions, "éditions"],
-                [settings.stats.artists, "artistes"],
-                [settings.stats.since, "création"],
-              ].map(([num, label], i) => (
-                <div key={label} className={`text-center py-5 md:py-6 ${i < 3 ? "border-r border-[rgba(43,27,94,0.06)]" : ""} ${i === 1 || i === 3 ? "max-md:border-r-0" : ""}`}>
-                  <div className="font-serif text-[26px] md:text-[30px] font-bold text-[var(--color-indigo)]">{num}</div>
-                  <div className="text-[13px] text-[var(--color-text-muted)] mt-1">{label}</div>
+                [settings.stats.spectators, "Spectateurs"],
+                [settings.stats.editions, "Éditions"],
+                [settings.stats.artists, "Artistes"],
+                [settings.stats.since, "Depuis"],
+              ].map(([num, label]) => (
+                <div key={label} className="bg-white/10 backdrop-blur rounded-2xl px-4 md:px-5 py-3 text-center min-w-[90px] border border-white/10">
+                  <div className="font-serif text-xl md:text-2xl font-bold text-[var(--color-gold)] leading-none">{num}</div>
+                  <div className="text-[11px] tracking-[1px] uppercase text-white/45 mt-1">{label}</div>
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </section>
 
-      {/* ===== FESTIVAL — composition asymétrique ===== */}
-      <section className="overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-[55%_45%] min-h-[340px]">
-          <div className="site-container flex flex-col justify-center py-12 md:py-16 md:pr-10">
-            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-coral)] font-bold mb-3">Le festival</div>
-            <h2 className="font-serif text-[26px] md:text-[32px] font-bold text-[var(--color-indigo)] leading-[1.15] mb-4">
-              La Crypte de Fourvière<br className="hidden md:block" /> comme vous ne l&apos;avez<br className="hidden md:block" /> jamais entendue
-            </h2>
-            <p className="text-[15px] md:text-[16px] text-[var(--color-text-muted)] leading-[1.7] mb-6 max-w-[440px]">
-              Tous les deux ans, la Crypte de la Basilique se transforme en salle de concert pour accueillir le gospel. Quatre jours de concerts professionnels, Masterclass ouvertes à tous et ateliers découverte.
-            </p>
-            <a href="/festival" className="btn-coral self-start no-underline">Découvrir le festival →</a>
-          </div>
-          <div className="bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A] min-h-[280px] md:min-h-0">
-            {/* Remplacer par une vraie photo de concert dans la Crypte */}
+      {/* ===== FESTIVAL — dans site-container ===== */}
+      <section className="py-12 md:py-16">
+        <div className="site-container">
+          <div className="grid grid-cols-1 md:grid-cols-[55%_45%] min-h-[280px] rounded-[20px] overflow-hidden">
+            <div className="px-6 md:px-10 py-10 md:py-14 flex flex-col justify-center">
+              <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-coral)] font-bold mb-2">Le festival</div>
+              <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-indigo)] leading-[1.15] mb-3">
+                La Crypte de Fourvière<br className="hidden md:block" /> comme vous ne l&apos;avez<br className="hidden md:block" /> jamais entendue
+              </h2>
+              <p className="text-[14px] md:text-[15px] text-[var(--color-text-muted)] leading-[1.65] mb-5 max-w-[440px]">
+                Tous les deux ans, la Crypte de la Basilique se transforme en salle de concert pour accueillir le gospel. Quatre jours de concerts, Masterclass et ateliers.
+              </p>
+              <a href="/festival" className="btn-coral self-start no-underline text-[13px] px-6 py-3">Découvrir le festival →</a>
+            </div>
+            <div className="bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A] min-h-[240px] md:min-h-0 rounded-none md:rounded-r-[20px]" />
           </div>
         </div>
       </section>
 
-      {/* ===== ÉCOLE — composition inverse ===== */}
-      <section className="overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-[40%_60%] min-h-[320px]">
-          <div className="bg-gradient-to-br from-[var(--color-teal)] to-[#5DCAA5] min-h-[260px] md:min-h-0 order-2 md:order-1">
-            {/* Remplacer par une vraie photo du chœur GEI */}
-          </div>
-          <div className="bg-[#ECFAF3] py-12 md:py-16 px-6 md:px-10 flex flex-col justify-center order-1 md:order-2">
-            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-teal-dark)] font-bold mb-3">L&apos;école GEI</div>
-            <h2 className="font-serif text-[26px] md:text-[30px] font-bold text-[var(--color-teal-dark)] leading-[1.15] mb-4">
-              Votre voix a<br />sa place ici
-            </h2>
-            <p className="text-[15px] md:text-[16px] text-[#1A6B4E] leading-[1.7] mb-6 max-w-[440px]">
-              Un dimanche par mois, rejoignez l&apos;atelier chœur gospel au Carré Fourvière. Jeunes dès 16 ans et adultes, tous niveaux. Dirigés par Hazaële, compositrice et chef de chœur.
-            </p>
-            <a href="/ecole" className="btn-teal self-start no-underline">S&apos;inscrire →</a>
+      {/* ===== ÉCOLE GEI — dans site-container ===== */}
+      <section className="pb-12 md:pb-16">
+        <div className="site-container">
+          <div className="grid grid-cols-1 md:grid-cols-[40%_60%] min-h-[260px] rounded-[20px] overflow-hidden">
+            <div className="bg-gradient-to-br from-[var(--color-teal)] to-[#5DCAA5] min-h-[220px] md:min-h-0 order-2 md:order-1 rounded-none md:rounded-l-[20px]" />
+            <div className="bg-[#ECFAF3] px-6 md:px-10 py-10 md:py-14 flex flex-col justify-center order-1 md:order-2">
+              <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-teal-dark)] font-bold mb-2">L&apos;école GEI</div>
+              <h2 className="font-serif text-[22px] md:text-[26px] font-bold text-[var(--color-teal-dark)] leading-[1.15] mb-3">
+                Votre voix a<br />sa place ici
+              </h2>
+              <p className="text-[14px] md:text-[15px] text-[#1A6B4E] leading-[1.65] mb-5 max-w-[440px]">
+                Un dimanche par mois, rejoignez l&apos;atelier chœur gospel au Carré Fourvière. Jeunes dès 16 ans et adultes, tous niveaux.
+              </p>
+              <a href="/ecole" className="btn-teal self-start no-underline text-[13px] px-6 py-3">S&apos;inscrire →</a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== FLYER (si présent) ===== */}
+      {/* ===== FLYER — dans site-container via composant ===== */}
       {settings?.flyerImage && (
-        <div className="py-10">
-          <FlyerSection
-            imageUrl={urlFor(settings.flyerImage).width(560).url()}
-            fullImageUrl={urlFor(settings.flyerImage).width(1600).url()}
-            title={settings.flyerTitle || "Rejoignez l'école de gospel"}
-            description={settings.flyerDescription}
-            link={settings.flyerLink}
-          />
-        </div>
+        <FlyerSection
+          imageUrl={urlFor(settings.flyerImage).width(560).url()}
+          fullImageUrl={urlFor(settings.flyerImage).width(1600).url()}
+          title={settings.flyerTitle || "Rejoignez l'école de gospel"}
+          description={settings.flyerDescription}
+          link={settings.flyerLink}
+        />
       )}
 
       {/* ===== TÉMOIGNAGES — carrousel plein écran ===== */}
@@ -177,8 +169,8 @@ export default async function HomePage() {
       {/* ===== ÉVÉNEMENTS ===== */}
       <section className="py-12 md:py-16">
         <div className="site-container">
-          <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-3">Agenda</div>
-          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-6">Prochains événements</h2>
+          <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-2">Agenda</div>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">Prochains événements</h2>
           <div className="flex flex-col gap-3">
             {events?.map((event) => {
               const date = new Date(event.dateStart);
@@ -213,7 +205,7 @@ export default async function HomePage() {
       {partners && partners.length > 0 && (
         <section className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
           <div className="site-container">
-            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-3">Partenaires</div>
+            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-2">Partenaires</div>
             <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-6">Ils portent le projet avec nous</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {partners.map((p) => (
@@ -252,13 +244,13 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ===== GALERIE — preview plus visible ===== */}
+      {/* ===== GALERIE — complète avec featured et labels ===== */}
       {gallery && gallery.length > 0 && (
         <section className="py-12 md:py-16">
           <div className="site-container">
             <div className="flex justify-between items-end mb-6">
               <div>
-                <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-magenta)] font-bold mb-3">Médiathèque</div>
+                <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-magenta)] font-bold mb-2">Médiathèque</div>
                 <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)]">Photos & vidéos</h2>
               </div>
               <Link href="/galerie" className="text-[13px] text-[var(--color-coral)] font-bold no-underline">Voir tout →</Link>
@@ -286,13 +278,12 @@ export default async function HomePage() {
           <div className="site-container">
             <div className="flex justify-between items-end mb-6">
               <div>
-                <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-indigo)] font-bold mb-3">Actualités</div>
+                <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-indigo)] font-bold mb-2">Actualités</div>
                 <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)]">Derniers articles</h2>
               </div>
               <Link href="/actualites" className="text-[13px] text-[var(--color-coral)] font-bold no-underline">Tous les articles →</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-4">
-              {/* Article principal (le premier, plus grand) */}
               {articles[0] && (() => {
                 const a = articles[0];
                 const cat = categoryColors[a.category] || categoryColors.coulisses;
@@ -310,7 +301,6 @@ export default async function HomePage() {
                   </Link>
                 );
               })()}
-              {/* Articles secondaires (empilés) */}
               <div className="flex flex-col gap-4">
                 {articles.slice(1, 3).map((a) => {
                   const cat = categoryColors[a.category] || categoryColors.coulisses;
