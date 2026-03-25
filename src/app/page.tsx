@@ -206,6 +206,39 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      
+      {/* ARTICLES PREVIEW */}
+      {articles && articles.length > 0 && (
+        <section className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
+          <div className="site-container">
+            <div className="flex justify-between items-end mb-5">
+              <div>
+                <div className="section-tag text-[var(--color-indigo)]">Actualités</div>
+                <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)]">Derniers articles</h2>
+              </div>
+              <a href="/actualites" className="text-[13px] text-[var(--color-coral)] font-bold no-underline">Tous les articles →</a>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {articles.map((a, i) => {
+                const cat = categoryColors[a.category] || categoryColors.coulisses;
+                const date = new Date(a.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+                return (
+                  <div key={a._id} className="bg-white rounded-2xl overflow-hidden border border-[rgba(43,27,94,0.06)] cursor-pointer hover:shadow-sm transition-shadow">
+                    <div className={`h-[160px] bg-gradient-to-br ${gradients[i % gradients.length]} relative overflow-hidden`}>
+                      {a.mainImage && <img src={urlFor(a.mainImage).width(500).height(320).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
+                      <span className="absolute top-3 left-3 text-[11px] tracking-[1px] uppercase font-bold px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
+                    </div>
+                    <div className="p-5">
+                      <h4 className="text-[16px] font-bold text-[var(--color-indigo)] leading-snug mb-2">{a.title}</h4>
+                      <div className="text-[13px] text-[var(--color-text-light)]">{date}{a.readTime && ` · ${a.readTime} min`}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* TÉMOIGNAGES */}
       {testimonials && testimonials.length > 0 && (
@@ -311,38 +344,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ARTICLES PREVIEW */}
-      {articles && articles.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
-          <div className="site-container">
-            <div className="flex justify-between items-end mb-5">
-              <div>
-                <div className="section-tag text-[var(--color-indigo)]">Actualités</div>
-                <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)]">Derniers articles</h2>
-              </div>
-              <a href="/actualites" className="text-[13px] text-[var(--color-coral)] font-bold no-underline">Tous les articles →</a>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {articles.map((a, i) => {
-                const cat = categoryColors[a.category] || categoryColors.coulisses;
-                const date = new Date(a.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-                return (
-                  <div key={a._id} className="bg-white rounded-2xl overflow-hidden border border-[rgba(43,27,94,0.06)] cursor-pointer hover:shadow-sm transition-shadow">
-                    <div className={`h-[160px] bg-gradient-to-br ${gradients[i % gradients.length]} relative overflow-hidden`}>
-                      {a.mainImage && <img src={urlFor(a.mainImage).width(500).height(320).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
-                      <span className="absolute top-3 left-3 text-[11px] tracking-[1px] uppercase font-bold px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
-                    </div>
-                    <div className="p-5">
-                      <h4 className="text-[16px] font-bold text-[var(--color-indigo)] leading-snug mb-2">{a.title}</h4>
-                      <div className="text-[13px] text-[var(--color-text-light)]">{date}{a.readTime && ` · ${a.readTime} min`}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
+
 
       {/* NEWSLETTER */}
       <div className="site-container py-10">
