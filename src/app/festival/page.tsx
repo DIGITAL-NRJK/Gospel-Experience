@@ -14,12 +14,25 @@ export const metadata: Metadata = {
 interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string; ticketUrl?: string }
 interface VenueStat { value: string; label: string }
 interface Settings {
+  festivalHeroImage?: { asset: { _ref: string } };
+  festivalHeroTag?: string;
+  festivalHeroTitle?: string;
+  festivalHeroSubtitle?: string;
+  festivalHeroButton1?: { text: string; url: string };
+  festivalHeroButton2?: { text: string; url: string };
+  festivalPresentationTag?: string;
+  festivalPresentationTitle?: string;
   festivalIntro?: string;
+  festivalIntro2?: string;
+  festivalIntro3?: string;
   festivalCrypteImage?: { asset: { _ref: string } };
   festivalCrypteText?: string;
   festivalVenueStats?: VenueStat[];
   festivalBasiliqueImage?: { asset: { _ref: string } };
   festivalBasiliqueText?: string;
+  festivalBasiliqueText2?: string;
+  festivalCtaTitle?: string;
+  festivalCtaDescription?: string;
 }
 
 const defaultVenueStats: VenueStat[] = [
@@ -28,11 +41,11 @@ const defaultVenueStats: VenueStat[] = [
 ];
 
 export default async function FestivalPage() {
-  const [events, settings] = await Promise.all([
+  const [events, s] = await Promise.all([
     client.fetch<Event[]>(FESTIVAL_EVENTS_QUERY),
     client.fetch<Settings>(SITE_SETTINGS_QUERY),
   ]);
-  const venueStats = settings?.festivalVenueStats?.length ? settings.festivalVenueStats : defaultVenueStats;
+  const venueStats = s?.festivalVenueStats?.length ? s.festivalVenueStats : defaultVenueStats;
 
   return (
     <>
@@ -40,39 +53,53 @@ export default async function FestivalPage() {
 
       {/* HERO */}
       <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[#3D1E10] to-[var(--color-indigo)] flex items-center overflow-hidden">
+        {s?.festivalHeroImage && (
+          <img src={urlFor(s.festivalHeroImage).width(1600).height(800).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
         <div className="absolute w-[400px] h-[400px] rounded-full bg-[var(--color-coral)] opacity-[0.06] -top-[100px] -right-[50px]" />
         <div className="site-container relative z-10 py-12 md:py-16">
           <div className="max-w-[560px]">
-            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-3">Festival biennal</div>
+            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-3">
+              {s?.festivalHeroTag || "Festival biennal"}
+            </div>
             <h1 className="font-serif text-[32px] md:text-[44px] font-bold text-white leading-[1.1] mb-4">
-              Fourvière<br /><span className="text-[var(--color-peach-deep)]">Gospel Expérience</span>
+              {s?.festivalHeroTitle || "Fourvière Gospel Expérience"}
             </h1>
             <p className="text-[16px] text-white/65 leading-relaxed mb-7">
-              Depuis 2021, le rendez-vous incontournable du gospel à Lyon. Quatre jours de concerts, Masterclass et ateliers dans le cadre exceptionnel de la Crypte de la Basilique de Fourvière.
+              {s?.festivalHeroSubtitle || "Depuis 2021, le rendez-vous incontournable du gospel à Lyon. Quatre jours de concerts, Masterclass et ateliers dans le cadre exceptionnel de la Crypte de la Basilique de Fourvière."}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a href="#programmation" className="btn-coral no-underline">Voir le programme</a>
-              <a href="#lieu" className="btn-outline border-white/40 text-white no-underline">Découvrir le lieu</a>
+              <a href={s?.festivalHeroButton1?.url || "#programmation"} className="btn-coral no-underline">
+                {s?.festivalHeroButton1?.text || "Voir le programme"}
+              </a>
+              <a href={s?.festivalHeroButton2?.url || "#lieu"} className="btn-outline border-white/40 text-white no-underline">
+                {s?.festivalHeroButton2?.text || "Découvrir le lieu"}
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* PRÉSENTATION DU FESTIVAL */}
+      {/* PRÉSENTATION */}
       <section className="py-12 md:py-16">
         <div className="site-container">
-          <div className="section-tag text-[var(--color-coral)]">Le festival</div>
-          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-4">Une expérience unique en son genre</h2>
+          <div className="section-tag text-[var(--color-coral)]">
+            {s?.festivalPresentationTag || "Le festival"}
+          </div>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-4">
+            {s?.festivalPresentationTitle || "Une expérience unique en son genre"}
+          </h2>
           <div className="max-w-[720px]">
             <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-5">
-              {settings?.festivalIntro || "Le Festival Gospel Expérience est un événement biennal porté par l'association GOSLYM (Gospel Lyon Métropole). Né en 2021, en pleine sortie de crise sanitaire, il a été conçu comme un moment de rassemblement et de retrouvailles autour de la musique gospel."}
+              {s?.festivalIntro || "Le Festival Gospel Expérience est un événement biennal porté par l'association GOSLYM (Gospel Lyon Métropole). Né en 2021, en pleine sortie de crise sanitaire, il a été conçu comme un moment de rassemblement et de retrouvailles autour de la musique gospel."}
             </p>
-            <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-5">
-              Chaque édition réunit des artistes professionnels, des chorales régionales et des musiciens d&apos;orchestre pour des concerts d&apos;exception dans la Crypte de la Basilique de Fourvière. Le festival propose également des Masterclass ouvertes à tous, encadrées par des artistes de renom, permettant aux participants de monter sur scène lors du concert de clôture.
-            </p>
-            <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8]">
-              Au-delà de la musique, le festival porte une dimension sociale forte : invitation de jeunes en difficulté, accessibilité aux personnes en situation de handicap, partenariats solidaires. Le gospel est ici un vecteur de partage, de joie et d&apos;inclusion.
-            </p>
+            {(s?.festivalIntro2) && (
+              <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-5">{s.festivalIntro2}</p>
+            )}
+            {(s?.festivalIntro3) && (
+              <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8]">{s.festivalIntro3}</p>
+            )}
           </div>
         </div>
       </section>
@@ -116,19 +143,19 @@ export default async function FestivalPage() {
           <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">La Crypte de la Basilique</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="rounded-[20px] overflow-hidden min-h-[260px] bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A]">
-              {settings?.festivalCrypteImage && (
-                <img src={urlFor(settings.festivalCrypteImage).width(800).height(520).url()} alt="Crypte de Fourvière" className="w-full h-full object-cover" />
+              {s?.festivalCrypteImage && (
+                <img src={urlFor(s.festivalCrypteImage).width(800).height(520).url()} alt="Crypte de Fourvière" className="w-full h-full object-cover" />
               )}
             </div>
             <div>
               <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.7] mb-5">
-                {settings?.festivalCrypteText || "Située sous la Basilique Notre-Dame de Fourvière, la crypte offre un cadre unique avec une acoustique remarquable. Ses voûtes basses et pierres apparentes créent une atmosphère intimiste propice aux concerts gospel."}
+                {s?.festivalCrypteText || "Située sous la Basilique Notre-Dame de Fourvière, la crypte offre un cadre unique avec une acoustique remarquable. Ses voûtes basses et pierres apparentes créent une atmosphère intimiste propice aux concerts gospel."}
               </p>
               <div className="grid grid-cols-2 gap-3">
-                {venueStats.map((s) => (
-                  <div key={s.label} className="bg-white rounded-xl px-4 py-3 border border-[rgba(43,27,94,0.06)]">
-                    <div className="font-serif text-xl font-bold text-[var(--color-indigo)]">{s.value}</div>
-                    <div className="text-[12px] text-[var(--color-text-light)] uppercase tracking-[1px]">{s.label}</div>
+                {venueStats.map((st) => (
+                  <div key={st.label} className="bg-white rounded-xl px-4 py-3 border border-[rgba(43,27,94,0.06)]">
+                    <div className="font-serif text-xl font-bold text-[var(--color-indigo)]">{st.value}</div>
+                    <div className="text-[12px] text-[var(--color-text-light)] uppercase tracking-[1px]">{st.label}</div>
                   </div>
                 ))}
               </div>
@@ -144,15 +171,15 @@ export default async function FestivalPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.7] mb-5">
-                {settings?.festivalBasiliqueText || "La Basilique Notre-Dame de Fourvière, monument emblématique de Lyon classé au patrimoine mondial de l'UNESCO, domine la ville depuis la colline de Fourvière. Son esplanade offre une vue panoramique exceptionnelle sur Lyon et les Alpes."}
+                {s?.festivalBasiliqueText || "La Basilique Notre-Dame de Fourvière, monument emblématique de Lyon classé au patrimoine mondial de l'UNESCO, domine la ville depuis la colline de Fourvière. Son esplanade offre une vue panoramique exceptionnelle sur Lyon et les Alpes."}
               </p>
-              <p className="text-[15px] text-[var(--color-text-muted)] leading-[1.7]">
-                La Fondation Fourvière, partenaire et mécène du festival, met à disposition la Crypte et son esplanade pour les concerts et les Masterclass, ainsi que son service de communication pour la promotion de l&apos;événement.
-              </p>
+              {(s?.festivalBasiliqueText2) && (
+                <p className="text-[15px] text-[var(--color-text-muted)] leading-[1.7]">{s.festivalBasiliqueText2}</p>
+              )}
             </div>
             <div className="rounded-[20px] overflow-hidden min-h-[260px] bg-gradient-to-br from-[var(--color-lavender)] to-[var(--color-lavender-light)]">
-              {settings?.festivalBasiliqueImage && (
-                <img src={urlFor(settings.festivalBasiliqueImage).width(800).height(520).url()} alt="Basilique de Fourvière" className="w-full h-full object-cover" />
+              {s?.festivalBasiliqueImage && (
+                <img src={urlFor(s.festivalBasiliqueImage).width(800).height(520).url()} alt="Basilique de Fourvière" className="w-full h-full object-cover" />
               )}
             </div>
           </div>
@@ -162,8 +189,12 @@ export default async function FestivalPage() {
       {/* CTA */}
       <div className="site-container py-10">
         <div className="bg-gradient-to-br from-[var(--color-coral-light)] to-[var(--color-peach)] rounded-3xl px-6 md:px-8 py-9 text-center">
-          <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-coral-dark)] mb-2">Ne manquez pas la prochaine édition</h3>
-          <p className="text-[15px] text-[var(--color-coral-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">Inscrivez-vous à la newsletter pour être informé de l&apos;ouverture de la billetterie et de la programmation.</p>
+          <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-coral-dark)] mb-2">
+            {s?.festivalCtaTitle || "Ne manquez pas la prochaine édition"}
+          </h3>
+          <p className="text-[15px] text-[var(--color-coral-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">
+            {s?.festivalCtaDescription || "Inscrivez-vous à la newsletter pour être informé de l'ouverture de la billetterie et de la programmation."}
+          </p>
           <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto">
             <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" />
             <button className="btn-coral">S&apos;inscrire</button>

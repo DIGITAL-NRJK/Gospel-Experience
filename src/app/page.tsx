@@ -31,6 +31,18 @@ interface SiteSettings {
   flyerDescription?: string;
   flyerLink?: string;
   secondarySponsors?: { name: string; url?: string }[];
+  homeFestivalImage?: { asset: { _ref: string } };
+  homeFestivalTag?: string;
+  homeFestivalTitle?: string;
+  homeFestivalDescription?: string;
+  homeFestivalButton?: { text: string; url: string };
+  homeEcoleImage?: { asset: { _ref: string } };
+  homeEcoleTag?: string;
+  homeEcoleTitle?: string;
+  homeEcoleDescription?: string;
+  homeEcoleButton?: { text: string; url: string };
+  newsletterTitle?: string;
+  newsletterDescription?: string;
 }
 interface Event { _id: string; title: string; eventType: string; dateStart: string; timeStart?: string; timeEnd?: string; venue: string; ticketUrl?: string }
 interface Testimonial { _id: string; quote: string; personName: string; personRole: string; videoUrl?: string }
@@ -112,39 +124,47 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== FESTIVAL — dans site-container ===== */}
+      {/* ===== FESTIVAL — dans site-container, piloté depuis Studio ===== */}
       <section className="py-12 md:py-16">
         <div className="site-container">
           <div className="grid grid-cols-1 md:grid-cols-[55%_45%] min-h-[280px] rounded-[20px] overflow-hidden">
             <div className="px-6 md:px-10 py-10 md:py-14 flex flex-col justify-center">
-              <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-coral)] font-bold mb-2">Le festival</div>
+              <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-coral)] font-bold mb-2">{settings?.homeFestivalTag || "Le festival"}</div>
               <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-indigo)] leading-[1.15] mb-3">
-                La Crypte de Fourvière<br className="hidden md:block" /> comme vous ne l&apos;avez<br className="hidden md:block" /> jamais entendue
+                {settings?.homeFestivalTitle || "La Crypte de Fourvière comme vous ne l'avez jamais entendue"}
               </h2>
               <p className="text-[14px] md:text-[15px] text-[var(--color-text-muted)] leading-[1.65] mb-5 max-w-[440px]">
-                Tous les deux ans, la Crypte de la Basilique se transforme en salle de concert pour accueillir le gospel. Quatre jours de concerts, Masterclass et ateliers.
+                {settings?.homeFestivalDescription || "Tous les deux ans, la Crypte de la Basilique se transforme en salle de concert pour accueillir le gospel. Quatre jours de concerts, Masterclass et ateliers."}
               </p>
-              <a href="/festival" className="btn-coral self-start no-underline text-[13px] px-6 py-3">Découvrir le festival →</a>
+              <a href={settings?.homeFestivalButton?.url || "/festival"} className="btn-coral self-start no-underline text-[13px] px-6 py-3">{settings?.homeFestivalButton?.text || "Découvrir le festival →"}</a>
             </div>
-            <div className="bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A] min-h-[240px] md:min-h-0 rounded-none md:rounded-r-[20px]" />
+            <div className="bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A] min-h-[240px] md:min-h-0 rounded-none md:rounded-r-[20px] relative overflow-hidden">
+              {settings?.homeFestivalImage && (
+                <img src={urlFor(settings.homeFestivalImage).width(800).height(600).url()} alt={settings.homeFestivalTag || "Festival"} className="absolute inset-0 w-full h-full object-cover" />
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== ÉCOLE GEI — dans site-container ===== */}
+      {/* ===== ÉCOLE GEI — dans site-container, piloté depuis Studio ===== */}
       <section className="pb-12 md:pb-16">
         <div className="site-container">
           <div className="grid grid-cols-1 md:grid-cols-[40%_60%] min-h-[260px] rounded-[20px] overflow-hidden">
-            <div className="bg-gradient-to-br from-[var(--color-teal)] to-[#5DCAA5] min-h-[220px] md:min-h-0 order-2 md:order-1 rounded-none md:rounded-l-[20px]" />
+            <div className="bg-gradient-to-br from-[var(--color-teal)] to-[#5DCAA5] min-h-[220px] md:min-h-0 order-2 md:order-1 rounded-none md:rounded-l-[20px] relative overflow-hidden">
+              {settings?.homeEcoleImage && (
+                <img src={urlFor(settings.homeEcoleImage).width(700).height(560).url()} alt={settings.homeEcoleTag || "École GEI"} className="absolute inset-0 w-full h-full object-cover" />
+              )}
+            </div>
             <div className="bg-[#ECFAF3] px-6 md:px-10 py-10 md:py-14 flex flex-col justify-center order-1 md:order-2">
-              <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-teal-dark)] font-bold mb-2">L&apos;école GEI</div>
+              <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-teal-dark)] font-bold mb-2">{settings?.homeEcoleTag || "L'école GEI"}</div>
               <h2 className="font-serif text-[22px] md:text-[26px] font-bold text-[var(--color-teal-dark)] leading-[1.15] mb-3">
-                Votre voix a<br />sa place ici
+                {settings?.homeEcoleTitle || "Votre voix a sa place ici"}
               </h2>
               <p className="text-[14px] md:text-[15px] text-[#1A6B4E] leading-[1.65] mb-5 max-w-[440px]">
-                Un dimanche par mois, rejoignez l&apos;atelier chœur gospel au Carré Fourvière. Jeunes dès 16 ans et adultes, tous niveaux.
+                {settings?.homeEcoleDescription || "Un dimanche par mois, rejoignez l'atelier chœur gospel au Carré Fourvière. Jeunes dès 16 ans et adultes, tous niveaux."}
               </p>
-              <a href="/ecole" className="btn-teal self-start no-underline text-[13px] px-6 py-3">S&apos;inscrire →</a>
+              <a href={settings?.homeEcoleButton?.url || "/ecole"} className="btn-teal self-start no-underline text-[13px] px-6 py-3">{settings?.homeEcoleButton?.text || "S'inscrire →"}</a>
             </div>
           </div>
         </div>
@@ -323,8 +343,8 @@ export default async function HomePage() {
       <section className="bg-[var(--color-indigo)]">
         <div className="site-container py-10 md:py-12 flex flex-col md:flex-row items-center gap-6">
           <div className="flex-1 text-center md:text-left">
-            <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">Accès préventes exclusives</h3>
-            <p className="text-[14px] text-white/50">Réservez vos places avant l&apos;ouverture au grand public.</p>
+            <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">{settings?.newsletterTitle || "Accès préventes exclusives"}</h3>
+            <p className="text-[14px] text-white/50">{settings?.newsletterDescription || "Réservez vos places avant l'ouverture au grand public."}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
             <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" />
