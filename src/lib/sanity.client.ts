@@ -44,7 +44,7 @@ export const ARCHIVED_EVENTS_QUERY = `
 `;
 
 export const FESTIVAL_EVENTS_QUERY = `
-  *[_type == "event" && eventType in ["festival", "concert", "masterclass"] && archived != true] | order(dateStart asc) {
+  *[_type == "event" && count(eventType[@ in ["festival", "concert", "masterclass"]]) > 0 && archived != true] | order(dateStart asc) {
     _id, title, slug, eventType, dateStart, dateEnd,
     timeStart, timeEnd, venue, price, ticketUrl, image, featured, artistNames,
     "artists": artists[]->{ _id, name, slug, role, photo }

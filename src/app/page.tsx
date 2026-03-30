@@ -50,17 +50,17 @@ export default async function HomePage() {
       <Header />
 
       {/* ===== HERO — conditionnel selon le mode ===== */}
-      <section className="relative min-h-[400px] md:min-h-[480px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
-        {hasVideo ? <HeroVideo mp4Url={heroMp4} youtubeUrl={heroYt} /> : <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />}
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
-        <div className="relative z-10 text-center max-w-[640px] mx-auto px-5 py-12 md:py-16">
+      <section className="relative min-h-100 md:min-h-120 overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
+        {hasVideo ? <HeroVideo mp4Url={heroMp4} youtubeUrl={heroYt} /> : <div className="absolute inset-0 bg-linear-to-br from-(--color-indigo) via-[#1E1432] to-[#0D0D0D]" />}
+        <div className="absolute inset-0 bg-linear-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
+        <div className="relative z-10 text-center max-w-160 mx-auto px-5 py-12 md:py-16">
           <span className="inline-flex items-center gap-2 text-[12px] tracking-[2px] uppercase text-white/80 bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-6 border border-white/10">
             {settings?.currentSeason || "Saison 2026 – 2027"}
           </span>
           <h1 className="font-serif text-[34px] md:text-[48px] font-bold leading-[1.08] text-white mb-5">
             {heroTitle}
           </h1>
-          <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-8 max-w-[480px] mx-auto">
+          <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-8 max-w-120 mx-auto">
             {heroSubtitle}
           </p>
           <div className="flex gap-3 justify-center flex-wrap">

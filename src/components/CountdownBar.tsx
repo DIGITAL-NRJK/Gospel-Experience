@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 interface CountdownBarProps {
   eventTitle: string;
-  eventType: string;
+  eventType: string | string[];
   eventDate: string;
   ticketUrl?: string;
 }
@@ -27,7 +27,8 @@ export default function CountdownBar({ eventTitle, eventType, eventDate, ticketU
 
   if (pathname?.startsWith("/studio") || daysLeft === null || daysLeft <= 0) return null;
 
-  const isFestival = eventType === "festival" || eventType === "concert";
+  const types = Array.isArray(eventType) ? eventType : [eventType];
+  const isFestival = types.some((t) => ["festival", "concert"].includes(t));
   const bgColor = isFestival ? "var(--color-coral)" : "var(--color-teal)";
   const message = isFestival
     ? `Le Fourvière Gospel Expérience est dans ${daysLeft} jour${daysLeft > 1 ? "s" : ""}`
