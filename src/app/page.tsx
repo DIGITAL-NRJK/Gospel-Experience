@@ -136,7 +136,8 @@ export default async function HomePage() {
               const date = new Date(event.dateStart);
               const day = date.getDate().toString().padStart(2, "0");
               const month = date.toLocaleDateString("fr-FR", { month: "short" });
-              const isFestival = event.eventType === "festival" || event.eventType === "concert";
+              const types = Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean);
+              const isFestival = types.some((t: string) => ["festival", "concert"].includes(t));
               const artistDisplay = event.artistNames || event.artists?.map((a: any) => a.name).join(", ");
               return (
                 <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 md:px-5 bg-white rounded-2xl border border-[rgba(43,27,94,0.06)]">
@@ -152,7 +153,7 @@ export default async function HomePage() {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className={isFestival ? "tag-festival" : "tag-ecole"}>{isFestival ? "Festival" : "École GEI"}</span>
+                    <span className={isFestival ? "tag-festival" : "tag-ecole"}>{types.join(" · ") || "Événement"}</span>
                     {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold no-underline" style={{ color: isFestival ? "var(--color-coral-dark)" : "var(--color-teal-dark)" }}>Réserver →</a>}
                   </div>
                 </div>
@@ -305,9 +306,9 @@ export default async function HomePage() {
             <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">{settings?.newsletterTitle || "Accès préventes exclusives"}</h3>
             <p className="text-[14px] text-white/50">{settings?.newsletterDescription || "Réservez vos places avant l'ouverture au grand public."}</p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
-            <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" />
-            <button className="bg-[var(--color-gold)] text-[var(--color-indigo)] text-[14px] font-bold px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity">S&apos;inscrire</button>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto" suppressHydrationWarning>
+            <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" suppressHydrationWarning />
+            <button type="button" className="bg-[var(--color-gold)] text-[var(--color-indigo)] text-[14px] font-bold px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity" suppressHydrationWarning>S&apos;inscrire</button>
           </div>
         </div>
       </section>

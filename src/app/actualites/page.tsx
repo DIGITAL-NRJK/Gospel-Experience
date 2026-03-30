@@ -2,6 +2,7 @@ import { client, ALL_ARTICLES_QUERY } from "@/lib/sanity.client";
 import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ArticleFilter from "@/components/ArticleFilter";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -23,24 +24,20 @@ interface Article {
   readTime?: number;
 }
 
-const categoryColors: Record<string, { bg: string; text: string }> = {
-  festival: { bg: "rgba(216,90,48,0.85)", text: "Festival" },
-  ecole: { bg: "rgba(29,158,117,0.85)", text: "École GEI" },
-  interview: { bg: "rgba(43,27,94,0.8)", text: "Interview" },
-  coulisses: { bg: "rgba(43,27,94,0.7)", text: "Coulisses" },
-};
-
-const gradients = [
-  "from-[var(--color-peach)] to-[var(--color-coral-light)]",
-  "from-[var(--color-teal-light)] to-[#ECFAF3]",
-  "from-[var(--color-lavender-light)] to-[#F5F0FC]",
-  "from-[var(--color-gold-light)] to-[var(--color-peach)]",
-  "from-[var(--color-magenta-light)] to-[#F5E0EC]",
-  "from-[var(--color-coral-light)] to-[var(--color-peach)]",
-];
-
 export default async function ActualitesPage() {
   const articles = await client.fetch<Article[]>(ALL_ARTICLES_QUERY);
+
+  // Prepare articles with resolved image URLs for the client component
+  const preparedArticles = (articles || []).map((a) => ({
+    _id: a._id,
+    title: a.title,
+    slug: a.slug,
+    category: a.category,
+    publishedAt: a.publishedAt,
+    excerpt: a.excerpt,
+    mainImage: a.mainImage ? urlFor(a.mainImage).width(360).height(300).url() : undefined,
+    readTime: a.readTime,
+  }));
 
   return (
     <>
@@ -57,31 +54,8 @@ export default async function ActualitesPage() {
           <h1 className="font-serif text-[26px] md:text-[32px] font-bold text-[var(--color-indigo)] mb-2">Toutes les actualités</h1>
           <p className="text-[15px] text-[var(--color-text-muted)] mb-8">Interviews, retours sur les événements, vie de l&apos;association et coulisses du gospel.</p>
 
-          {articles && articles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {articles.map((a, i) => {
-                const cat = categoryColors[a.category] || categoryColors.coulisses;
-                const date = new Date(a.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-                return (
-                  <Link
-                    key={a._id}
-                    href={`/actualites/${a.slug.current}`}
-                    className="bg-white rounded-2xl overflow-hidden border border-[rgba(43,27,94,0.06)] flex flex-col sm:flex-row cursor-pointer hover:shadow-sm transition-shadow no-underline"
-                  >
-                    <div className={`w-full sm:w-[180px] h-[160px] sm:h-auto bg-gradient-to-br ${gradients[i % gradients.length]} shrink-0 relative`}>
-                      {a.mainImage && <img src={urlFor(a.mainImage).width(360).height(300).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
-                      <span className="absolute top-3 left-3 text-[11px] tracking-[1px] uppercase font-bold px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
-                    </div>
-                    <div className="p-5 flex flex-col justify-center">
-                      <h4 className="text-base font-bold text-[var(--color-indigo)] leading-snug mb-2">{a.title}</h4>
-                      {a.excerpt && <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed mb-2 line-clamp-2">{a.excerpt}</p>}
-                      <div className="text-[13px] text-[var(--color-text-light)]">{date}{a.readTime && ` · ${a.readTime} min`}</div>
-                      <span className="text-[13px] font-bold text-[var(--color-coral)] mt-3">Lire l&apos;article →</span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
+          {preparedArticles.length > 0 ? (
+            <ArticleFilter articles={preparedArticles} />
           ) : (
             <div className="text-center py-16">
               <p className="text-base text-[var(--color-text-muted)]">Aucun article publié pour le moment.</p>

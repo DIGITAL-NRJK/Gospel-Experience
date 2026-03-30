@@ -196,7 +196,7 @@ export default async function FestivalPage() {
             <div>
               <div className="bg-white rounded-[20px] p-6 border border-[rgba(43,27,94,0.06)] mb-4">
                 <h4 className="font-serif text-[17px] font-bold text-[var(--color-indigo)] mb-3">Crypte de la Basilique de Fourvière</h4>
-                <p className="text-[15px] text-[var(--color-text-muted)] leading-[1.7] mb-3">5 place de Fourvière<br />69005 Lyon</p>
+                <p className="text-[15px] text-[var(--color-text-muted)] leading-[1.7] mb-3">8 place de Fourvière<br />69005 Lyon</p>
                 <div className="text-[14px] text-[var(--color-text-muted)] leading-[1.7]">
                   <p className="mb-2"><strong className="text-[var(--color-indigo)]">Funiculaire</strong> : Station Fourvière (ligne F2)</p>
                   <p className="mb-2"><strong className="text-[var(--color-indigo)]">Bus</strong> : Ligne C20, arrêt Fourvière</p>
@@ -221,9 +221,9 @@ export default async function FestivalPage() {
           <p className="text-[15px] text-[var(--color-coral-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">
             {s?.festivalCtaDescription || "Inscrivez-vous à la newsletter pour être informé de l'ouverture de la billetterie et de la programmation."}
           </p>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto">
-            <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" />
-            <button type="button" className="btn-coral">S&apos;inscrire</button>
+          <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto" suppressHydrationWarning>
+            <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" suppressHydrationWarning />
+            <button type="button" className="btn-coral" suppressHydrationWarning>S&apos;inscrire</button>
           </div>
         </div>
       </div>
