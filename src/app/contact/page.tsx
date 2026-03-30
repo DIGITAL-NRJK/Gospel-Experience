@@ -2,6 +2,7 @@ import { client, SITE_SETTINGS_QUERY } from "@/lib/sanity.client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
+import GoogleMap from "@/components/GoogleMap";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -39,9 +40,10 @@ export default async function ContactPage() {
                   </div>
                 ))}
               </div>
-              <div className="bg-gradient-to-br from-[var(--color-lavender-light)] to-[var(--color-peach)] rounded-[20px] min-h-[180px] flex items-center justify-center">
-                <span className="text-[14px] text-[var(--color-indigo)] font-bold">Carte Google Maps</span>
-              </div>
+              <GoogleMap
+                query="Carré Fourvière, 5 place de Fourvière, 69005 Lyon"
+                title="Carré Fourvière — Siège de GOSLYM"
+              />
             </div>
           </div>
         </div>
