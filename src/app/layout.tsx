@@ -3,6 +3,7 @@ import { Playfair_Display, Nunito } from "next/font/google";
 import "@/styles/globals.css";
 import { client, NEXT_EVENT_QUERY } from "@/lib/sanity.client";
 import CountdownBar from "@/components/CountdownBar";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap", variable: "--font-serif", weight: ["400", "700"] });
 const nunito = Nunito({ subsets: ["latin"], display: "swap", variable: "--font-sans", weight: ["400", "600", "700"] });
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="fr" className={`${playfair.variable} ${nunito.variable}`}>
       <head>
+        <GoogleAnalytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(festivalSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }} />

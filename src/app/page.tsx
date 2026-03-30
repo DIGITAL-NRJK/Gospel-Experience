@@ -306,9 +306,9 @@ export default async function HomePage() {
             <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">{settings?.newsletterTitle || "Accès préventes exclusives"}</h3>
             <p className="text-[14px] text-white/50">{settings?.newsletterDescription || "Réservez vos places avant l'ouverture au grand public."}</p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
-            <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" />
-            <button type="button" className="bg-[var(--color-gold)] text-[var(--color-indigo)] text-[14px] font-bold px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity">S&apos;inscrire</button>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto" suppressHydrationWarning>
+            <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" suppressHydrationWarning />
+            <button type="button" className="bg-[var(--color-gold)] text-[var(--color-indigo)] text-[14px] font-bold px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity" suppressHydrationWarning>S&apos;inscrire</button>
           </div>
         </div>
       </section>

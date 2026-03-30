@@ -2,6 +2,7 @@ import { client, FESTIVAL_EVENTS_QUERY, SITE_SETTINGS_QUERY } from "@/lib/sanity
 import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GoogleMap from "@/components/GoogleMap";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -186,6 +187,31 @@ export default async function FestivalPage() {
         </div>
       </section>
 
+      {/* LOCALISATION */}
+      <section className="py-12 md:py-16">
+        <div className="site-container">
+          <div className="section-tag text-[var(--color-gold)]">Accès</div>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">Comment s&apos;y rendre</h2>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-6">
+            <div>
+              <div className="bg-white rounded-[20px] p-6 border border-[rgba(43,27,94,0.06)] mb-4">
+                <h4 className="font-serif text-[17px] font-bold text-[var(--color-indigo)] mb-3">Crypte de la Basilique de Fourvière</h4>
+                <p className="text-[15px] text-[var(--color-text-muted)] leading-[1.7] mb-3">8 place de Fourvière<br />69005 Lyon</p>
+                <div className="text-[14px] text-[var(--color-text-muted)] leading-[1.7]">
+                  <p className="mb-2"><strong className="text-[var(--color-indigo)]">Funiculaire</strong> : Station Fourvière (ligne F2)</p>
+                  <p className="mb-2"><strong className="text-[var(--color-indigo)]">Bus</strong> : Ligne C20, arrêt Fourvière</p>
+                  <p><strong className="text-[var(--color-indigo)]">Voiture</strong> : Parking Fourvière à proximité</p>
+                </div>
+              </div>
+            </div>
+            <GoogleMap
+              query="Basilique Notre-Dame de Fourvière, Lyon"
+              title="Basilique de Fourvière — Lieu du festival"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <div className="site-container py-10">
         <div className="bg-gradient-to-br from-[var(--color-coral-light)] to-[var(--color-peach)] rounded-3xl px-6 md:px-8 py-9 text-center">
@@ -195,9 +221,9 @@ export default async function FestivalPage() {
           <p className="text-[15px] text-[var(--color-coral-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">
             {s?.festivalCtaDescription || "Inscrivez-vous à la newsletter pour être informé de l'ouverture de la billetterie et de la programmation."}
           </p>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto">
-            <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" />
-            <button type="button" className="btn-coral">S&apos;inscrire</button>
+          <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto" suppressHydrationWarning>
+            <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" suppressHydrationWarning />
+            <button type="button" className="btn-coral" suppressHydrationWarning>S&apos;inscrire</button>
           </div>
         </div>
       </div>
