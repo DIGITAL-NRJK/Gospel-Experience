@@ -41,9 +41,9 @@ export default function HeaderClient({ logoText, logoSubtext, logoUrl, navLinks,
             <img src={logoUrl} alt={logoText || "Gospel Expérience"} className="h-10 w-auto" />
           ) : (
             <>
-              {logoText || "Gospel Expérience"}
-              <span className="block text-[10px] font-normal tracking-[3px] uppercase text-[var(--color-gold)]">
-                {logoSubtext || "Lyon Fourvière"}
+              {logoText || "Gospel Lyon Métropole"}
+              <span className="block text-[10px] font-normal tracking-[3px] uppercase text-gold">
+                {logoSubtext || "Festival & Ecole de Gospel"}
               </span>
             </>
           )}
@@ -72,7 +72,7 @@ export default function HeaderClient({ logoText, logoSubtext, logoUrl, navLinks,
       </div>
 
       {menuOpen && (
-        <div className="lg:hidden bg-[var(--color-cream)] border-t border-[rgba(43,27,94,0.06)] px-5 pb-5">
+        <div className="lg:hidden bg-cream border-t border-[rgba(43,27,94,0.06)] px-5 pb-5">
           <nav className="flex flex-col gap-1 pt-3">
             {links.map(({ href, label }) => {
               const isActive = href === "/" ? pathname === "/" : pathname?.startsWith(href);

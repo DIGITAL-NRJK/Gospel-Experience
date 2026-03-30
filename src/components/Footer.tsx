@@ -46,17 +46,17 @@ export default async function Footer() {
   ].filter((item) => item.url);
 
   return (
-    <footer className="bg-[var(--color-cream)]">
+    <footer className="bg-cream">
       <div className="site-container">
         <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_${sections.map(() => "1fr").join("_")}] gap-8 pt-10 pb-6 border-t border-[rgba(43,27,94,0.06)]`}>
           <div>
-            <div className="font-serif text-lg font-bold text-[var(--color-indigo)] mb-2">
+            <div className="font-serif text-lg font-bold text-(--color-indigo) mb-2">
               {s.headerLogoText || "Gospel Expérience"}
-              <span className="block text-[10px] font-normal tracking-[3px] uppercase text-[var(--color-gold)]">
+              <span className="block text-[10px] font-normal tracking-[3px] uppercase text-gold">
                 {s.headerLogoSubtext || "Lyon Fourvière"}
               </span>
             </div>
-            <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed">
+            <p className="text-[14px] text-text-muted leading-relaxed">
               {s.footerDescription || "Association GOSLYM — Gospel Lyon Métropole. Promouvoir le gospel, rassembler les talents, transmettre des valeurs de joie et de fraternité."}
             </p>
             {socialItems.length > 0 && (
@@ -76,7 +76,7 @@ export default async function Footer() {
                 {section.title}
               </h5>
               {section.links?.map(({ label, href }) => (
-                <Link key={label} href={href} className="block text-[14px] text-[var(--color-text-muted)] no-underline mb-2 hover:text-[var(--color-indigo)] transition-colors">
+                <Link key={label} href={href} className="block text-[14px] text-text-muted no-underline mb-2 hover:text-(--color-indigo) transition-colors">
                   {label}
                 </Link>
               ))}
@@ -87,9 +87,9 @@ export default async function Footer() {
         <div className="flex flex-col sm:flex-row justify-between py-4 border-t border-[rgba(43,27,94,0.04)] text-[12px] text-[var(--color-text-light)] gap-2">
           <span>© {new Date().getFullYear()} {s.footerCopyright || "GOSLYM — Gospel Lyon Métropole"}</span>
           <span>
-            <Link href="/mentions-legales" className="no-underline text-inherit hover:text-[var(--color-indigo)]">Mentions légales</Link>
+            <Link href="/mentions-legales" className="no-underline text-inherit hover:text-(--color-indigo)">Mentions légales</Link>
             {" · "}
-            <Link href="/confidentialite" className="no-underline text-inherit hover:text-[var(--color-indigo)]">Confidentialité</Link>
+            <Link href="/confidentialite" className="no-underline text-inherit hover:text-(--color-indigo)">Confidentialité</Link>
           </span>
         </div>
       </div>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Festival biennal de gospel dans la Crypte de la Basilique de Fourvière à Lyon. Concerts professionnels, chorales régionales, Masterclass.",
 };
 
-interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string; ticketUrl?: string }
+interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string[]; ticketUrl?: string }
 interface VenueStat { value: string; label: string }
 interface Settings {
   festivalHeroImage?: { asset: { _ref: string } };
@@ -126,7 +126,7 @@ export default async function FestivalPage() {
                     <p className="text-[13px] text-[var(--color-text-light)]">{event.venue}{event.timeStart && ` · ${event.timeStart}`}{event.timeEnd && ` - ${event.timeEnd}`}</p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="tag-festival">{event.eventType}</span>
+                    <span className="tag-festival">{(Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean)).join(" · ") || "Concert"}</span>
                     {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold text-[var(--color-coral-dark)] no-underline">Réserver →</a>}
                   </div>
                 </div>
@@ -197,7 +197,7 @@ export default async function FestivalPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto">
             <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" />
-            <button className="btn-coral">S&apos;inscrire</button>
+            <button type="button" className="btn-coral">S&apos;inscrire</button>
           </div>
         </div>
       </div>

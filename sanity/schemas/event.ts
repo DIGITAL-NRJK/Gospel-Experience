@@ -21,20 +21,20 @@ export const event = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "eventType",
-      title: "Type d'événement",
-      type: "string",
-      options: {
-        list: [
-          { title: "Concert", value: "concert" },
-          { title: "Masterclass", value: "masterclass" },
-          { title: "Atelier GEI", value: "atelier-gei" },
-          { title: "Festival", value: "festival" },
-        ],
-        layout: "radio",
-      },
-      validation: (rule) => rule.required(),
-    }),
+  name: "eventType",
+  title: "Type(s) d'événement",
+  type: "array",
+  of: [{ type: "string" }],
+  options: {
+    list: [
+      { title: "Festival", value: "festival" },
+      { title: "Concert", value: "concert" },
+      { title: "Masterclass", value: "masterclass" },
+      { title: "Atelier GEI", value: "atelier-gei" },
+    ],
+  },
+  validation: (rule) => rule.required().min(1),
+}),
     defineField({
       name: "dateStart",
       title: "Date de début",
