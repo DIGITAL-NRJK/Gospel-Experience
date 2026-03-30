@@ -50,17 +50,17 @@ export default async function HomePage() {
       <Header />
 
       {/* ===== HERO — conditionnel selon le mode ===== */}
-      <section className="relative min-h-[400px] md:min-h-[480px] overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
-        {hasVideo ? <HeroVideo mp4Url={heroMp4} youtubeUrl={heroYt} /> : <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-indigo)] via-[#1E1432] to-[#0D0D0D]" />}
-        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
-        <div className="relative z-10 text-center max-w-[640px] mx-auto px-5 py-12 md:py-16">
+      <section className="relative min-h-100 md:min-h-120 overflow-hidden bg-[#1A1A1A] flex items-center justify-center">
+        {hasVideo ? <HeroVideo mp4Url={heroMp4} youtubeUrl={heroYt} /> : <div className="absolute inset-0 bg-linear-to-br from-(--color-indigo) via-[#1E1432] to-[#0D0D0D]" />}
+        <div className="absolute inset-0 bg-linear-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
+        <div className="relative z-10 text-center max-w-160 mx-auto px-5 py-12 md:py-16">
           <span className="inline-flex items-center gap-2 text-[12px] tracking-[2px] uppercase text-white/80 bg-white/10 backdrop-blur px-5 py-2 rounded-full font-bold mb-6 border border-white/10">
             {settings?.currentSeason || "Saison 2026 – 2027"}
           </span>
           <h1 className="font-serif text-[34px] md:text-[48px] font-bold leading-[1.08] text-white mb-5">
             {heroTitle}
           </h1>
-          <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-8 max-w-[480px] mx-auto">
+          <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-8 max-w-120 mx-auto">
             {heroSubtitle}
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
@@ -136,7 +136,8 @@ export default async function HomePage() {
               const date = new Date(event.dateStart);
               const day = date.getDate().toString().padStart(2, "0");
               const month = date.toLocaleDateString("fr-FR", { month: "short" });
-              const isFestival = event.eventType === "festival" || event.eventType === "concert";
+              const types = Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean);
+              const isFestival = types.some((t: string) => ["festival", "concert"].includes(t));
               const artistDisplay = event.artistNames || event.artists?.map((a: any) => a.name).join(", ");
               return (
                 <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 md:px-5 bg-white rounded-2xl border border-[rgba(43,27,94,0.06)]">
@@ -152,7 +153,7 @@ export default async function HomePage() {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className={isFestival ? "tag-festival" : "tag-ecole"}>{isFestival ? "Festival" : "École GEI"}</span>
+                    <span className={isFestival ? "tag-festival" : "tag-ecole"}>{types.join(" · ") || "Événement"}</span>
                     {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold no-underline" style={{ color: isFestival ? "var(--color-coral-dark)" : "var(--color-teal-dark)" }}>Réserver →</a>}
                   </div>
                 </div>
@@ -307,7 +308,7 @@ export default async function HomePage() {
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
             <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" />
-            <button className="bg-[var(--color-gold)] text-[var(--color-indigo)] text-[14px] font-bold px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity">S&apos;inscrire</button>
+            <button type="button" className="bg-[var(--color-gold)] text-[var(--color-indigo)] text-[14px] font-bold px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity">S&apos;inscrire</button>
           </div>
         </div>
       </section>

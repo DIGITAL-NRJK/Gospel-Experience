@@ -49,7 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(festivalSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }} />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         {nextEvent && (
           <CountdownBar
             eventTitle={nextEvent.title}

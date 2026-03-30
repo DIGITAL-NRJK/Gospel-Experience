@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 interface Event {
-  _id: string; title: string; eventType: string; dateStart: string;
+  _id: string; title: string; eventType: string[]; dateStart: string;
   timeStart?: string; timeEnd?: string; venue: string; ticketUrl?: string;
   artistNames?: string; artists?: { _id: string; name: string }[];
 }
@@ -31,7 +31,8 @@ export default async function EvenementsPage() {
     const day = date.getDate().toString().padStart(2, "0");
     const month = date.toLocaleDateString("fr-FR", { month: "short" });
     const fullDate = date.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-    const isFestival = event.eventType === "festival" || event.eventType === "concert";
+    const types = Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean);
+    const isFestival = types.some((t: string) => ["festival", "concert"].includes(t));
     const artistDisplay = event.artistNames || event.artists?.map((a) => a.name).join(", ");
 
     return (
@@ -50,7 +51,7 @@ export default async function EvenementsPage() {
           {artistDisplay && <p className="text-[13px] text-[var(--color-text-muted)] italic mt-0.5">{artistDisplay}</p>}
         </div>
         <div className="flex items-center gap-3">
-          <span className={isFestival ? "tag-festival" : "tag-ecole"}>{isFestival ? "Festival" : "École GEI"}</span>
+          <span className={isFestival ? "tag-festival" : "tag-ecole"}>{types.join(" · ") || "Événement"}</span>
           {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold no-underline" style={{ color: isFestival ? "var(--color-coral-dark)" : "var(--color-teal-dark)" }}>Réserver →</a>}
         </div>
       </div>
