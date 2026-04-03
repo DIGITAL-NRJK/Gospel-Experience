@@ -1,4 +1,4 @@
-import { client, ARTICLE_BY_SLUG_QUERY, ALL_ARTICLE_SLUGS_QUERY, RELATED_ARTICLES_QUERY } from "@/lib/sanity.client";
+import { client, ARTICLE_BY_SLUG_QUERY, ALL_ARTICLE_SLUGS_QUERY, RELATED_ARTICLES_SAME_CAT_QUERY, RELATED_ARTICLES_RECENT_QUERY } from "@/lib/sanity.client";
 import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -82,7 +82,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     );
   }
 
-  const relatedArticles = await client.fetch<Article[]>(RELATED_ARTICLES_QUERY, { slug, category: article.category });
+  const [sameCat, recent] = await Promise.all([
+    client.fetch<Article[]>(RELATED_ARTICLES_SAME_CAT_QUERY, { slug, category: article.category }),
+    client.fetch<Article[]>(RELATED_ARTICLES_RECENT_QUERY, { slug }),
+  ]);
+  const sameCatIds = new Set((sameCat || []).map((a) => a._id));
+  const filler = (recent || []).filter((a) => !sameCatIds.has(a._id));
+  const relatedArticles = [...(sameCat || []), ...filler].slice(0, 3);
 
   const date = new Date(article.publishedAt).toLocaleDateString("fr-FR", {
     day: "numeric", month: "long", year: "numeric",

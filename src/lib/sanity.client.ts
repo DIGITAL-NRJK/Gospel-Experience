@@ -140,11 +140,14 @@ export const SITEMAP_ARTICLES_QUERY = `
 `;
 
 // Related articles: same category first, then recent, excluding current
-export const RELATED_ARTICLES_QUERY = `
-  *[_type == "article" && slug.current != $slug] | order(
-    category == $category desc,
-    publishedAt desc
-  ) [0...3] {
+export const RELATED_ARTICLES_SAME_CAT_QUERY = `
+  *[_type == "article" && slug.current != $slug && category == $category] | order(publishedAt desc) [0...3] {
+    _id, title, slug, category, publishedAt, mainImage, readTime
+  }
+`;
+
+export const RELATED_ARTICLES_RECENT_QUERY = `
+  *[_type == "article" && slug.current != $slug] | order(publishedAt desc) [0...6] {
     _id, title, slug, category, publishedAt, mainImage, readTime
   }
 `;
