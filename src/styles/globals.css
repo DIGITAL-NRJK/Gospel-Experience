@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
 @theme {
+  /* ─── MARQUE (charte officielle) ─── */
+  --color-brand: #413485;
+  --color-brand-dark: #2A1F5E;
+  --color-brand-light: #EDE6F6;
+
+  /* ─── OR (accent signature logo) ─── */
+  --color-gold: #C8A24E;
+  --color-gold-light: #F9F0DB;
+  --color-gold-dark: #8B6D2F;
+
+  /* ─── FONDS ─── */
   --color-cream: #FFF8F0;
   --color-peach: #F7DCC8;
   --color-peach-deep: #E8A67C;
-  --color-indigo: #2B1B5E;
+  --color-peach-light: #FDF0E3;
+
+  /* ─── ACCENTS ─── */
   --color-lavender: #C4B0E0;
   --color-lavender-light: #EDE6F6;
-  --color-teal: #1D9E75;
-  --color-teal-light: #D4F1E7;
-  --color-teal-dark: #0F6E56;
-  --color-coral: #D85A30;
-  --color-coral-light: #FCEEE7;
-  --color-coral-dark: #993C1D;
-  --color-gold: #C8A24E;
-  --color-gold-light: #F9F0DB;
   --color-magenta: #D4537E;
   --color-magenta-light: #FBEAF0;
-  --color-text-body: #2B1B5E;
-  --color-text-muted: #6B5E8A;
-  --color-text-light: #9A8FB5;
+
+  /* ─── FESTIVAL = violet brand ─── */
+  --color-festival: #413485;
+  --color-festival-lt: #EDE6F6;
+  --color-festival-dk: #2A1F5E;
+
+  /* ─── ÉCOLE = or ─── */
+  --color-ecole: #C8A24E;
+  --color-ecole-lt: #F9F0DB;
+  --color-ecole-dk: #8B6D2F;
+
+  /* ─── ALIASES COMPAT ─── */
+  --color-indigo: #413485;
+  --color-coral: #413485;
+  --color-coral-light: #EDE6F6;
+  --color-coral-dark: #2A1F5E;
+  --color-teal: #C8A24E;
+  --color-teal-light: #F9F0DB;
+  --color-teal-dark: #8B6D2F;
+
+  /* ─── TEXTE ─── */
+  --color-text-body: #1E1535;
+  --color-text-muted: #5A4E72;
+  --color-text-light: #8D83A5;
+
+  /* ─── POLICES (3 niveaux) ─── */
   --font-serif: "Playfair Display", Georgia, serif;
+  --font-display: "Fjalla One", system-ui, sans-serif;
   --font-sans: "Nunito", system-ui, sans-serif;
 }
 
@@ -29,7 +58,7 @@ body {
   background-color: var(--color-cream);
   color: var(--color-text-body);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .site-container {
@@ -44,12 +73,15 @@ body {
   .site-container { padding-left: 32px; padding-right: 32px; }
 }
 
-/* Buttons */
-.btn-coral {
-  background-color: var(--color-coral);
+.font-display { font-family: var(--font-display); }
+
+/* ─── BOUTONS ─── */
+.btn-primary, .btn-coral {
+  background-color: var(--color-brand);
   color: white;
+  font-family: var(--font-display);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   padding: 14px 30px;
   border-radius: 28px;
   border: none;
@@ -57,13 +89,14 @@ body {
   transition: transform 0.15s ease, opacity 0.15s ease;
   display: inline-block;
 }
-.btn-coral:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:hover, .btn-coral:hover { opacity: 0.9; transform: translateY(-1px); }
 
-.btn-teal {
-  background-color: var(--color-teal);
-  color: white;
+.btn-ecole, .btn-teal {
+  background-color: var(--color-gold);
+  color: var(--color-text-body);
+  font-family: var(--font-display);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   padding: 14px 30px;
   border-radius: 28px;
   border: none;
@@ -71,27 +104,47 @@ body {
   transition: transform 0.15s ease, opacity 0.15s ease;
   display: inline-block;
 }
-.btn-teal:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-ecole:hover, .btn-teal:hover { opacity: 0.9; transform: translateY(-1px); }
 
+/* Outline sur fond clair (cream/blanc) */
 .btn-outline {
   background-color: transparent;
+  font-family: var(--font-display);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   padding: 13px 30px;
   border-radius: 28px;
-  border: 2px solid var(--color-teal);
-  color: var(--color-teal);
+  border: 2px solid var(--color-brand);
+  color: var(--color-brand);
   cursor: pointer;
   transition: background-color 0.2s ease;
   display: inline-block;
 }
-.btn-outline:hover { background-color: var(--color-teal-light); }
+.btn-outline:hover { background-color: var(--color-brand-light); }
 
+/* Outline sur fond sombre (hero, footer, sections indigo) */
+.btn-outline-light {
+  background-color: transparent;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 400;
+  padding: 13px 30px;
+  border-radius: 28px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  display: inline-block;
+}
+.btn-outline-light:hover { background-color: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.6); }
+
+/* ─── TAGS ─── */
 .tag-festival {
-  background-color: var(--color-coral-light);
-  color: var(--color-coral-dark);
+  background-color: var(--color-festival-lt);
+  color: var(--color-festival);
+  font-family: var(--font-display);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
   padding: 5px 14px;
   border-radius: 12px;
   text-transform: uppercase;
@@ -100,10 +153,24 @@ body {
 }
 
 .tag-ecole {
-  background-color: var(--color-teal-light);
-  color: var(--color-teal-dark);
+  background-color: var(--color-ecole-lt);
+  color: var(--color-ecole-dk);
+  font-family: var(--font-display);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 400;
+  padding: 5px 14px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.tag-brand {
+  background-color: var(--color-brand-light);
+  color: var(--color-brand);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 400;
   padding: 5px 14px;
   border-radius: 12px;
   text-transform: uppercase;
@@ -112,22 +179,49 @@ body {
 }
 
 .section-tag {
+  font-family: var(--font-display);
   font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 400;
   margin-bottom: 8px;
 }
 
+/* ─── FILTRES (galerie, actualités, événements) ─── */
+.filter-btn {
+  font-family: var(--font-display);
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: 24px;
+  border: 1.5px solid rgba(30, 21, 53, 0.08);
+  background-color: white;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.filter-btn:hover { border-color: var(--color-brand); color: var(--color-brand); }
+.filter-btn-active {
+  font-family: var(--font-display);
+  font-size: 13px;
+  padding: 8px 18px;
+  border-radius: 24px;
+  border: 1.5px solid var(--color-brand);
+  background-color: var(--color-brand);
+  color: white;
+  cursor: pointer;
+}
+
+/* ─── CARDS ─── */
 .card {
   background-color: white;
   border-radius: 16px;
-  border: 1px solid rgba(43, 27, 94, 0.06);
+  border: 1px solid rgba(30, 21, 53, 0.06);
   overflow: hidden;
   transition: transform 0.2s ease;
 }
 .card:hover { transform: translateY(-2px); }
 
+/* ─── HEADER ─── */
 .header-sticky {
   position: sticky;
   top: 0;
@@ -135,5 +229,5 @@ body {
   background-color: rgba(255, 248, 240, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(43, 27, 94, 0.06);
+  border-bottom: 1px solid rgba(30, 21, 53, 0.06);
 }
