@@ -27,21 +27,27 @@ export default function CountdownBar({ eventTitle, eventType, eventDate, ticketU
 
   if (pathname?.startsWith("/studio") || daysLeft === null || daysLeft <= 0) return null;
 
-  const types = Array.isArray(eventType) ? eventType : [eventType];
-  const isFestival = types.some((t) => ["festival", "concert"].includes(t));
-  const bgColor = isFestival ? "var(--color-coral)" : "var(--color-teal)";
+  const types = Array.isArray(eventType) ? eventType : [eventType].filter(Boolean);
+  const isFestival = types.some((t) => ["festival", "concert", "masterclass"].includes(t));
+
+  const bgColor = isFestival ? "var(--color-brand)" : "var(--color-gold)";
+  const textColor = isFestival ? "white" : "var(--color-text-body)";
+
   const message = isFestival
     ? `Le Fourvière Gospel Expérience est dans ${daysLeft} jour${daysLeft > 1 ? "s" : ""}`
     : `La prochaine session du Gospel Experience Institute est dans ${daysLeft} jour${daysLeft > 1 ? "s" : ""}`;
   const ctaText = isFestival ? "Réservez votre place !" : "Inscrivez-vous !";
 
   return (
-    <div className="text-center py-2 px-4 text-[12px] md:text-[13px] font-bold text-white" style={{ backgroundColor: bgColor }}>
+    <div
+      className="text-center py-2 px-4 font-display text-[12px] md:text-[13px]"
+      style={{ backgroundColor: bgColor, color: textColor }}
+    >
       <span>{message} — </span>
       {ticketUrl ? (
-        <a href={ticketUrl} className="underline text-white">{ctaText}</a>
+        <a href={ticketUrl} className="underline font-bold" style={{ color: textColor }}>{ctaText}</a>
       ) : (
-        <span className="underline">{ctaText}</span>
+        <span className="underline font-bold">{ctaText}</span>
       )}
     </div>
   );

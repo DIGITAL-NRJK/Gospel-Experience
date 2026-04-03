@@ -74,7 +74,7 @@ export default async function FestivalPage() {
               <a href={s?.festivalHeroButton1?.url || "#programmation"} className="btn-coral no-underline">
                 {s?.festivalHeroButton1?.text || "Voir le programme"}
               </a>
-              <a href={s?.festivalHeroButton2?.url || "#lieu"} className="btn-outline border-white/40 text-white no-underline">
+              <a href={s?.festivalHeroButton2?.url || "#lieu"} className="btn-outline-light no-underline">
                 {s?.festivalHeroButton2?.text || "Découvrir le lieu"}
               </a>
             </div>

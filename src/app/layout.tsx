@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Nunito } from "next/font/google";
+import { Playfair_Display, Fjalla_One, Nunito } from "next/font/google";
 import "@/styles/globals.css";
 import { client, NEXT_EVENT_QUERY } from "@/lib/sanity.client";
 import CountdownBar from "@/components/CountdownBar";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap", variable: "--font-serif", weight: ["400", "700"] });
+const fjallaOne = Fjalla_One({ subsets: ["latin"], display: "swap", variable: "--font-display", weight: "400" });
 const nunito = Nunito({ subsets: ["latin"], display: "swap", variable: "--font-sans", weight: ["400", "600", "700"] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fourvieregospelexperience.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://goslym.com";
 
 export const metadata: Metadata = {
   title: { default: "Gospel Expérience Lyon | Festival & École Gospel Fourvière", template: "%s | Gospel Expérience Lyon" },
@@ -23,14 +24,14 @@ export const metadata: Metadata = {
 const organizationSchema = {
   "@context": "https://schema.org", "@type": "Organization",
   name: "GOSLYM — Gospel Lyon Métropole", alternateName: "Gospel Expérience Lyon", url: siteUrl,
-  address: { "@type": "PostalAddress", streetAddress: "5 place de Fourvière", addressLocality: "Lyon", postalCode: "69005", addressCountry: "FR" },
+  address: { "@type": "PostalAddress", streetAddress: "8 place de Fourvière", addressLocality: "Lyon", postalCode: "69005", addressCountry: "FR" },
   telephone: "+33788519652", email: "goslym69@gmail.com",
 };
 
 const festivalSchema = {
   "@context": "https://schema.org", "@type": "MusicFestival",
   name: "Festival Gospel Expérience", url: `${siteUrl}/festival`,
-  location: { "@type": "Place", name: "Crypte de la Basilique de Fourvière", address: { "@type": "PostalAddress", streetAddress: "5 place de Fourvière", addressLocality: "Lyon", postalCode: "69005", addressCountry: "FR" } },
+  location: { "@type": "Place", name: "Crypte de la Basilique de Fourvière", address: { "@type": "PostalAddress", streetAddress: "8 place de Fourvière", addressLocality: "Lyon", postalCode: "69005", addressCountry: "FR" } },
   organizer: { "@type": "Organization", name: "GOSLYM" },
 };
 
@@ -44,7 +45,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   try { nextEvent = await client.fetch(NEXT_EVENT_QUERY); } catch {}
 
   return (
-    <html lang="fr" className={`${playfair.variable} ${nunito.variable}`}>
+    <html lang="fr" className={`${playfair.variable} ${fjallaOne.variable} ${nunito.variable}`}>
       <head>
         <GoogleAnalytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
