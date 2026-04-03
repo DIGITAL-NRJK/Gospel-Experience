@@ -138,3 +138,13 @@ export const SITEMAP_ARTICLES_QUERY = `
     _updatedAt
   }
 `;
+
+// Related articles: same category first, then recent, excluding current
+export const RELATED_ARTICLES_QUERY = `
+  *[_type == "article" && slug.current != $slug] | order(
+    category == $category desc,
+    publishedAt desc
+  ) [0...3] {
+    _id, title, slug, category, publishedAt, mainImage, readTime
+  }
+`;

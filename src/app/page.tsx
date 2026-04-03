@@ -65,7 +65,7 @@ export default async function HomePage() {
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <a href={heroBtn1.url} className={`${mode === "ecole" ? "btn-teal" : "btn-coral"} no-underline`}>{heroBtn1.text}</a>
-            <a href={heroBtn2.url} className="btn-outline border-white/40 text-white no-underline">{heroBtn2.text}</a>
+            <a href={heroBtn2.url} className="btn-outline-light no-underline">{heroBtn2.text}</a>
           </div>
           {heroYt && (
             <a href={heroYt} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 font-display text-[13px] text-white/80 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline hover:bg-white/20 transition-colors">

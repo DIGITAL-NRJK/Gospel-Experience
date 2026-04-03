@@ -2,6 +2,7 @@ import { client, ALL_FORMATIONS_QUERY, SITE_SETTINGS_QUERY } from "@/lib/sanity.
 import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FaqAccordion from "@/components/FaqAccordion";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -33,6 +34,13 @@ interface Settings {
   ecolePresentationText?: string;
   ecoleVision?: string;
   ecolePedagogie?: string;
+  ecoleFaqs?: { question: string; answer: string }[];
+  ecoleJeunesSchedule?: string;
+  ecoleJeunesDescription?: string;
+  ecoleJeunesPrice?: string;
+  ecoleAdultesSchedule?: string;
+  ecoleAdultesDescription?: string;
+  ecoleAdultesPrice?: string;
 }
 
 const defaultValues = [
@@ -159,15 +167,15 @@ export default async function EcolePage() {
                 </div>
               </div>
               <div className="font-serif text-[32px] md:text-[36px] font-bold text-[var(--color-gold-dark)] mb-2">
-                {jeunesFormation?.schedule || "11h – 13h"}
+                {jeunesFormation?.schedule || s?.ecoleJeunesSchedule || "11h – 13h"}
               </div>
               <p className="text-[15px] text-[var(--color-gold-dark)] opacity-70 leading-relaxed mb-4 flex-1">
-                Session dédiée aux jeunes talents. Découverte du chant choral, technique vocale adaptée, répertoire gospel accessible. Un espace d&apos;expression et de confiance.
+                {s?.ecoleJeunesDescription || "Session dédiée aux jeunes talents. Découverte du chant choral, technique vocale adaptée, répertoire gospel accessible. Un espace d'expression et de confiance."}
               </p>
               <div className="flex items-end justify-between mt-auto">
                 <div>
                   <div className="font-serif text-[24px] font-bold text-[var(--color-gold-dark)]">
-                    {jeunesFormation?.price || "30€"}
+                    {jeunesFormation?.price || s?.ecoleJeunesPrice || "30€"}
                     <span className="text-[14px] font-normal ml-1">/ semestre</span>
                   </div>
                   {jeunesFormation?.venue && <div className="text-[13px] text-[var(--color-gold-dark)] opacity-60 mt-1">{jeunesFormation.venue}</div>}
@@ -192,15 +200,15 @@ export default async function EcolePage() {
                 </div>
               </div>
               <div className="font-serif text-[32px] md:text-[36px] font-bold text-[var(--color-brand)] mb-2">
-                {adultesFormation?.schedule || "14h – 17h"}
+                {adultesFormation?.schedule || s?.ecoleAdultesSchedule || "14h – 17h"}
               </div>
               <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed mb-4 flex-1">
-                Session ouverte à tous. Technique vocale, harmonisation, interprétation de répertoire gospel. Travail en chœur avec possibilité de monter sur scène lors des concerts du festival.
+                {s?.ecoleAdultesDescription || "Session ouverte à tous. Technique vocale, harmonisation, interprétation de répertoire gospel. Travail en chœur avec possibilité de monter sur scène lors des concerts du festival."}
               </p>
               <div className="flex items-end justify-between mt-auto">
                 <div>
                   <div className="font-serif text-[24px] font-bold text-[var(--color-brand)]">
-                    {adultesFormation?.price || "150€"}
+                    {adultesFormation?.price || s?.ecoleAdultesPrice || "150€"}
                     <span className="text-[14px] font-normal ml-1">/ semestre</span>
                   </div>
                   {adultesFormation?.venue && <div className="text-[13px] text-[var(--color-text-light)] mt-1">{adultesFormation.venue}</div>}
@@ -284,6 +292,28 @@ export default async function EcolePage() {
           )}
         </div>
       </section>
+
+      {/* ===== FAQ ===== */}
+      {(() => {
+        const faqs = s?.ecoleFaqs?.length ? s.ecoleFaqs : [
+          { question: "Faut-il avoir de l'expérience en chant pour s'inscrire ?", answer: "Non, l'école accueille tous les niveaux. Les ateliers sont conçus pour que chacun progresse à son rythme, des débutants aux chanteurs confirmés." },
+          { question: "À partir de quel âge peut-on participer ?", answer: "Le créneau Jeunes est ouvert dès 16 ans. Le créneau Adultes est ouvert à tous sans limite d'âge." },
+          { question: "Combien de temps dure une session ?", answer: "Le créneau Jeunes dure 2 heures (11h-13h) et le créneau Adultes dure 3 heures (14h-17h). Les sessions ont lieu un dimanche par mois." },
+          { question: "Peut-on participer aux concerts du festival ?", answer: "Oui, les participants de l'école ont la possibilité de monter sur scène lors des concerts du Festival Gospel Expérience, notamment dès le mois de décembre." },
+          { question: "Où se déroulent les ateliers ?", answer: "Les ateliers ont lieu au Carré Fourvière, 8 place de Fourvière, 69005 Lyon. Accessible en funiculaire (station Fourvière) ou en bus (ligne C20)." },
+        ];
+        return faqs.length > 0 ? (
+          <section className="py-12 md:py-16">
+            <div className="site-container">
+              <div className="section-tag text-[var(--color-gold)]">FAQ</div>
+              <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Questions fréquentes</h2>
+              <div className="max-w-[720px]">
+                <FaqAccordion items={faqs} accentColor="var(--color-gold-dark)" />
+              </div>
+            </div>
+          </section>
+        ) : null;
+      })()}
 
       {/* ===== CTA ===== */}
       <div id="inscription" className="site-container pb-10 pt-4">

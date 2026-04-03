@@ -24,6 +24,8 @@ interface Settings {
   aboutHistoryTitle?: string;
   aboutHistory?: string;
   aboutHistory2?: string;
+  aboutCtaTitle?: string;
+  aboutCtaDescription?: string;
 }
 
 const defaultStats = [
@@ -179,8 +181,8 @@ export default async function AProposPage() {
       {/* CTA */}
       <div className="site-container py-10">
         <div className="bg-[var(--color-gold-light)] rounded-3xl px-6 md:px-8 py-9 text-center">
-          <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-gold-dark)] mb-2">Envie de nous rejoindre ?</h3>
-          <p className="text-[15px] text-[var(--color-gold-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">Bénévoles, partenaires, mécènes — chaque contribution compte pour faire vivre le gospel à Lyon.</p>
+          <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-gold-dark)] mb-2">{settings?.aboutCtaTitle || "Envie de nous rejoindre ?"}</h3>
+          <p className="text-[15px] text-[var(--color-gold-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">{settings?.aboutCtaDescription || "Bénévoles, partenaires, mécènes — chaque contribution compte pour faire vivre le gospel à Lyon."}</p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link href="/contact" className="btn-coral no-underline">Nous contacter</Link>
             <Link href="/festival" className="btn-outline no-underline">Découvrir le festival</Link>
