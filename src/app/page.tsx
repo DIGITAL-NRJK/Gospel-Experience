@@ -35,7 +35,8 @@ export default async function HomePage() {
   const mode = settings?.siteMode || "general";
   const modeKey = mode === "festival" ? "Festival" : mode === "ecole" ? "Ecole" : "General";
 
-  const heroTitle = settings?.[`hero${modeKey}Title`] || "Vivez le Gospel au cœur de Lyon";
+  const heroTitle = settings?.[`hero${modeKey}Title`];
+  const hasCustomTitle = !!heroTitle;
   const heroSubtitle = settings?.[`hero${modeKey}Subtitle`] || "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans l'écrin sacré de la Basilique de Fourvière.";
   const heroMp4 = settings?.[`hero${modeKey}VideoFileUrl`];
   const heroYt = settings?.[`hero${modeKey}VideoUrl`];
@@ -57,14 +58,14 @@ export default async function HomePage() {
             {settings?.currentSeason || "Saison 2026 – 2027"}
           </span>
           <h1 className="font-serif text-[34px] md:text-[48px] font-bold leading-[1.08] text-white mb-5">
-            {heroTitle}
+            {hasCustomTitle ? heroTitle : (<>Vivez le <em className="italic text-[var(--color-peach)]">Gospel</em><br />au cœur de <span className="text-[var(--color-gold)]">Lyon</span></>)}
           </h1>
           <p className="text-[16px] md:text-[17px] text-white/70 leading-relaxed mb-8 max-w-[480px] mx-auto">
             {heroSubtitle}
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <a href={heroBtn1.url} className={`${mode === "ecole" ? "btn-teal" : "btn-coral"} no-underline`}>{heroBtn1.text}</a>
-            <a href={heroBtn2.url} className="btn-outline-light no-underline">{heroBtn2.text}</a>
+            <a href={heroBtn2.url} className="btn-outline border-white/40 text-white no-underline">{heroBtn2.text}</a>
           </div>
           {heroYt && (
             <a href={heroYt} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 font-display text-[13px] text-white/80 bg-white/10 backdrop-blur px-4 py-2 rounded-full border border-white/10 no-underline hover:bg-white/20 transition-colors">

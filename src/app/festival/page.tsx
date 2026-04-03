@@ -3,6 +3,7 @@ import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
+import FaqAccordion from "@/components/FaqAccordion";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -34,6 +35,7 @@ interface Settings {
   festivalBasiliqueText2?: string;
   festivalCtaTitle?: string;
   festivalCtaDescription?: string;
+  festivalFaqs?: { question: string; answer: string }[];
 }
 
 const defaultVenueStats: VenueStat[] = [
@@ -211,6 +213,28 @@ export default async function FestivalPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      {(() => {
+        const faqs = s?.festivalFaqs?.length ? s.festivalFaqs : [
+          { question: "Faut-il réserver ses places à l'avance ?", answer: "Oui, nous recommandons de réserver en ligne via notre billetterie. Les places sont limitées par la capacité de la Crypte (800 places). Certaines soirées affichent complet." },
+          { question: "Les concerts sont-ils accessibles aux personnes à mobilité réduite ?", answer: "La Crypte de Fourvière est accessible aux personnes à mobilité réduite. Un accès adapté est prévu. Contactez-nous pour toute question spécifique." },
+          { question: "Puis-je participer aux Masterclass sans expérience ?", answer: "Absolument. Les Masterclass sont ouvertes à tous les niveaux, débutants comme confirmés. Les artistes encadrants s'adaptent au niveau de chaque participant." },
+          { question: "Y a-t-il un parking à proximité ?", answer: "Le parking Fourvière se trouve à proximité immédiate de la Basilique. Vous pouvez également emprunter le funiculaire (station Fourvière, ligne F2) ou le bus C20." },
+          { question: "Le festival a lieu tous les ans ?", answer: "Non, le Festival Gospel Expérience est un événement biennal — il a lieu tous les deux ans. La prochaine édition se tiendra du 23 au 26 avril 2026." },
+        ];
+        return faqs.length > 0 ? (
+          <section className="py-12 md:py-16 bg-white">
+            <div className="site-container">
+              <div className="section-tag text-[var(--color-gold)]">FAQ</div>
+              <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Questions fréquentes</h2>
+              <div className="max-w-[720px]">
+                <FaqAccordion items={faqs} />
+              </div>
+            </div>
+          </section>
+        ) : null;
+      })()}
 
       {/* CTA */}
       <div className="site-container py-10">

@@ -290,7 +290,21 @@ export const siteSettings = defineType({
     defineField({ name: "festivalBasiliqueText2", title: "Basilique — Paragraphe 2", type: "text", rows: 4, group: "festival" }),
     defineField({ name: "festivalCtaTitle", title: "CTA — Titre", type: "string", group: "festival", initialValue: "Ne manquez pas la prochaine édition" }),
     defineField({ name: "festivalCtaDescription", title: "CTA — Description", type: "text", rows: 2, group: "festival" }),
-
+    defineField({
+      name: "festivalFaqs",
+      title: "FAQ Festival",
+      type: "array",
+      group: "festival",
+      description: "Questions fréquentes sur le festival. Affichées en accordéon.",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "question", title: "Question", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "answer", title: "Réponse", type: "text", rows: 3, validation: (r) => r.required() }),
+        ],
+        preview: { select: { title: "question" } },
+      }],
+    }),
     // ========================================
     // PAGE ÉCOLE GEI
     // ========================================
@@ -330,11 +344,33 @@ export const siteSettings = defineType({
     defineField({ name: "ecoleCtaTitle", title: "CTA — Titre", type: "string", group: "ecole", initialValue: "Prêt à rejoindre le chœur ?" }),
     defineField({ name: "ecoleCtaDescription", title: "CTA — Description", type: "string", group: "ecole" }),
     defineField({ name: "ecoleCtaButton", title: "CTA — Bouton", type: "object", group: "ecole", fields: buttonFields("S'inscrire maintenant", "#inscription") }),
-
+    defineField({ name: "ecolePresentationTitle", title: "Présentation — Titre", type: "string", group: "ecole", initialValue: "Une école de gospel au cœur de Fourvière" }),
+    defineField({ name: "ecolePresentationText", title: "Présentation — Paragraphe 1", type: "text", rows: 4, group: "ecole" }),
+    defineField({ name: "ecoleVision", title: "Présentation — Vision", type: "text", rows: 4, group: "ecole" }),
+    defineField({ name: "ecolePedagogie", title: "Présentation — Pédagogie", type: "text", rows: 4, group: "ecole" }),
+    defineField({
+      name: "ecoleFaqs",
+      title: "FAQ École",
+      type: "array",
+      group: "ecole",
+      description: "Questions fréquentes sur l'école GEI.",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "question", title: "Question", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "answer", title: "Réponse", type: "text", rows: 3, validation: (r) => r.required() }),
+        ],
+        preview: { select: { title: "question" } },
+      }],
+    }),
     // ========================================
     // PAGE À PROPOS
     // ========================================
     defineField({ name: "aboutIntro", title: "Introduction", type: "text", rows: 4, group: "about" }),
+    defineField({ name: "aboutIntro2", title: "Introduction — Suite", type: "text", rows: 4, group: "about" }),
+    defineField({ name: "aboutHistoryTitle", title: "Histoire — Titre", type: "string", group: "about", initialValue: "Du rêve à la scène" }),
+    defineField({ name: "aboutHistory", title: "Histoire — Paragraphe 1", type: "text", rows: 5, group: "about" }),
+    defineField({ name: "aboutHistory2", title: "Histoire — Paragraphe 2", type: "text", rows: 5, group: "about" }),
     defineField({ name: "aboutStats", title: "Chiffres", type: "array", group: "about", of: [{ type: "object", fields: [
       defineField({ name: "value", title: "Valeur", type: "string" }),
       defineField({ name: "label", title: "Label", type: "string" }),
@@ -345,6 +381,23 @@ export const siteSettings = defineType({
       defineField({ name: "title", title: "Titre", type: "string" }),
       defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
     ], preview: { select: { title: "title" } } }] }),
+    defineField({
+      name: "aboutTeam",
+      title: "Équipe / Membres",
+      type: "array",
+      group: "about",
+      description: "Les membres de l'équipe GOSLYM. Photo, nom, rôle, bio.",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "name", title: "Nom", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "role", title: "Rôle", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "photo", title: "Photo", type: "image", options: { hotspot: true } }),
+          defineField({ name: "bio", title: "Bio courte", type: "text", rows: 3 }),
+        ],
+        preview: { select: { title: "name", subtitle: "role", media: "photo" } },
+      }],
+    }),
 
     // ========================================
     // CONTACT
