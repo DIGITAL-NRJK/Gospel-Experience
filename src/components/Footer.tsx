@@ -4,8 +4,6 @@ import { client, SITE_SETTINGS_QUERY } from "@/lib/sanity.client";
 interface FooterSection { title: string; links: { label: string; href: string }[] }
 interface Socials { instagram?: string; facebook?: string; youtube?: string }
 interface Settings {
-  headerLogoText?: string;
-  headerLogoSubtext?: string;
   footerSections?: FooterSection[];
   footerDescription?: string;
   footerCopyright?: string;
@@ -31,7 +29,7 @@ const defaultSections: FooterSection[] = [
   ]},
 ];
 
-const sectionColors = ["var(--color-coral)", "var(--color-teal)", "var(--color-indigo)", "var(--color-gold)"];
+const sectionColors = ["var(--color-brand)", "var(--color-gold)", "var(--color-brand)", "var(--color-gold)"];
 
 export default async function Footer() {
   let s: Settings = {};
@@ -40,29 +38,29 @@ export default async function Footer() {
   const sections = s.footerSections?.length ? s.footerSections : defaultSections;
   const socials = s.socials || {};
   const socialItems = [
-    { key: "instagram", label: "Instagram", icon: "Ig", bg: "var(--color-coral)", url: socials.instagram },
-    { key: "facebook", label: "Facebook", icon: "Fb", bg: "var(--color-indigo)", url: socials.facebook },
-    { key: "youtube", label: "YouTube", icon: "Yt", bg: "var(--color-magenta)", url: socials.youtube },
+    { key: "instagram", label: "Instagram", icon: "Ig", bg: "var(--color-brand)", url: socials.instagram },
+    { key: "facebook", label: "Facebook", icon: "Fb", bg: "var(--color-brand-dark)", url: socials.facebook },
+    { key: "youtube", label: "YouTube", icon: "Yt", bg: "var(--color-gold-dark)", url: socials.youtube },
   ].filter((item) => item.url);
 
   return (
-    <footer className="bg-cream">
+    <footer className="bg-[var(--color-cream)] border-t border-[rgba(30,21,53,0.06)]">
       <div className="site-container">
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_${sections.map(() => "1fr").join("_")}] gap-8 pt-10 pb-6 border-t border-[rgba(43,27,94,0.06)]`}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 pt-10 pb-6">
+          {/* Logo column */}
           <div>
-            <div className="font-serif text-lg font-bold text-(--color-indigo) mb-2">
-              {s.headerLogoText || "Gospel Expérience"}
-              <span className="block text-[10px] font-normal tracking-[3px] uppercase text-gold">
-                {s.headerLogoSubtext || "Lyon Fourvière"}
-              </span>
+            <div className="flex items-center gap-4 mb-4">
+              <img src="/images/logo-goslym.png" alt="GOSLYM — Gospel Lyon Métropole" className="h-10 w-auto" />
+              <div className="w-px h-8 bg-[rgba(30,21,53,0.1)]" />
+              <img src="/images/logo-festival.png" alt="Fourvière Gospel Expérience" className="h-9 w-auto" />
             </div>
-            <p className="text-[14px] text-text-muted leading-relaxed">
+            <p className="text-[14px] text-[var(--color-text-muted)] leading-relaxed mb-3">
               {s.footerDescription || "Association GOSLYM — Gospel Lyon Métropole. Promouvoir le gospel, rassembler les talents, transmettre des valeurs de joie et de fraternité."}
             </p>
             {socialItems.length > 0 && (
-              <div className="flex gap-2 mt-3">
+              <div className="flex gap-2">
                 {socialItems.map((item) => (
-                  <a key={item.key} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={item.label} className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold text-white no-underline hover:opacity-80 transition-opacity" style={{ backgroundColor: item.bg }}>
+                  <a key={item.key} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={item.label} className="w-8 h-8 rounded-full flex items-center justify-center font-display text-[12px] text-white no-underline hover:opacity-80 transition-opacity" style={{ backgroundColor: item.bg }}>
                     {item.icon}
                   </a>
                 ))}
@@ -70,13 +68,14 @@ export default async function Footer() {
             )}
           </div>
 
+          {/* Link columns */}
           {sections.map((section, i) => (
             <div key={section.title}>
-              <h5 className="text-[11px] tracking-[2px] uppercase font-bold mb-3" style={{ color: sectionColors[i % sectionColors.length] }}>
+              <h5 className="font-display text-[11px] tracking-[2px] uppercase mb-3" style={{ color: sectionColors[i % sectionColors.length] }}>
                 {section.title}
               </h5>
               {section.links?.map(({ label, href }) => (
-                <Link key={label} href={href} className="block text-[14px] text-text-muted no-underline mb-2 hover:text-(--color-indigo) transition-colors">
+                <Link key={label} href={href} className="block text-[14px] text-[var(--color-text-muted)] no-underline mb-2 hover:text-[var(--color-brand)] transition-colors">
                   {label}
                 </Link>
               ))}
@@ -84,12 +83,12 @@ export default async function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between py-4 border-t border-[rgba(43,27,94,0.04)] text-[12px] text-[var(--color-text-light)] gap-2">
+        <div className="flex flex-col sm:flex-row justify-between py-4 border-t border-[rgba(30,21,53,0.04)] text-[12px] text-[var(--color-text-light)] gap-2">
           <span>© {new Date().getFullYear()} {s.footerCopyright || "GOSLYM — Gospel Lyon Métropole"}</span>
           <span>
-            <Link href="/mentions-legales" className="no-underline text-inherit hover:text-(--color-indigo)">Mentions légales</Link>
+            <Link href="/mentions-legales" className="no-underline text-inherit hover:text-[var(--color-brand)]">Mentions légales</Link>
             {" · "}
-            <Link href="/confidentialite" className="no-underline text-inherit hover:text-(--color-indigo)">Confidentialité</Link>
+            <Link href="/confidentialite" className="no-underline text-inherit hover:text-[var(--color-brand)]">Confidentialité</Link>
           </span>
         </div>
       </div>
