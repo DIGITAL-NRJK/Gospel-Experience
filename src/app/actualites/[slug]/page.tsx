@@ -1,4 +1,4 @@
-import { client, ARTICLE_BY_SLUG_QUERY, ALL_ARTICLE_SLUGS_QUERY } from "@/lib/sanity.client";
+import { client, ARTICLE_BY_SLUG_QUERY, ALL_ARTICLE_SLUGS_QUERY, RELATED_ARTICLES_SAME_CAT_QUERY, RELATED_ARTICLES_RECENT_QUERY } from "@/lib/sanity.client";
 import { urlFor } from "@/lib/sanity.image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -82,6 +82,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     );
   }
 
+  const [sameCat, recent] = await Promise.all([
+    client.fetch<Article[]>(RELATED_ARTICLES_SAME_CAT_QUERY, { slug, category: article.category }),
+    client.fetch<Article[]>(RELATED_ARTICLES_RECENT_QUERY, { slug }),
+  ]);
+  const sameCatIds = new Set((sameCat || []).map((a) => a._id));
+  const filler = (recent || []).filter((a) => !sameCatIds.has(a._id));
+  const relatedArticles = [...(sameCat || []), ...filler].slice(0, 3);
+
   const date = new Date(article.publishedAt).toLocaleDateString("fr-FR", {
     day: "numeric", month: "long", year: "numeric",
   });
@@ -163,6 +171,35 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </div>
         </div>
       </article>
+
+      {/* Related articles */}
+      {relatedArticles && relatedArticles.length > 0 && (
+        <section className="py-12 md:py-16 bg-white">
+          <div className="site-container">
+            <div className="section-tag text-[var(--color-gold)]">À lire aussi</div>
+            <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Articles similaires</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {relatedArticles.map((a) => {
+                const relCat = categoryLabels[a.category] || a.category;
+                const relColor = categoryColors[a.category] || "#413485";
+                const relDate = new Date(a.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+                return (
+                  <Link key={a._id} href={`/actualites/${a.slug.current}`} className="bg-[var(--color-cream)] rounded-2xl overflow-hidden border border-[rgba(30,21,53,0.06)] hover:shadow-sm transition-shadow no-underline">
+                    <div className="h-[160px] bg-gradient-to-br from-[var(--color-peach)] to-[var(--color-lavender-light)] relative overflow-hidden">
+                      {a.mainImage && <img src={urlFor(a.mainImage).width(400).height(300).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
+                      <span className="font-display absolute top-3 left-3 text-[10px] tracking-[1px] uppercase px-2.5 py-1 rounded-lg text-white" style={{ backgroundColor: relColor }}>{relCat}</span>
+                    </div>
+                    <div className="p-4">
+                      <h4 className="text-[15px] font-bold text-[var(--color-brand)] leading-snug mb-2">{a.title}</h4>
+                      <div className="text-[12px] text-[var(--color-text-light)]">{relDate}{a.readTime && ` · ${a.readTime} min`}</div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </>

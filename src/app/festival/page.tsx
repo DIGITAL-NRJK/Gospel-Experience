@@ -121,7 +121,7 @@ export default async function FestivalPage() {
               return (
                 <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 bg-white rounded-2xl border border-[rgba(43,27,94,0.06)]">
                   <div className="rounded-xl px-3.5 py-2.5 text-center min-w-[56px] bg-[var(--color-coral-light)]">
-                    <div className="font-serif text-xl font-bold leading-none text-[var(--color-coral-dark)]">{day}</div>
+                    <div className="font-serif text-xl font-bold leading-none text-[var(--color-brand)]">{day}</div>
                     <div className="text-[11px] tracking-[1px] uppercase text-[var(--color-coral)]">{month}</div>
                   </div>
                   <div className="flex-1">
@@ -130,7 +130,7 @@ export default async function FestivalPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="tag-festival">{(Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean)).join(" · ") || "Concert"}</span>
-                    {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold text-[var(--color-coral-dark)] no-underline">Réserver →</a>}
+                    {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold text-[var(--color-brand)] no-underline">Réserver →</a>}
                   </div>
                 </div>
               );
@@ -238,11 +238,11 @@ export default async function FestivalPage() {
 
       {/* CTA */}
       <div className="site-container py-10">
-        <div className="bg-gradient-to-br from-[var(--color-coral-light)] to-[var(--color-peach)] rounded-3xl px-6 md:px-8 py-9 text-center">
-          <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-coral-dark)] mb-2">
+        <div className="bg-gradient-to-br from-[var(--color-brand-light)] to-[var(--color-lavender-light)] rounded-3xl px-6 md:px-8 py-9 text-center">
+          <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-brand)] mb-2">
             {s?.festivalCtaTitle || "Ne manquez pas la prochaine édition"}
           </h3>
-          <p className="text-[15px] text-[var(--color-coral-dark)] opacity-70 mb-5 max-w-[480px] mx-auto">
+          <p className="text-[15px] text-[var(--color-brand)] opacity-70 mb-5 max-w-[480px] mx-auto">
             {s?.festivalCtaDescription || "Inscrivez-vous à la newsletter pour être informé de l'ouverture de la billetterie et de la programmation."}
           </p>
           <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto" suppressHydrationWarning>
