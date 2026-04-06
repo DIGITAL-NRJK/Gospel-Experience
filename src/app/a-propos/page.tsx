@@ -54,15 +54,15 @@ export default async function AProposPage() {
     <>
       <Header />
 
-      {/* HERO / INTRO */}
-      <section className="relative min-h-[300px] md:min-h-[360px] bg-gradient-to-br from-[#413485] via-[#2A1F5E] to-[#0D0D0D] flex items-center overflow-hidden">
-        <div className="site-container relative z-10 py-12 md:py-16">
-          <div className="max-w-[600px]">
-            <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">L&apos;association</div>
-            <h1 className="font-serif text-[30px] md:text-[40px] font-bold text-white leading-[1.1] mb-4">
-              Gospel Lyon Métropole
-            </h1>
-            <p className="text-[16px] text-white/65 leading-relaxed">
+      {/* INTRODUCTION */}
+      <section className="py-12 md:py-16">
+        <div className="site-container">
+          <div className="section-tag text-[var(--color-gold)]">L&apos;association</div>
+          <h1 className="font-serif text-[28px] md:text-[36px] font-bold text-[var(--color-brand)] mb-4">
+            Gospel Lyon Métropole
+          </h1>
+          <div className="max-w-[680px]">
+            <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-4">
               {settings?.aboutIntro || "GOSLYM a pour mission la promotion du chant gospel à Lyon et dans la métropole lyonnaise. L'association croit profondément que le gospel peut faire grandir grâce aux valeurs qu'il porte : fraternité, solidarité, communion, joie."}
             </p>
           </div>

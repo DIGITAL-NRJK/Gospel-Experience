@@ -86,12 +86,12 @@ export default async function EcolePage() {
       <Header />
 
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[var(--color-brand-dark)] to-[#0D0D0D] flex items-center overflow-hidden">
+      <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[var(--color-brand-dark)] to-[#0D0D0D] overflow-hidden">
         {s?.ecoleHeroImage && (
           <img src={urlFor(s.ecoleHeroImage).width(1600).height(800).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(42,31,94,0.85)] to-[rgba(13,13,13,0.9)]" />
-        <div className="site-container relative z-10 py-12 md:py-16">
+        <div className="site-container relative z-10 py-16 md:py-20">
           <div className="max-w-[520px]">
             <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
               {s?.ecoleHeroTag || "Atelier chœur gospel"}
