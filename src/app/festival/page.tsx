@@ -55,15 +55,14 @@ export default async function FestivalPage() {
       <Header />
 
       {/* HERO */}
-      <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[#3D1E10] to-[var(--color-indigo)] flex items-center overflow-hidden">
+      <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[#3D1E10] to-[var(--color-indigo)] overflow-hidden">
         {s?.festivalHeroImage && (
           <img src={urlFor(s.festivalHeroImage).width(1600).height(800).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
-        <div className="absolute w-[400px] h-[400px] rounded-full bg-[var(--color-coral)] opacity-[0.06] -top-[100px] -right-[50px]" />
-        <div className="site-container relative z-10 py-12 md:py-16">
+        <div className="site-container relative z-10 py-16 md:py-20">
           <div className="max-w-[560px]">
-            <div className="text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] font-bold mb-3">
+            <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
               {s?.festivalHeroTag || "Festival biennal"}
             </div>
             <h1 className="font-serif text-[32px] md:text-[44px] font-bold text-white leading-[1.1] mb-4">
