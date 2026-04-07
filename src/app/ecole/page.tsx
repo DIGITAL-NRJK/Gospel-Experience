@@ -7,9 +7,10 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
+// ✅ Meta description enrichie avec mots-clés locaux et bénéfices
 export const metadata: Metadata = {
-  title: "École GEI — Gospel Experience Institute",
-  description: "Ateliers chœur gospel un dimanche par mois au Carré Fourvière. Jeunes dès 16 ans et adultes, tous niveaux. Dirigé par Hazaële.",
+  title: "École de Gospel à Lyon — Gospel Experience Institute (GEI)",
+  description: "Apprenez le gospel à Lyon avec le Gospel Experience Institute (GEI). Ateliers chœur mensuels au Carré Fourvière, ouverts aux jeunes (16-18 ans, 30€) et adultes (150€/semestre). Dirigé par Hazaële.",
 };
 
 interface Intervenant { name: string; role?: string; photo?: { asset: { _ref: string } }; bio?: string; bio2?: string }
@@ -81,33 +82,65 @@ export default async function EcolePage() {
   const jeunesFormation = formations?.find((f: { targetAudience: string }) => f.targetAudience === "jeunes");
   const adultesFormation = formations?.find((f: { targetAudience: string }) => f.targetAudience !== "jeunes");
 
+  // ✅ Schema FAQ JSON-LD pour rich snippets Google
+  const faqs = s?.ecoleFaqs?.length ? s.ecoleFaqs : [
+    { question: "Faut-il avoir de l'expérience en chant pour s'inscrire ?", answer: "Non, l'école de gospel GEI à Lyon accueille tous les niveaux. Les ateliers sont conçus pour que chacun progresse à son rythme, des débutants aux chanteurs confirmés." },
+    { question: "À partir de quel âge peut-on participer ?", answer: "Le créneau Jeunes est ouvert dès 16 ans. Le créneau Adultes est ouvert à tous sans limite d'âge supérieure." },
+    { question: "Combien de temps dure une session ?", answer: "Le créneau Jeunes dure 2 heures (11h-13h) et le créneau Adultes dure 3 heures (14h-17h). Les sessions ont lieu un dimanche par mois au Carré Fourvière, Lyon." },
+    { question: "Peut-on participer aux concerts du festival ?", answer: "Oui, les participants de l'école de gospel GEI ont la possibilité de monter sur scène lors des concerts du Festival Gospel Expérience, notamment dès le mois de décembre." },
+    { question: "Où se déroulent les ateliers de gospel ?", answer: "Les ateliers de gospel ont lieu au Carré Fourvière, 8 place de Fourvière, 69005 Lyon. Accessible en funiculaire (station Fourvière) ou en bus (ligne C20)." },
+    { question: "Quel est le tarif de l'école de gospel à Lyon ?", answer: "Le créneau Jeunes (16-18 ans) est à 30€ par semestre. Le créneau Adultes est à 150€ par semestre. Les sessions ont lieu un dimanche par mois." },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+
   return (
     <>
       <Header />
 
+      {/* ✅ Schema FAQ injecté */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       {/* ===== HERO ===== */}
       <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[var(--color-brand-dark)] to-[#0D0D0D] overflow-hidden">
         {s?.ecoleHeroImage && (
-          <img src={urlFor(s.ecoleHeroImage).width(1600).height(800).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          <img
+            src={urlFor(s.ecoleHeroImage).width(1600).height(800).url()}
+            alt="Atelier chœur gospel au Carré Fourvière — École GEI Lyon"
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+          />
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(42,31,94,0.85)] to-[rgba(13,13,13,0.9)]" />
         <div className="site-container relative z-10 py-16 md:py-20">
           <div className="max-w-[520px]">
             <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
-              {s?.ecoleHeroTag || "Atelier chœur gospel"}
+              {s?.ecoleHeroTag || "Atelier chœur gospel · Lyon"}
             </div>
+            {/* ✅ H1 enrichi avec mots-clés locaux et bénéfice utilisateur */}
             <h1 className="font-serif text-[32px] md:text-[42px] font-bold text-white leading-[1.1] mb-4">
-              {s?.ecoleHeroTitle || "Gospel Experience Institute"}
+              {s?.ecoleHeroTitle || "Apprenez le gospel à Lyon — L'école GEI vous attend"}
             </h1>
             <p className="text-[16px] text-white/65 leading-relaxed mb-7">
-              {s?.ecoleHeroSubtitle || "Un dimanche par mois, rejoignez notre atelier chœur gospel au Carré Fourvière. Jeunes et adultes, tous niveaux."}
+              {s?.ecoleHeroSubtitle || "Un dimanche par mois, rejoignez notre atelier chœur gospel au Carré Fourvière. Jeunes et adultes, tous niveaux bienvenus."}
             </p>
             <div className="flex flex-wrap gap-3">
               <a href={s?.ecoleHeroButton1?.url || "#inscription"} className="btn-teal no-underline">
-                {s?.ecoleHeroButton1?.text || "S'inscrire maintenant"}
+                {s?.ecoleHeroButton1?.text || "Rejoindre le chœur →"}
               </a>
               <a href={s?.ecoleHeroButton2?.url || "#dates"} className="btn-outline-light no-underline">
-                {s?.ecoleHeroButton2?.text || "Voir les dates"}
+                {s?.ecoleHeroButton2?.text || "Voir les dates 2026"}
               </a>
             </div>
           </div>
@@ -119,7 +152,7 @@ export default async function EcolePage() {
         <div className="site-container">
           <div className="section-tag text-[var(--color-gold)]">L&apos;école</div>
           <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-4">
-            {s?.ecolePresentationTitle || "Une école de gospel au cœur de Fourvière"}
+            {s?.ecolePresentationTitle || "Une école de gospel au cœur de Lyon"}
           </h2>
           <div className="max-w-[720px] mb-10">
             <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-5">
@@ -146,7 +179,7 @@ export default async function EcolePage() {
         </div>
       </section>
 
-      {/* ===== CRÉNEAUX — blocs distincts ===== */}
+      {/* ===== CRÉNEAUX ===== */}
       <section className="py-12 md:py-16 bg-white">
         <div className="site-container">
           <div className="section-tag text-[var(--color-gold)]">{s?.ecoleFormatTag || "Format"}</div>
@@ -181,9 +214,9 @@ export default async function EcolePage() {
                   {jeunesFormation?.venue && <div className="text-[13px] text-[var(--color-gold-dark)] opacity-60 mt-1">{jeunesFormation.venue}</div>}
                 </div>
                 {jeunesFormation?.registrationUrl ? (
-                  <a href={jeunesFormation.registrationUrl} className="btn-teal text-[13px] px-5 py-2.5 no-underline">S&apos;inscrire →</a>
+                  <a href={jeunesFormation.registrationUrl} className="btn-teal text-[13px] px-5 py-2.5 no-underline">Rejoindre →</a>
                 ) : (
-                  <a href="#inscription" className="btn-teal text-[13px] px-5 py-2.5 no-underline">S&apos;inscrire →</a>
+                  <a href="#inscription" className="btn-teal text-[13px] px-5 py-2.5 no-underline">Rejoindre →</a>
                 )}
               </div>
             </div>
@@ -195,7 +228,7 @@ export default async function EcolePage() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-2-3.5l6-4.5-6-4.5v9z"/></svg>
                 </div>
                 <div>
-                  <div className="font-display text-[13px] text-[var(--color-brand)] uppercase tracking-[1px]">Adultes & jeunes</div>
+                  <div className="font-display text-[13px] text-[var(--color-brand)] uppercase tracking-[1px]">Adultes & jeunes adultes</div>
                   <div className="text-[13px] text-[var(--color-brand)] opacity-70">Tous niveaux</div>
                 </div>
               </div>
@@ -214,9 +247,9 @@ export default async function EcolePage() {
                   {adultesFormation?.venue && <div className="text-[13px] text-[var(--color-text-light)] mt-1">{adultesFormation.venue}</div>}
                 </div>
                 {adultesFormation?.registrationUrl ? (
-                  <a href={adultesFormation.registrationUrl} className="btn-coral text-[13px] px-5 py-2.5 no-underline">S&apos;inscrire →</a>
+                  <a href={adultesFormation.registrationUrl} className="btn-coral text-[13px] px-5 py-2.5 no-underline">Rejoindre →</a>
                 ) : (
-                  <a href="#inscription" className="btn-coral text-[13px] px-5 py-2.5 no-underline">S&apos;inscrire →</a>
+                  <a href="#inscription" className="btn-coral text-[13px] px-5 py-2.5 no-underline">Rejoindre →</a>
                 )}
               </div>
             </div>
@@ -236,7 +269,12 @@ export default async function EcolePage() {
               <div key={i} className={intervenants.length > 1 ? "bg-white rounded-[20px] p-6 border border-[rgba(30,21,53,0.06)]" : "contents"}>
                 <div className={`bg-gradient-to-br from-[#413485] to-[#6B4DAE] rounded-[20px] overflow-hidden ${intervenants.length > 1 ? "h-[200px] mb-4" : "min-h-[260px]"}`}>
                   {p.photo && (
-                    <img src={urlFor(p.photo).width(400).height(400).url()} alt={p.name} className="w-full h-full object-cover" />
+                    <img
+                      src={urlFor(p.photo).width(400).height(400).url()}
+                      alt={`${p.name} — chef de chœur gospel GEI Lyon`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                   )}
                 </div>
                 <div>
@@ -262,9 +300,9 @@ export default async function EcolePage() {
       {/* ===== DATES ===== */}
       <section id="dates" className="py-12 md:py-16 bg-white">
         <div className="site-container">
-          <div className="section-tag text-[var(--color-gold)]">{s?.ecoleDatesTag || "Dates 2026"}</div>
+          <div className="section-tag text-[var(--color-gold)]">{s?.ecoleDatesTag || "Calendrier 2026"}</div>
           <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-5">
-            {s?.ecoleDatesTitle || "Calendrier des sessions"}
+            {s?.ecoleDatesTitle || "Dates des ateliers gospel à Lyon"}
           </h2>
           {dates.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -281,7 +319,7 @@ export default async function EcolePage() {
                     </div>
                     <div>
                       <div className="text-[15px] font-bold text-[var(--color-brand)]">Dimanche {day} {monthLong}</div>
-                      <div className="text-[13px] text-[var(--color-text-light)]">{d.lieu || "Carré Fourvière"}</div>
+                      <div className="text-[13px] text-[var(--color-text-light)]">{d.lieu || "Carré Fourvière, Lyon"}</div>
                     </div>
                   </div>
                 );
@@ -294,38 +332,29 @@ export default async function EcolePage() {
       </section>
 
       {/* ===== FAQ ===== */}
-      {(() => {
-        const faqs = s?.ecoleFaqs?.length ? s.ecoleFaqs : [
-          { question: "Faut-il avoir de l'expérience en chant pour s'inscrire ?", answer: "Non, l'école accueille tous les niveaux. Les ateliers sont conçus pour que chacun progresse à son rythme, des débutants aux chanteurs confirmés." },
-          { question: "À partir de quel âge peut-on participer ?", answer: "Le créneau Jeunes est ouvert dès 16 ans. Le créneau Adultes est ouvert à tous sans limite d'âge." },
-          { question: "Combien de temps dure une session ?", answer: "Le créneau Jeunes dure 2 heures (11h-13h) et le créneau Adultes dure 3 heures (14h-17h). Les sessions ont lieu un dimanche par mois." },
-          { question: "Peut-on participer aux concerts du festival ?", answer: "Oui, les participants de l'école ont la possibilité de monter sur scène lors des concerts du Festival Gospel Expérience, notamment dès le mois de décembre." },
-          { question: "Où se déroulent les ateliers ?", answer: "Les ateliers ont lieu au Carré Fourvière, 8 place de Fourvière, 69005 Lyon. Accessible en funiculaire (station Fourvière) ou en bus (ligne C20)." },
-        ];
-        return faqs.length > 0 ? (
-          <section className="py-12 md:py-16">
-            <div className="site-container">
-              <div className="section-tag text-[var(--color-gold)]">FAQ</div>
-              <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Questions fréquentes</h2>
-              <div className="max-w-[720px]">
-                <FaqAccordion items={faqs} accentColor="var(--color-gold-dark)" />
-              </div>
+      {faqs.length > 0 && (
+        <section className="py-12 md:py-16">
+          <div className="site-container">
+            <div className="section-tag text-[var(--color-gold)]">FAQ</div>
+            <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Questions fréquentes sur l&apos;école de gospel</h2>
+            <div className="max-w-[720px]">
+              <FaqAccordion items={faqs} accentColor="var(--color-gold-dark)" />
             </div>
-          </section>
-        ) : null;
-      })()}
+          </div>
+        </section>
+      )}
 
       {/* ===== CTA ===== */}
       <div id="inscription" className="site-container pb-10 pt-4">
         <div className="bg-[var(--color-gold-light)] rounded-3xl px-6 md:px-8 py-9 text-center">
           <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-gold-dark)] mb-2">
-            {s?.ecoleCtaTitle || "Prêt à rejoindre le chœur ?"}
+            {s?.ecoleCtaTitle || "Votre voix a sa place dans notre chœur"}
           </h3>
           <p className="text-[15px] text-[var(--color-gold-dark)] opacity-70 mb-5">
-            {s?.ecoleCtaDescription || "Carré Fourvière — 8 place de Fourvière, 69005 Lyon"}
+            {s?.ecoleCtaDescription || "Carré Fourvière — 8 place de Fourvière, 69005 Lyon · Un dimanche par mois"}
           </p>
           <a href={s?.ecoleCtaButton?.url || "#inscription"} className="btn-teal no-underline">
-            {s?.ecoleCtaButton?.text || "S'inscrire maintenant"}
+            {s?.ecoleCtaButton?.text || "Rejoindre le chœur →"}
           </a>
         </div>
       </div>

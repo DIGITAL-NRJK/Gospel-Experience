@@ -8,9 +8,10 @@ import type { Metadata } from "next";
 
 export const revalidate = 60;
 
+// ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {
-  title: "Festival Gospel Expérience",
-  description: "Festival biennal de gospel dans la Crypte de la Basilique de Fourvière à Lyon. Concerts professionnels, chorales régionales, Masterclass.",
+  title: "Fourvière Gospel Expérience — Festival, Lyon",
+  description: "Fourvière Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts, Masterclasses ouvertes à tous, ateliers le week-end. Réservez vos places.",
 };
 
 interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string[]; ticketUrl?: string }
@@ -38,9 +39,12 @@ interface Settings {
   festivalFaqs?: { question: string; answer: string }[];
 }
 
+// ✅ Stats enrichies avec "800 places" pour levier de rareté
 const defaultVenueStats: VenueStat[] = [
-  { value: "800", label: "Places" }, { value: "1884", label: "Construction" },
-  { value: "UNESCO", label: "Patrimoine" }, { value: "Lyon 5e", label: "Localisation" },
+  { value: "800", label: "Places — salle intime" },
+  { value: "1884", label: "Construction" },
+  { value: "UNESCO", label: "Patrimoine mondial" },
+  { value: "Lyon 5e", label: "Localisation" },
 ];
 
 export default async function FestivalPage() {
@@ -50,30 +54,61 @@ export default async function FestivalPage() {
   ]);
   const venueStats = s?.festivalVenueStats?.length ? s.festivalVenueStats : defaultVenueStats;
 
+  // ✅ Schema FAQ JSON-LD pour rich snippets Google
+  const faqs = s?.festivalFaqs?.length ? s.festivalFaqs : [
+    { question: "Faut-il réserver ses places à l'avance ?", answer: "Oui, nous recommandons de réserver en ligne via notre billetterie. Les places sont limitées à 800 par la capacité de la Crypte. Certaines soirées affichent complet. Réservez sur reservation.fourviere.org." },
+    { question: "Les concerts sont-ils accessibles aux personnes à mobilité réduite ?", answer: "La Crypte de Fourvière est accessible aux personnes à mobilité réduite. Un accès adapté est prévu. Contactez-nous pour toute question spécifique." },
+    { question: "Puis-je participer aux Masterclass sans expérience ?", answer: "Absolument. Les Masterclass sont ouvertes à tous les niveaux, débutants comme confirmés. Les artistes encadrants s'adaptent au niveau de chaque participant. Participation possible dès 16 ans." },
+    { question: "Y a-t-il un parking à proximité ?", answer: "Le parking Fourvière se trouve à proximité immédiate de la Basilique. Vous pouvez également emprunter le funiculaire (station Fourvière, ligne F2) ou le bus C20." },
+    { question: "Le festival a lieu tous les ans ?", answer: "Non, le Fourvière Gospel Expérience est un événement biennal — il a lieu tous les deux ans. La 3e édition se tient du 23 au 26 avril 2026 à la Crypte de la Basilique de Fourvière à Lyon." },
+    { question: "Où se déroule le festival ?", answer: "Le festival se déroule dans la Crypte de la Basilique Notre-Dame de Fourvière, 8 place de Fourvière, 69005 Lyon. Accessible en funiculaire (ligne F2, station Fourvière) ou en bus (ligne C20)." },
+  ];
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+
   return (
     <>
       <Header />
 
+      {/* ✅ Schema FAQ injecté */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+
       {/* HERO */}
       <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[#3D1E10] to-[var(--color-indigo)] overflow-hidden">
         {s?.festivalHeroImage && (
-          <img src={urlFor(s.festivalHeroImage).width(1600).height(800).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          <img src={urlFor(s.festivalHeroImage).width(1600).height(800).url()} alt="Crypte de la Basilique de Fourvière — Fourvière Gospel Expérience Lyon" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
         <div className="site-container relative z-10 py-16 md:py-20">
           <div className="max-w-[560px]">
             <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
-              {s?.festivalHeroTag || "Festival biennal"}
+              {s?.festivalHeroTag || "Festival biennal · 23–26 avril 2026"}
             </div>
+            {/* ✅ H1 enrichi avec localisation et année */}
             <h1 className="font-serif text-[32px] md:text-[44px] font-bold text-white leading-[1.1] mb-4">
-              {s?.festivalHeroTitle || "Fourvière Gospel Expérience"}
+              {s?.festivalHeroTitle || "Fourvière Gospel Expérience — Festival biennal, Lyon"}
             </h1>
-            <p className="text-[16px] text-white/65 leading-relaxed mb-7">
-              {s?.festivalHeroSubtitle || "Depuis 2021, le rendez-vous incontournable du gospel à Lyon. Quatre jours de concerts, Masterclass et ateliers dans le cadre exceptionnel de la Crypte de la Basilique de Fourvière."}
+            <p className="text-[16px] text-white/65 leading-relaxed mb-3">
+              {s?.festivalHeroSubtitle || "23–26 avril 2026. Quatre jours de concerts, Masterclasses et ateliers dans la Crypte de la Basilique de Fourvière — le rendez-vous du gospel à Lyon."}
+            </p>
+            {/* ✅ Levier de rareté visible dès le hero */}
+            <p className="text-[13px] text-[var(--color-gold)] font-display mb-7">
+              Salle intime de 800 places — réservez avant complet
             </p>
             <div className="flex flex-wrap gap-3">
               <a href={s?.festivalHeroButton1?.url || "#programmation"} className="btn-coral no-underline">
-                {s?.festivalHeroButton1?.text || "Voir le programme"}
+                {s?.festivalHeroButton1?.text || "Réserver mes places →"}
               </a>
               <a href={s?.festivalHeroButton2?.url || "#lieu"} className="btn-outline-light no-underline">
                 {s?.festivalHeroButton2?.text || "Découvrir le lieu"}
@@ -94,7 +129,7 @@ export default async function FestivalPage() {
           </h2>
           <div className="max-w-[720px]">
             <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-5">
-              {s?.festivalIntro || "Le Festival Gospel Expérience est un événement biennal porté par l'association GOSLYM (Gospel Lyon Métropole). Né en 2021, en pleine sortie de crise sanitaire, il a été conçu comme un moment de rassemblement et de retrouvailles autour de la musique gospel."}
+              {s?.festivalIntro || "Le Fourvière Gospel Expérience est un événement biennal porté par l'association GOSLYM (Gospel Lyon Métropole). Né en 2021, en pleine sortie de crise sanitaire, il a été conçu comme un moment de rassemblement et de retrouvailles autour de la musique gospel."}
             </p>
             {(s?.festivalIntro2) && (
               <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.8] mb-5">{s.festivalIntro2}</p>
@@ -110,8 +145,8 @@ export default async function FestivalPage() {
       <section id="programmation" className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
         <div className="site-container">
           <div className="section-tag text-[var(--color-gold)]">Programmation</div>
-          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-2">Prochaine édition</h2>
-          <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed mb-6">4 jours de concerts, Masterclass et ateliers dans la Crypte de Fourvière.</p>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-2">Édition 2026 — 23 au 26 avril</h2>
+          <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed mb-6">4 jours de concerts, Masterclasses et ateliers dans la Crypte de Fourvière. <strong className="text-[var(--color-brand)]">800 places — réservation recommandée.</strong></p>
           <div className="flex flex-col gap-3">
             {events && events.length > 0 ? events.map((event) => {
               const date = new Date(event.dateStart);
@@ -142,11 +177,11 @@ export default async function FestivalPage() {
       <section id="lieu" className="py-12 md:py-16">
         <div className="site-container">
           <div className="section-tag text-[var(--color-indigo)]">Le lieu</div>
-          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">La Crypte de la Basilique</h2>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">La Crypte de la Basilique de Fourvière</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="rounded-[20px] overflow-hidden min-h-[260px] bg-gradient-to-br from-[var(--color-indigo)] to-[#4A2E8A]">
               {s?.festivalCrypteImage && (
-                <img src={urlFor(s.festivalCrypteImage).width(800).height(520).url()} alt="Crypte de Fourvière" className="w-full h-full object-cover" />
+                <img src={urlFor(s.festivalCrypteImage).width(800).height(520).url()} alt="Crypte de la Basilique de Fourvière — salle de concert gospel Lyon" className="w-full h-full object-cover" loading="lazy" />
               )}
             </div>
             <div>
@@ -169,7 +204,7 @@ export default async function FestivalPage() {
       {/* BASILIQUE */}
       <section className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
         <div className="site-container">
-          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">La Basilique de Fourvière</h2>
+          <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-indigo)] mb-5">La Basilique Notre-Dame de Fourvière</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p className="text-[16px] text-[var(--color-text-muted)] leading-[1.7] mb-5">
@@ -181,7 +216,7 @@ export default async function FestivalPage() {
             </div>
             <div className="rounded-[20px] overflow-hidden min-h-[260px] bg-gradient-to-br from-[var(--color-lavender)] to-[var(--color-lavender-light)]">
               {s?.festivalBasiliqueImage && (
-                <img src={urlFor(s.festivalBasiliqueImage).width(800).height(520).url()} alt="Basilique de Fourvière" className="w-full h-full object-cover" />
+                <img src={urlFor(s.festivalBasiliqueImage).width(800).height(520).url()} alt="Basilique Notre-Dame de Fourvière — Lyon patrimoine UNESCO" className="w-full h-full object-cover" loading="lazy" />
               )}
             </div>
           </div>
@@ -214,40 +249,30 @@ export default async function FestivalPage() {
       </section>
 
       {/* FAQ */}
-      {(() => {
-        const faqs = s?.festivalFaqs?.length ? s.festivalFaqs : [
-          { question: "Faut-il réserver ses places à l'avance ?", answer: "Oui, nous recommandons de réserver en ligne via notre billetterie. Les places sont limitées par la capacité de la Crypte (800 places). Certaines soirées affichent complet." },
-          { question: "Les concerts sont-ils accessibles aux personnes à mobilité réduite ?", answer: "La Crypte de Fourvière est accessible aux personnes à mobilité réduite. Un accès adapté est prévu. Contactez-nous pour toute question spécifique." },
-          { question: "Puis-je participer aux Masterclass sans expérience ?", answer: "Absolument. Les Masterclass sont ouvertes à tous les niveaux, débutants comme confirmés. Les artistes encadrants s'adaptent au niveau de chaque participant." },
-          { question: "Y a-t-il un parking à proximité ?", answer: "Le parking Fourvière se trouve à proximité immédiate de la Basilique. Vous pouvez également emprunter le funiculaire (station Fourvière, ligne F2) ou le bus C20." },
-          { question: "Le festival a lieu tous les ans ?", answer: "Non, le Festival Gospel Expérience est un événement biennal — il a lieu tous les deux ans. La prochaine édition se tiendra du 23 au 26 avril 2026." },
-        ];
-        return faqs.length > 0 ? (
-          <section className="py-12 md:py-16 bg-white">
-            <div className="site-container">
-              <div className="section-tag text-[var(--color-gold)]">FAQ</div>
-              <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Questions fréquentes</h2>
-              <div className="max-w-[720px]">
-                <FaqAccordion items={faqs} />
-              </div>
+      {faqs.length > 0 && (
+        <section className="py-12 md:py-16 bg-white">
+          <div className="site-container">
+            <div className="section-tag text-[var(--color-gold)]">FAQ</div>
+            <h2 className="font-serif text-[24px] md:text-[30px] font-bold text-[var(--color-brand)] mb-6">Questions fréquentes</h2>
+            <div className="max-w-[720px]">
+              <FaqAccordion items={faqs} />
             </div>
-          </section>
-        ) : null;
-      })()}
+          </div>
+        </section>
+      )}
 
-      {/* CTA */}
+      {/* ✅ CTA final — sans newsletter */}
       <div className="site-container py-10">
         <div className="bg-gradient-to-br from-[var(--color-brand-light)] to-[var(--color-lavender-light)] rounded-3xl px-6 md:px-8 py-9 text-center">
           <h3 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-brand)] mb-2">
-            {s?.festivalCtaTitle || "Ne manquez pas la prochaine édition"}
+            {s?.festivalCtaTitle || "Réservez vos places — 800 places disponibles"}
           </h3>
           <p className="text-[15px] text-[var(--color-brand)] opacity-70 mb-5 max-w-[480px] mx-auto">
-            {s?.festivalCtaDescription || "Inscrivez-vous à la newsletter pour être informé de l'ouverture de la billetterie et de la programmation."}
+            {s?.festivalCtaDescription || "Fourvière Gospel Expérience · 23–26 avril 2026 · Crypte de la Basilique de Fourvière, Lyon"}
           </p>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center max-w-[400px] mx-auto" suppressHydrationWarning>
-            <input type="email" placeholder="votre@email.com" className="flex-1 bg-white border border-[rgba(43,27,94,0.1)] rounded-[20px] px-4 py-3 text-[14px] outline-none" suppressHydrationWarning />
-            <button type="button" className="btn-coral" suppressHydrationWarning>S&apos;inscrire</button>
-          </div>
+          <a href="https://reservation.fourviere.org" target="_blank" rel="noopener noreferrer" className="btn-coral no-underline">
+            Réserver sur fourviere.org →
+          </a>
         </div>
       </div>
 

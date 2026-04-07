@@ -37,7 +37,8 @@ export default async function HomePage() {
 
   const heroTitle = settings?.[`hero${modeKey}Title`];
   const hasCustomTitle = !!heroTitle;
-  const heroSubtitle = settings?.[`hero${modeKey}Subtitle`] || "Festival, Masterclass, École de Gospel — une expérience musicale et humaine unique dans l'écrin sacré de la Basilique de Fourvière.";
+  // ✅ Sous-titre hero réécrit : plus court, verbes d'action, mots-clés en premier
+  const heroSubtitle = settings?.[`hero${modeKey}Subtitle`] || "Chantez, ressentez, progressez. Concerts professionnels, Masterclasses et école de gospel dans l'écrin unique de la Crypte de Fourvière.";
   const heroMp4 = settings?.[`hero${modeKey}VideoFileUrl`];
   const heroYt = settings?.[`hero${modeKey}VideoUrl`];
   const heroStats = settings?.[`hero${modeKey}Stats`];
@@ -55,8 +56,9 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[rgba(30,20,50,0.6)] via-[rgba(30,20,50,0.75)] to-[rgba(30,20,50,0.9)]" />
         <div className="relative z-10 text-center max-w-[640px] mx-auto px-5 py-12 md:py-16">
           <span className="inline-flex items-center gap-2 font-display text-[12px] tracking-[2px] uppercase text-white/80 bg-white/10 backdrop-blur px-5 py-2 rounded-full mb-6 border border-white/10">
-            {settings?.currentSeason || "Saison 2026 – 2027"}
+            {settings?.currentSeason || "Festival · 23–26 avril 2026 · Lyon Fourvière"}
           </span>
+          {/* ✅ H1 garanti — fallback solide avec mots-clés locaux */}
           <h1 className="font-serif text-[34px] md:text-[48px] font-bold leading-[1.08] text-white mb-5">
             {hasCustomTitle ? heroTitle : (<>Vivez le <em className="italic text-[var(--color-peach)]">Gospel</em><br />au cœur de <span className="text-[var(--color-gold)]">Lyon</span></>)}
           </h1>
@@ -99,23 +101,23 @@ export default async function HomePage() {
             <div className="px-6 md:px-10 py-10 md:py-14 flex flex-col justify-center">
               <div className="section-tag text-[var(--color-gold)]">{settings?.homeFestivalTag || "Le festival"}</div>
               <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-brand)] leading-[1.15] mb-3">{settings?.homeFestivalTitle || "La Crypte de Fourvière comme vous ne l'avez jamais entendue"}</h2>
-              <p className="text-[14px] md:text-[15px] text-[var(--color-text-muted)] leading-[1.65] mb-5 max-w-[440px]">{settings?.homeFestivalDescription || "Tous les deux ans, la Crypte de la Basilique se transforme en salle de concert pour accueillir le gospel. Quatre jours de concerts, Masterclass et ateliers."}</p>
+              <p className="text-[14px] md:text-[15px] text-[var(--color-text-muted)] leading-[1.65] mb-5 max-w-[440px]">{settings?.homeFestivalDescription || "Tous les deux ans, la Crypte de la Basilique se transforme en salle de concert pour accueillir le gospel. Quatre jours de concerts, Masterclasses et ateliers. 800 places — prochaine édition : 23–26 avril 2026."}</p>
               <a href={settings?.homeFestivalButton?.url || "/festival"} className="btn-coral self-start no-underline text-[13px] px-6 py-3">{settings?.homeFestivalButton?.text || "Découvrir le festival →"}</a>
             </div>
             <div className="bg-gradient-to-br from-[#413485] to-[#6B4DAE] min-h-[240px] md:min-h-0 relative overflow-hidden">
-              {settings?.homeFestivalImage && <img src={urlFor(settings.homeFestivalImage).width(800).height(600).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />}
+              {settings?.homeFestivalImage && <img src={urlFor(settings.homeFestivalImage).width(800).height(600).url()} alt="Festival Gospel Expérience — Crypte de la Basilique de Fourvière, Lyon" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
             </div>
           </div>
           {/* École — carte lavande */}
           <div className="bg-[var(--color-brand-light)] rounded-[20px] overflow-hidden grid grid-cols-1 md:grid-cols-[40%_60%] min-h-[260px]">
             <div className="bg-gradient-to-br from-[#413485] to-[#6B4DAE] min-h-[220px] md:min-h-0 order-2 md:order-1 relative overflow-hidden">
-              {settings?.homeEcoleImage && <img src={urlFor(settings.homeEcoleImage).width(700).height(560).url()} alt="" className="absolute inset-0 w-full h-full object-cover" />}
+              {settings?.homeEcoleImage && <img src={urlFor(settings.homeEcoleImage).width(700).height(560).url()} alt="Atelier chœur gospel GEI — école de gospel à Lyon" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
             </div>
             <div className="px-6 md:px-10 py-10 md:py-14 flex flex-col justify-center order-1 md:order-2">
               <div className="section-tag text-[var(--color-gold)]">{settings?.homeEcoleTag || "L'école GEI"}</div>
               <h2 className="font-serif text-[22px] md:text-[26px] font-bold text-[var(--color-brand)] leading-[1.15] mb-3">{settings?.homeEcoleTitle || "Votre voix a sa place ici"}</h2>
               <p className="text-[14px] md:text-[15px] text-[var(--color-text-muted)] leading-[1.65] mb-5 max-w-[440px]">{settings?.homeEcoleDescription || "Un dimanche par mois, rejoignez l'atelier chœur gospel au Carré Fourvière. Jeunes dès 16 ans et adultes, tous niveaux."}</p>
-              <a href={settings?.homeEcoleButton?.url || "/ecole"} className="btn-teal self-start no-underline text-[13px] px-6 py-3">{settings?.homeEcoleButton?.text || "S'inscrire →"}</a>
+              <a href={settings?.homeEcoleButton?.url || "/ecole"} className="btn-teal self-start no-underline text-[13px] px-6 py-3">{settings?.homeEcoleButton?.text || "S'inscrire à l'école →"}</a>
             </div>
           </div>
         </div>
@@ -170,7 +172,7 @@ export default async function HomePage() {
           <div className="site-container">
             <div className="bg-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center border border-[rgba(30,21,53,0.06)]">
               <div className="w-full md:w-[280px] shrink-0">
-                <img src={urlFor(settings.flyerImage).width(560).url()} alt={settings.flyerTitle || "Flyer"} className="w-full max-w-[320px] mx-auto md:max-w-none rounded-2xl shadow-lg" />
+                <img src={urlFor(settings.flyerImage).width(560).url()} alt={settings.flyerTitle || "Flyer école gospel GEI Lyon"} className="w-full max-w-[320px] mx-auto md:max-w-none rounded-2xl shadow-lg" loading="lazy" />
               </div>
               <div className="flex-1 text-center md:text-left">
                 <div className="section-tag text-[var(--color-gold)]">{settings.flyerTagline || "École de gospel"}</div>
@@ -207,7 +209,7 @@ export default async function HomePage() {
                 return (
                   <Link href={`/actualites/${a.slug.current}`} className="bg-[var(--color-cream)] rounded-2xl overflow-hidden border border-[rgba(30,21,53,0.06)] hover:shadow-sm transition-shadow no-underline">
                     <div className="h-[200px] md:h-[220px] bg-gradient-to-br from-[var(--color-peach)] to-[var(--color-peach-light)] relative overflow-hidden">
-                      {a.mainImage && <img src={urlFor(a.mainImage).width(700).height(440).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" />}
+                      {a.mainImage && <img src={urlFor(a.mainImage).width(700).height(440).url()} alt={a.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
                       <span className="font-display absolute top-3 left-3 text-[11px] tracking-[1px] uppercase px-3 py-1.5 rounded-lg text-white" style={{ backgroundColor: cat.bg }}>{cat.text}</span>
                     </div>
                     <div className="p-5 md:p-6">
@@ -245,7 +247,7 @@ export default async function HomePage() {
               {partners.map((p: any) => (
                 <div key={p._id} className="bg-white rounded-[20px] p-5 md:p-6 border border-[rgba(30,21,53,0.06)] flex gap-5 items-start">
                   <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl shrink-0 overflow-hidden bg-[var(--color-cream)] flex items-center justify-center p-2">
-                    {p.logo ? <img src={urlFor(p.logo).width(160).height(160).fit("max").url()} alt={p.name} className="w-full h-full object-contain" /> : <span className="font-serif text-[22px] font-bold text-[var(--color-brand)] opacity-30">{p.name[0]}</span>}
+                    {p.logo ? <img src={urlFor(p.logo).width(160).height(160).fit("max").url()} alt={`Logo ${p.name} — partenaire GOSLYM Gospel Lyon`} className="w-full h-full object-contain" loading="lazy" /> : <span className="font-serif text-[22px] font-bold text-[var(--color-brand)] opacity-30">{p.name[0]}</span>}
                   </div>
                   <div>
                     <h4 className="font-serif text-[17px] font-bold text-[var(--color-brand)] mb-0.5">{p.name}</h4>
@@ -287,7 +289,7 @@ export default async function HomePage() {
                 const fallback = ["from-[#413485] to-[#6B4DAE]", "from-[var(--color-peach-deep)] to-[var(--color-peach)]", "from-[#C8A24E] to-[#E8C878]", "from-[var(--color-magenta)] to-[#ED93B1]", "from-[var(--color-gold-light)] to-[var(--color-peach)]"];
                 return (
                   <Link key={g._id} href="/galerie" className={`rounded-2xl relative overflow-hidden hover:opacity-90 transition-opacity flex items-center justify-center no-underline ${!g.image ? `bg-gradient-to-br ${fallback[i % fallback.length]}` : ""}`} style={{ gridRow: i === 0 && g.featured ? "span 2" : undefined }}>
-                    {g.image && <img src={urlFor(g.image).width(i === 0 ? 800 : 500).height(i === 0 ? 720 : 400).url()} alt={g.title} className="absolute inset-0 w-full h-full object-cover" />}
+                    {g.image && <img src={urlFor(g.image).width(i === 0 ? 800 : 500).height(i === 0 ? 720 : 400).url()} alt={g.title || "Photo Festival Gospel Expérience Lyon"} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
                     {g.mediaType === "video" && <div className="relative z-10 w-14 h-14 rounded-full bg-white/90 flex items-center justify-center"><svg width="20" height="20" viewBox="0 0 24 24" fill="#413485"><polygon points="9,6 18,12 9,18" /></svg></div>}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <span className="absolute bottom-3 left-4 text-[13px] text-white font-bold z-10">{g.title}</span>
@@ -299,16 +301,26 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ===== 8. NEWSLETTER ===== */}
+      {/* ===== 8. CTA FESTIVAL — remplace la newsletter ===== */}
       <section className="bg-[var(--color-brand)]">
-        <div className="site-container py-10 md:py-12 flex flex-col md:flex-row items-center gap-6">
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">{settings?.newsletterTitle || "Accès préventes exclusives"}</h3>
-            <p className="text-[14px] text-white/50">{settings?.newsletterDescription || "Réservez vos places avant l'ouverture au grand public."}</p>
+        <div className="site-container py-10 md:py-12 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+          <div className="flex-1">
+            <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">
+              Fourvière Gospel Expérience — 23 au 26 avril 2026
+            </h3>
+            <p className="text-[14px] text-white/60">
+              Crypte de la Basilique de Fourvière · Lyon · 800 places — réservez avant complet
+            </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto" suppressHydrationWarning>
-            <input type="email" placeholder="votre@email.com" className="bg-white/10 border border-white/15 rounded-[20px] px-5 py-3 text-[14px] text-white placeholder-white/40 min-w-[200px] outline-none" suppressHydrationWarning />
-            <button type="button" className="font-display bg-[var(--color-gold)] text-[var(--color-text-body)] text-[14px] px-6 py-3 rounded-[20px] border-none cursor-pointer hover:opacity-90 transition-opacity" suppressHydrationWarning>S&apos;inscrire</button>
+          <div className="shrink-0">
+            <a
+              href="https://reservation.fourviere.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display bg-[var(--color-gold)] text-[var(--color-text-body)] text-[14px] px-6 py-3 rounded-[20px] inline-block no-underline hover:opacity-90 transition-opacity"
+            >
+              Réserver mes places →
+            </a>
           </div>
         </div>
       </section>

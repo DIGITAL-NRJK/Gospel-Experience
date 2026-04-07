@@ -22,22 +22,96 @@ export const metadata: Metadata = {
 };
 
 const organizationSchema = {
-  "@context": "https://schema.org", "@type": "Organization",
-  name: "GOSLYM — Gospel Lyon Métropole", alternateName: "Gospel Expérience Lyon", url: siteUrl,
-  address: { "@type": "PostalAddress", streetAddress: "8 place de Fourvière", addressLocality: "Lyon", postalCode: "69005", addressCountry: "FR" },
-  telephone: "+33788519652", email: "goslym69@gmail.com",
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "GOSLYM — Gospel Lyon Métropole",
+  alternateName: ["Gospel Expérience Lyon", "Fourvière Gospel Expérience"],
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "8 place de Fourvière",
+    addressLocality: "Lyon",
+    postalCode: "69005",
+    addressCountry: "FR",
+  },
+  telephone: "+33788519652",
+  email: "goslym69@gmail.com",
+  sameAs: [
+    "https://goslym.com",
+    "https://www.helloasso.com/associations/gospel-lyon-metropole",
+  ],
 };
 
+// ✅ Schema enrichi avec dates 2026, artistes et billetterie
 const festivalSchema = {
-  "@context": "https://schema.org", "@type": "MusicFestival",
-  name: "Festival Gospel Expérience", url: `${siteUrl}/festival`,
-  location: { "@type": "Place", name: "Crypte de la Basilique de Fourvière", address: { "@type": "PostalAddress", streetAddress: "8 place de Fourvière", addressLocality: "Lyon", postalCode: "69005", addressCountry: "FR" } },
-  organizer: { "@type": "Organization", name: "GOSLYM" },
+  "@context": "https://schema.org",
+  "@type": "MusicFestival",
+  name: "Fourvière Gospel Expérience 2026",
+  alternateName: "Festival Gospel Expérience Lyon",
+  url: `${siteUrl}/festival`,
+  startDate: "2026-04-23",
+  endDate: "2026-04-26",
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  description: "Festival biennal de gospel à Lyon. Quatre jours de concerts professionnels, Masterclasses et ateliers dans la Crypte de la Basilique de Fourvière.",
+  image: `${siteUrl}/og-image.jpg`,
+  location: {
+    "@type": "Place",
+    name: "Crypte de la Basilique Notre-Dame de Fourvière",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "8 place de Fourvière",
+      addressLocality: "Lyon",
+      postalCode: "69005",
+      addressCountry: "FR",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 45.7622,
+      longitude: 4.8220,
+    },
+    maximumAttendeeCapacity: 800,
+  },
+  organizer: {
+    "@type": "Organization",
+    name: "GOSLYM — Gospel Lyon Métropole",
+    url: siteUrl,
+  },
+  performer: [
+    { "@type": "MusicGroup", name: "Gospel Academy de Lyon" },
+    { "@type": "MusicGroup", name: "Grand Chœur GPE de Lyon" },
+    { "@type": "MusicGroup", name: "Chorale Gospel de Paris" },
+    { "@type": "MusicGroup", name: "One Step Gospel" },
+  ],
+  offers: {
+    "@type": "Offer",
+    url: "https://reservation.fourviere.org",
+    availability: "https://schema.org/InStock",
+    priceCurrency: "EUR",
+  },
+  typicalAgeRange: "Tout public",
 };
 
+// ✅ Schema École enrichi
 const schoolSchema = {
-  "@context": "https://schema.org", "@type": "EducationalOrganization",
-  name: "Gospel Experience Institute (GEI)", url: `${siteUrl}/ecole`,
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Gospel Experience Institute (GEI)",
+  alternateName: "École de gospel GEI Lyon",
+  description: "École de gospel à Lyon : ateliers chœur mensuels au Carré Fourvière, ouverts aux jeunes (16-18 ans) et adultes tous niveaux.",
+  url: `${siteUrl}/ecole`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "8 place de Fourvière",
+    addressLocality: "Lyon",
+    postalCode: "69005",
+    addressCountry: "FR",
+  },
+  parentOrganization: {
+    "@type": "Organization",
+    name: "GOSLYM — Gospel Lyon Métropole",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
