@@ -104,7 +104,7 @@ export default async function FestivalPage() {
       {/* HERO */}
       <section className="relative min-h-[350px] md:min-h-[420px] bg-gradient-to-br from-[#3D1E10] to-[var(--color-indigo)] overflow-hidden">
         {s?.festivalHeroImage && (
-          <img src={urlFor(s.festivalHeroImage).width(1600).height(800).url()} alt="Crypte de la Basilique de Fourvière — Fourvière Gospel Expérience Lyon" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
+          <img src={urlFor(s.festivalHeroImage).width(1600).height(800).url()} alt="Crypte de la Basilique de Fourvière — Festival Gospel Expérience Lyon" className="absolute inset-0 w-full h-full object-cover" loading="eager" />
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
         <div className="site-container relative z-10 py-16 md:py-20">
@@ -161,7 +161,12 @@ export default async function FestivalPage() {
 
             {/* Bloc chiffres clés */}
             <div className="flex flex-col gap-3">
-              {highlights.map((item) => (
+              {[
+                { icon: "🎵", value: "3e édition", label: "23–26 avril 2026", sub: "Festival biennal depuis 2021" },
+                { icon: "🎤", value: "Concerts · Masterclasses · Ateliers", label: "4 jours de programme", sub: "Ouvert à tous niveaux" },
+                { icon: "🏛️", value: "Crypte de Fourvière", label: "Lyon 5e — UNESCO", sub: "800 places · salle intime" },
+                { icon: "🎶", value: "Gospel en direct", label: "Artistes professionnels", sub: "Chœurs · Solistes · Groupes" },
+              ].map((item) => (
                 <div key={item.value} className="flex items-start gap-4 bg-white rounded-2xl p-4 border border-[rgba(43,27,94,0.06)]">
                   <span className="text-[22px] mt-0.5">{item.icon}</span>
                   <div>
@@ -176,7 +181,20 @@ export default async function FestivalPage() {
 
           {/* Bande "Ce qui rend ce festival unique" */}
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {uniqueCards.map((card) => (
+            {[
+              {
+                title: "Un lieu hors du commun",
+                desc: "La Crypte de la Basilique de Fourvière offre une acoustique naturelle exceptionnelle et une atmosphère unique en Europe pour un festival gospel.",
+              },
+              {
+                title: "Participatif par nature",
+                desc: "Les Masterclasses permettent à chacun — débutant ou confirmé — de chanter avec les artistes. Le gospel se transmet en direct, sur scène.",
+              },
+              {
+                title: "Ancré dans Lyon",
+                desc: "Porté par GOSLYM et ses artistes locaux, le festival met en valeur le talent lyonnais tout en accueillant des chœurs et solistes de toute la France.",
+              },
+            ].map((card) => (
               <div key={card.title} className="bg-gradient-to-br from-[var(--color-brand-light)] to-[var(--color-lavender-light)] rounded-2xl p-5">
                 <h3 className="font-serif text-[16px] font-bold text-[var(--color-indigo)] mb-2">{card.title}</h3>
                 <p className="text-[14px] text-[var(--color-text-muted)] leading-[1.7]">{card.desc}</p>

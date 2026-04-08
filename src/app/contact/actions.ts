@@ -21,7 +21,7 @@ export async function sendContactMessage(formData: FormData) {
     const resend = new Resend(apiKey);
 
     const { error } = await resend.emails.send({
-      from: "Formulaire Contact <contact@fourvieregospelexperience.com>",
+      from: "Formulaire Contact <contact@goslym.com>",
       to: process.env.CONTACT_EMAIL || "goslym69@gmail.com",
       replyTo: email,
       subject: `[Gospel Expérience] ${subject || "Message"} de ${name}`,
