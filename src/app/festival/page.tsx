@@ -10,8 +10,8 @@ export const revalidate = 60;
 
 // ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {
-  title: "Festival Gospel Expérience — Fourvière, Lyon",
-  description: "Festival Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts professionnels, Masterclasses ouvertes à tous, ateliers gratuits le week-end. Réservez vos places.",
+  title: "Fourvière Gospel Expérience — Festival, Lyon",
+  description: "Fourvière Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts professionnels, Masterclasses ouvertes à tous, ateliers gratuits le week-end. Réservez vos places.",
 };
 
 interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string[]; ticketUrl?: string }
@@ -37,6 +37,8 @@ interface Settings {
   festivalCtaTitle?: string;
   festivalCtaDescription?: string;
   festivalFaqs?: { question: string; answer: string }[];
+  festivalHighlights?: { icon: string; value: string; label: string; sub?: string }[];
+  festivalUniqueCards?: { title: string; desc: string }[];
 }
 
 // ✅ Stats enrichies avec "800 places" pour levier de rareté
@@ -53,6 +55,21 @@ export default async function FestivalPage() {
     client.fetch<Settings>(SITE_SETTINGS_QUERY),
   ]);
   const venueStats = s?.festivalVenueStats?.length ? s.festivalVenueStats : defaultVenueStats;
+
+  const defaultHighlights = [
+    { icon: "🎵", value: "3e édition", label: "23–26 avril 2026", sub: "Festival biennal depuis 2021" },
+    { icon: "🎤", value: "Concerts · Masterclasses · Ateliers", label: "4 jours de programme", sub: "Ouvert à tous niveaux" },
+    { icon: "🏛️", value: "Crypte de Fourvière", label: "Lyon 5e — UNESCO", sub: "800 places · salle intime" },
+    { icon: "🎶", value: "Gospel en direct", label: "Artistes professionnels", sub: "Chœurs · Solistes · Groupes" },
+  ];
+  const highlights = s?.festivalHighlights?.length ? s.festivalHighlights : defaultHighlights;
+
+  const defaultUniqueCards = [
+    { title: "Un lieu hors du commun", desc: "La Crypte de la Basilique de Fourvière offre une acoustique naturelle exceptionnelle et une atmosphère unique en Europe pour un festival gospel." },
+    { title: "Participatif par nature", desc: "Les Masterclasses permettent à chacun — débutant ou confirmé — de chanter avec les artistes. Le gospel se transmet en direct, sur scène." },
+    { title: "Ancré dans Lyon", desc: "Porté par GOSLYM et ses artistes locaux, le festival met en valeur le talent lyonnais tout en accueillant des chœurs et solistes de toute la France." },
+  ];
+  const uniqueCards = s?.festivalUniqueCards?.length ? s.festivalUniqueCards : defaultUniqueCards;
 
   // ✅ Schema FAQ JSON-LD pour rich snippets Google
   const faqs = s?.festivalFaqs?.length ? s.festivalFaqs : [
@@ -91,13 +108,13 @@ export default async function FestivalPage() {
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
         <div className="site-container relative z-10 py-16 md:py-20">
-          <div className="max-w-[560px]">
+          <div className="max-w-[565px]">
             <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
               {s?.festivalHeroTag || "Festival biennal · 23–26 avril 2026"}
             </div>
             {/* ✅ H1 enrichi avec localisation et année */}
             <h1 className="font-serif text-[32px] md:text-[44px] font-bold text-white leading-[1.1] mb-4">
-              {s?.festivalHeroTitle || "Festival Gospel Expérience — Fourvière, Lyon"}
+              {s?.festivalHeroTitle || "Fourvière Gospel Expérience — Festival, Lyon"}
             </h1>
             <p className="text-[16px] text-white/65 leading-relaxed mb-3">
               {s?.festivalHeroSubtitle || "23–26 avril 2026. Quatre jours de concerts, Masterclasses et ateliers dans la Crypte de la Basilique de Fourvière — le rendez-vous du gospel à Lyon."}

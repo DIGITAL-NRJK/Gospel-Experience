@@ -142,6 +142,40 @@ export const siteSettings = defineType({
     defineField({ name: "festivalIntro2", title: "📝 Présentation — Paragraphe 2", type: "text", rows: 5, group: "festival" }),
     defineField({ name: "festivalIntro3", title: "📝 Présentation — Paragraphe 3", type: "text", rows: 5, group: "festival" }),
 
+    defineField({
+      name: "festivalHighlights",
+      title: "✨ Chiffres clés — 4 cartes",
+      type: "array",
+      group: "festival",
+      description: "Les 4 cartes affichées à droite du texte de présentation (icône, valeur, label, sous-label).",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "icon", title: "Icône (emoji)", type: "string", initialValue: "🎵" }),
+          defineField({ name: "value", title: "Valeur principale", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "label", title: "Label", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "sub", title: "Sous-label", type: "string" }),
+        ],
+        preview: { select: { title: "value", subtitle: "label" } },
+      }],
+    }),
+
+    defineField({
+      name: "festivalUniqueCards",
+      title: "🏆 Ce qui rend ce festival unique — 3 cartes",
+      type: "array",
+      group: "festival",
+      description: "Les 3 cartes thématiques en bas de la section présentation.",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "title", title: "Titre", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "desc", title: "Description", type: "text", rows: 3, validation: (r) => r.required() }),
+        ],
+        preview: { select: { title: "title", subtitle: "desc" } },
+      }],
+    }),
+
     defineField({ name: "festivalCrypteImage", title: "🏛️ Crypte — Image", type: "image", group: "festival", options: { hotspot: true } }),
     defineField({ name: "festivalCrypteText", title: "🏛️ Crypte — Description", type: "text", rows: 4, group: "festival" }),
     defineField({ name: "festivalVenueStats", title: "🏛️ Crypte — Chiffres", type: "array", group: "festival", of: [{ type: "object", fields: [
