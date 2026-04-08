@@ -61,6 +61,14 @@ export const siteSettings = defineType({
       defineField({ name: "facebook", title: "Facebook", type: "url" }),
       defineField({ name: "youtube", title: "YouTube", type: "url" }),
     ] }),
+    defineField({
+  name: 'comingSoonMode',
+  title: 'Mode "Bientôt disponible"',
+  description: 'Activer pour afficher la page coming soon à tous les visiteurs (Studio reste accessible).',
+  type: 'boolean',
+  initialValue: false,
+  group: 'general',
+}),
 
     // ═══════════════════════════════════════
     // ② HERO (conditionnel)

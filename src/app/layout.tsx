@@ -3,7 +3,8 @@ import { Playfair_Display, Fjalla_One, Nunito } from "next/font/google";
 import "@/styles/globals.css";
 import { client, NEXT_EVENT_QUERY } from "@/lib/sanity.client";
 import CountdownBar from "@/components/CountdownBar";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
+import GoogleAnalyticsConditional from "@/components/GoogleAnalyticsConditional";
+import CookieBanner from "@/components/CookieBanner";
 
 const playfair = Playfair_Display({ subsets: ["latin"], display: "swap", variable: "--font-serif", weight: ["400", "700"] });
 const fjallaOne = Fjalla_One({ subsets: ["latin"], display: "swap", variable: "--font-display", weight: "400" });
@@ -121,12 +122,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="fr" className={`${playfair.variable} ${fjallaOne.variable} ${nunito.variable}`}>
       <head>
-        <GoogleAnalytics />
+        <GoogleAnalyticsConditional />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(festivalSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schoolSchema) }} />
       </head>
       <body className="antialiased" suppressHydrationWarning>
+        <CookieBanner />
         {nextEvent && (
           <CountdownBar
             eventTitle={nextEvent.title}
