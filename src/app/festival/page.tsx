@@ -10,8 +10,8 @@ export const revalidate = 60;
 
 // ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {
-  title: "Festival Gospel Expérience — Fourvière, Lyon",
-  description: "Festival Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts professionnels, Masterclasses ouvertes à tous, ateliers gratuits le week-end. Réservez vos places.",
+  title: "Fourvière Gospel Expérience — Festival, Lyon",
+  description: "Fourvière Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts professionnels, Masterclasses ouvertes à tous, ateliers gratuits le week-end. Réservez vos places.",
 };
 
 interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string[]; ticketUrl?: string }
@@ -108,13 +108,13 @@ export default async function FestivalPage() {
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
         <div className="site-container relative z-10 py-16 md:py-20">
-          <div className="max-w-[560px]">
+          <div className="max-w-[565px]">
             <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
               {s?.festivalHeroTag || "Festival biennal · 23–26 avril 2026"}
             </div>
             {/* ✅ H1 enrichi avec localisation et année */}
             <h1 className="font-serif text-[32px] md:text-[44px] font-bold text-white leading-[1.1] mb-4">
-              {s?.festivalHeroTitle || "Festival Gospel Expérience — Fourvière, Lyon"}
+              {s?.festivalHeroTitle || "Fourvière Gospel Expérience — Festival, Lyon"}
             </h1>
             <p className="text-[16px] text-white/65 leading-relaxed mb-3">
               {s?.festivalHeroSubtitle || "23–26 avril 2026. Quatre jours de concerts, Masterclasses et ateliers dans la Crypte de la Basilique de Fourvière — le rendez-vous du gospel à Lyon."}
