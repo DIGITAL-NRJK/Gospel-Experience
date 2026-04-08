@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { client, SITE_SETTINGS_QUERY } from "@/lib/sanity.client";
+import CookiePreferencesButton from "@/components/CookiePreferencesButton";
 
 interface FooterSection { title: string; links: { label: string; href: string }[] }
 interface Socials { instagram?: string; facebook?: string; youtube?: string }
@@ -46,7 +47,46 @@ export default async function Footer() {
   return (
     <footer className="bg-[var(--color-cream)] border-t border-[rgba(30,21,53,0.06)]">
       <div className="site-container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 pt-10 pb-6">
+
+        {/* Logo + description : pleine largeur sur mobile */}
+        <div className="pt-8 pb-6 border-b border-[rgba(30,21,53,0.04)] lg:hidden">
+          <div className="flex items-center gap-3 mb-3">
+            <img src="/images/logo-goslym.png" alt="GOSLYM — Gospel Lyon Métropole" className="h-9 w-auto" />
+            <div className="w-px h-7 bg-[rgba(30,21,53,0.1)]" />
+            <img src="/images/logo-festival.png" alt="Fourvière Gospel Expérience" className="h-8 w-auto" />
+          </div>
+          <p className="text-[13px] text-[var(--color-text-muted)] leading-relaxed mb-3">
+            {s.footerDescription || "Association GOSLYM — Gospel Lyon Métropole. Promouvoir le gospel, rassembler les talents, transmettre des valeurs de joie et de fraternité."}
+          </p>
+          {socialItems.length > 0 && (
+            <div className="flex gap-2">
+              {socialItems.map((item) => (
+                <a key={item.key} href={item.url} target="_blank" rel="noopener noreferrer" aria-label={item.label} className="w-8 h-8 rounded-full flex items-center justify-center font-display text-[12px] text-white no-underline hover:opacity-80 transition-opacity" style={{ backgroundColor: item.bg }}>
+                  {item.icon}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sections de navigation : 3 colonnes sur mobile */}
+        <div className="grid grid-cols-3 lg:hidden gap-x-3 py-6">
+          {sections.map((section, i) => (
+            <div key={section.title}>
+              <h5 className="font-display text-[10px] tracking-[1.5px] uppercase mb-2.5" style={{ color: sectionColors[i % sectionColors.length] }}>
+                {section.title}
+              </h5>
+              {section.links?.map(({ label, href }) => (
+                <Link key={label} href={href} className="block text-[13px] text-[var(--color-text-muted)] no-underline mb-1.5 hover:text-[var(--color-brand)] transition-colors leading-snug">
+                  {label}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Layout desktop : 4 colonnes (logo + 3 sections) */}
+        <div className="hidden lg:grid lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 pt-10 pb-6">
           {/* Logo column */}
           <div>
             <div className="flex items-center gap-4 mb-4">
@@ -67,7 +107,6 @@ export default async function Footer() {
               </div>
             )}
           </div>
-
           {/* Link columns */}
           {sections.map((section, i) => (
             <div key={section.title}>
@@ -83,12 +122,15 @@ export default async function Footer() {
           ))}
         </div>
 
+        {/* Barre de bas de page */}
         <div className="flex flex-col sm:flex-row justify-between py-4 border-t border-[rgba(30,21,53,0.04)] text-[12px] text-[var(--color-text-light)] gap-2">
           <span>© {new Date().getFullYear()} {s.footerCopyright || "GOSLYM — Gospel Lyon Métropole"}</span>
           <span>
             <Link href="/mentions-legales" className="no-underline text-inherit hover:text-[var(--color-brand)]">Mentions légales</Link>
             {" · "}
             <Link href="/confidentialite" className="no-underline text-inherit hover:text-[var(--color-brand)]">Confidentialité</Link>
+            {" · "}
+            <CookiePreferencesButton />
           </span>
         </div>
       </div>
