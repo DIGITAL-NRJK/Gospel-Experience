@@ -179,7 +179,7 @@ export default async function FestivalPage() {
             </div>
           </div>
 
-          {/* Bande "Ce qui rend ce festival unique" */}
+          {/* Bande "Ce qui rend ce festival unique, infos utiles" */}
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
