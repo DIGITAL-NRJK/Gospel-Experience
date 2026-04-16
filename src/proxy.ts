@@ -8,7 +8,7 @@ const DATASET    = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 const BYPASS_PREFIXES = ['/studio', '/api/', '/_next/', '/coming-soon']
 const BYPASS_FILES    = /\.(ico|png|jpg|jpeg|svg|webp|gif|woff2?|ttf|css|js|map)$/i
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Laisser passer le studio, les API, les assets et la page elle-même
