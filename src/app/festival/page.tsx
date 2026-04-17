@@ -4,10 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
 import FaqAccordion from "@/components/FaqAccordion";
-import VillageGospelSection from "@/components/VillageGospelSection";
 import type { Metadata } from "next";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 // ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {

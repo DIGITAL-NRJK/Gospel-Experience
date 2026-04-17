@@ -12,7 +12,7 @@ import FlyerSection from "@/components/FlyerSection";
 import VillageGospelSection from "@/components/VillageGospelSection";
 import Link from "next/link";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type S = Record<string, any>;
@@ -23,6 +23,39 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   interview: { bg: "#6B4DAE", text: "Interview" },
   coulisses: { bg: "#8D83A5", text: "Coulisses" },
 };
+
+function formatEventDate(dateStart: string, dateEnd?: string) {
+  const start = new Date(dateStart);
+  const startDay = start.getDate();
+  const startMonth = start.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (!dateEnd) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
+  const end = new Date(dateEnd);
+
+  // Même jour — pas de plage à afficher
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth() &&
+    start.getDate() === end.getDate()
+  ) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
+  const endDay = end.getDate();
+  const endMonth = end.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth()
+  ) {
+    return { dayLabel: `${startDay}–${endDay}`, monthLabel: startMonth };
+  }
+
+  return { dayLabel: `${startDay}–${endDay}`, monthLabel: `${startMonth}–${endMonth}` };
+}
 
 export default async function HomePage() {
   const [settings, events, testimonials, partners, articles, gallery] = await Promise.all([
@@ -124,9 +157,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      
+
       {/* ===== 1.2. VILLAGE GOSPEL ===== */}
-          <VillageGospelSection
+      <VillageGospelSection
         title={settings?.villageGospelTitle}
         text={settings?.villageGospelText}
         active={settings?.villageGospelActive ?? true}
@@ -144,17 +177,15 @@ export default async function HomePage() {
           </div>
           <div className="flex flex-col gap-3">
             {events?.map((event: any) => {
-              const date = new Date(event.dateStart);
-              const day = date.getDate().toString().padStart(2, "0");
-              const month = date.toLocaleDateString("fr-FR", { month: "short" });
+              const { dayLabel, monthLabel } = formatEventDate(event.dateStart, event.dateEnd);
               const types = Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean);
               const isFestival = types.some((t: string) => ["festival", "concert", "masterclass"].includes(t));
               const artistDisplay = event.artistNames || event.artists?.map((a: any) => a.name).join(", ");
               return (
                 <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 md:px-5 bg-[var(--color-cream)] rounded-2xl border border-[rgba(30,21,53,0.06)]">
-                  <div className={`rounded-xl px-3.5 py-2.5 text-center min-w-[56px] ${isFestival ? "bg-[var(--color-brand-light)]" : "bg-[var(--color-gold-light)]"}`}>
-                    <div className={`font-serif text-xl font-bold leading-none ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold-dark)]"}`}>{day}</div>
-                    <div className={`font-display text-[11px] tracking-[1px] uppercase ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold)]"}`}>{month}</div>
+                  <div className={`rounded-xl px-3.5 py-2.5 text-center min-w-[64px] ${isFestival ? "bg-[var(--color-brand-light)]" : "bg-[var(--color-gold-light)]"}`}>
+                    <div className={`font-serif text-xl font-bold leading-none ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold-dark)]"}`}>{dayLabel}</div>
+                    <div className={`font-display text-[11px] tracking-[1px] uppercase ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold)]"}`}>{monthLabel}</div>
                   </div>
                   <div className="flex-1">
                     <h4 className="text-[15px] font-bold text-[var(--color-brand)] mb-0.5">{event.title}</h4>
