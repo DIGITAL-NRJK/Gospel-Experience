@@ -12,7 +12,7 @@ import FlyerSection from "@/components/FlyerSection";
 import VillageGospelSection from "@/components/VillageGospelSection";
 import Link from "next/link";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type S = Record<string, any>;
