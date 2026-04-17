@@ -140,35 +140,39 @@ export default async function ProgrammePage() {
       <main className="min-h-screen bg-[var(--color-cream)]">
 
         {/* ── Hero ── */}
-        <section className="bg-gradient-to-br from-[#1A1532] via-[#2A1F5E] to-[#413485] py-14 md:py-20 text-center px-5">
-          <Link
-            href="/festival"
-            className="inline-flex items-center gap-1.5 font-display text-[12px] tracking-[1.5px] uppercase text-white/60 mb-6 no-underline hover:text-white/90 transition-colors"
-          >
-            ← Page Festival
-          </Link>
-          <div className="flex flex-wrap justify-center gap-2 mb-5">
-            <span className="font-display text-[11px] tracking-[2px] uppercase bg-[var(--color-gold)] text-[#1A1532] px-4 py-1.5 rounded-full font-bold">
-              3ème édition
-            </span>
-            <span className="font-display text-[11px] tracking-[2px] uppercase bg-white/15 text-white px-4 py-1.5 rounded-full border border-white/20">
-              23 – 26 avril 2026
-            </span>
+        <section className="relative bg-gradient-to-br from-[#1A1532] via-[#2A1F5E] to-[#413485] overflow-hidden">
+          <div className="site-container relative z-10 py-14 md:py-20">
+            <div className="max-w-[560px]">
+              <Link
+                href="/festival"
+                className="inline-flex items-center gap-1.5 font-display text-[12px] tracking-[1.5px] uppercase text-white/60 mb-6 no-underline hover:text-white/90 transition-colors"
+              >
+                ← Page Festival
+              </Link>
+              <div className="flex flex-wrap gap-2 mb-5">
+                <span className="font-display text-[11px] tracking-[2px] uppercase bg-[var(--color-gold)] text-[#1A1532] px-4 py-1.5 rounded-full font-bold">
+                  3ème édition
+                </span>
+                <span className="font-display text-[11px] tracking-[2px] uppercase bg-white/15 text-white px-4 py-1.5 rounded-full border border-white/20">
+                  23 – 26 avril 2026
+                </span>
+              </div>
+              <h1 className="font-serif text-[30px] md:text-[46px] font-bold text-white leading-[1.1] mb-4">
+                {heroTitle}
+              </h1>
+              <p className="text-[16px] text-white/65 leading-relaxed mb-8">
+                {heroSubtitle}
+              </p>
+              <a
+                href={billetterieUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[var(--color-gold)] text-[#1A1532] font-display text-[14px] tracking-[0.5px] font-bold px-7 py-3.5 rounded-xl no-underline hover:opacity-90 transition-opacity"
+              >
+                Réserver mes places →
+              </a>
+            </div>
           </div>
-          <h1 className="font-serif text-[30px] md:text-[46px] font-bold text-white leading-[1.1] mb-4">
-            {heroTitle}
-          </h1>
-          <p className="text-[16px] text-white/65 max-w-[500px] mx-auto leading-relaxed mb-8">
-            {heroSubtitle}
-          </p>
-          <a
-            href={billetterieUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[var(--color-gold)] text-[#1A1532] font-display text-[14px] tracking-[0.5px] font-bold px-7 py-3.5 rounded-xl no-underline hover:opacity-90 transition-opacity"
-          >
-            Réserver mes places →
-          </a>
         </section>
 
         {/* ── Concerts ── */}
