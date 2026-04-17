@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
 import FaqAccordion from "@/components/FaqAccordion";
+import VillageGospelSection from "@/components/VillageGospelSection";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
@@ -185,7 +186,7 @@ export default async function FestivalPage() {
           </div>
         </div>
       </section>
-
+            
       {/* PROGRAMMATION */}
       <section id="programmation" className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
         <div className="site-container">
