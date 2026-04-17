@@ -46,9 +46,10 @@ export const siteSettings = defineType({
     { name: "headerFooter", title: "③ Header & Footer" },
     { name: "homepage", title: "④ Accueil — Sections" },
     { name: "festival", title: "⑤ Page Festival" },
-    { name: "ecole", title: "⑥ Page École GEI" },
-    { name: "about", title: "⑦ Page À propos" },
-    { name: "contact", title: "⑧ Contact" },
+    { name: "programme", title: "⑥ Page Programme" },
+    { name: "ecole", title: "⑦ Page École GEI" },
+    { name: "about", title: "⑧ Page À propos" },
+    { name: "contact", title: "⑨ Contact" },
   ],
   fields: [
     // ═══════════════════════════════════════
@@ -62,13 +63,13 @@ export const siteSettings = defineType({
       defineField({ name: "youtube", title: "YouTube", type: "url" }),
     ] }),
     defineField({
-  name: 'comingSoonMode',
-  title: 'Mode "Bientôt disponible"',
-  description: 'Activer pour afficher la page coming soon à tous les visiteurs (Studio reste accessible).',
-  type: 'boolean',
-  initialValue: false,
-  group: 'general',
-}),
+      name: "comingSoonMode",
+      title: "🚧 Mode Coming Soon",
+      type: "boolean",
+      group: "general",
+      description: "Activez pour afficher la page de maintenance à tous les visiteurs. Désactivez pour remettre le site en ligne.",
+      initialValue: false,
+    }),
 
     // ═══════════════════════════════════════
     // ② HERO (conditionnel)
@@ -116,13 +117,18 @@ export const siteSettings = defineType({
     defineField({ name: "homeEcoleDescription", title: "🎶 École — Description", type: "text", rows: 3, group: "homepage" }),
     defineField({ name: "homeEcoleButton", title: "🎶 École — Bouton", type: "object", group: "homepage", fields: buttonFields("S'inscrire →", "/ecole") }),
 
-    // --- Flyer ---
-    defineField({ name: "flyerImage", title: "📄 Flyer — Image", type: "image", group: "homepage", options: { hotspot: true } }),
-    defineField({ name: "flyerTagline", title: "📄 Flyer — Étiquette", type: "string", group: "homepage", initialValue: "École de gospel" }),
-    defineField({ name: "flyerTitle", title: "📄 Flyer — Titre", type: "string", group: "homepage" }),
-    defineField({ name: "flyerDescription", title: "📄 Flyer — Description", type: "text", rows: 2, group: "homepage" }),
-    defineField({ name: "flyerButton", title: "📄 Flyer — Bouton principal", type: "object", group: "homepage", fields: buttonFields("S'inscrire →", "/ecole") }),
-    defineField({ name: "flyerButton2", title: "📄 Flyer — Bouton secondaire", type: "object", group: "homepage", fields: buttonFields("Voir le flyer en grand", "") }),
+    // --- Flyer École ---
+    defineField({ name: "flyerImage", title: "📄 Flyer École — Image", type: "image", group: "homepage", options: { hotspot: true } }),
+    defineField({ name: "flyerTagline", title: "📄 Flyer École — Étiquette", type: "string", group: "homepage", initialValue: "École de gospel" }),
+    defineField({ name: "flyerTitle", title: "📄 Flyer École — Titre", type: "string", group: "homepage" }),
+    defineField({ name: "flyerDescription", title: "📄 Flyer École — Description", type: "text", rows: 2, group: "homepage" }),
+    defineField({ name: "flyerButton", title: "📄 Flyer École — Bouton principal", type: "object", group: "homepage", fields: buttonFields("S'inscrire →", "/ecole") }),
+    //defineField({ name: "flyerButton2", title: "📄 Flyer École — Bouton secondaire", type: "object", group: "homepage", fields: buttonFields("Voir le flyer en grand", "") }),
+
+    // --- Flyer Festival ---
+    defineField({ name: "festivalFlyerImage", title: "🎪 Flyer Festival — Image", type: "image", group: "homepage", options: { hotspot: true } }),
+    defineField({ name: "festivalFlyerTitle", title: "🎪 Flyer Festival — Titre", type: "string", group: "homepage", initialValue: "Fourvière Gospel Expérience 2026" }),
+    defineField({ name: "festivalFlyerDesc", title: "🎪 Flyer Festival — Description courte", type: "string", group: "homepage", initialValue: "23 – 26 avril 2026 · Dans la Crypte de la Basilique de Fourvière · 3ème édition" }),
 
     // --- Sponsors ---
     defineField({ name: "secondarySponsors", title: "🤝 Sponsors secondaires", type: "array", group: "homepage", of: [{ type: "object", fields: [
@@ -200,8 +206,94 @@ export const siteSettings = defineType({
 
     faqArrayField("festivalFaqs", "❓ FAQ Festival", "festival"),
 
+    // --- Village Gospel (section homepage + page festival) ---
+    defineField({ name: "villageGospelActive", title: "🏕️ Village Gospel — Afficher la section", type: "boolean", group: "festival", description: "Active/désactive la section Village Gospel sur la homepage et la page festival.", initialValue: true }),
+    defineField({ name: "villageGospelTitle", title: "🏕️ Village Gospel — Titre", type: "string", group: "festival", initialValue: "Le Village Gospel sur l'Esplanade de Fourvière" }),
+    defineField({ name: "villageGospelText", title: "🏕️ Village Gospel — Texte descriptif", type: "text", rows: 4, group: "festival" }),
+
     // ═══════════════════════════════════════
-    // ⑥ PAGE ÉCOLE GEI
+    // ⑥ PAGE PROGRAMME
+    // ═══════════════════════════════════════
+
+    // --- Hero ---
+    defineField({ name: "programmeHeroTitle", title: "🎭 Hero — Titre", type: "string", group: "programme", initialValue: "Programme complet" }),
+    defineField({ name: "programmeHeroSubtitle", title: "🎭 Hero — Sous-titre", type: "string", group: "programme", initialValue: "4 concerts dans la Crypte · Village Gospel sur l'Esplanade · Masterclasses" }),
+    defineField({ name: "programmeBilletterieUrl", title: "🎭 Billetterie — Lien", type: "url", group: "programme", initialValue: "https://reservation.fourviere.org" }),
+
+    // --- Concerts ---
+    defineField({
+      name: "programmeConcerts",
+      title: "🎵 Concerts (4 soirées)",
+      type: "array",
+      group: "programme",
+      description: "Les concerts dans la Crypte. L'ordre ici détermine l'ordre d'affichage sur la page.",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "day", title: "Jour", type: "string", validation: (r) => r.required(), description: "Ex: Jeudi, Vendredi, Samedi, Dimanche" }),
+          defineField({ name: "date", title: "Date", type: "string", validation: (r) => r.required(), description: "Ex: 23 avril" }),
+          defineField({ name: "time", title: "Horaire", type: "string", validation: (r) => r.required(), description: "Ex: 20h30 – 22h" }),
+          defineField({ name: "ensemble", title: "Ensemble / Chœur", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "director", title: "Directeur artistique", type: "string" }),
+          defineField({ name: "description", title: "Description", type: "text", rows: 4 }),
+          defineField({ name: "firstPart", title: "1ère partie (laisser vide si aucune)", type: "string" }),
+        ],
+        preview: { select: { title: "ensemble", subtitle: "date" } },
+      }],
+    }),
+
+    // --- Village Gospel esplanade ---
+    defineField({ name: "programmeEsplanadeTitle", title: "🏕️ Esplanade — Titre de section", type: "string", group: "programme", initialValue: "Le Village Gospel sur l'Esplanade" }),
+    defineField({ name: "programmeEsplanadeSubtitle", title: "🏕️ Esplanade — Dates & accès", type: "string", group: "programme", initialValue: "Samedi 25 avril · Accès gratuit · 12h30 – 20h15" }),
+    defineField({ name: "programmeEsplanadeDesc1", title: "🏕️ Esplanade — Paragraphe 1", type: "text", rows: 4, group: "programme", description: "Description principale du Village Gospel (concerts gratuits, ateliers, Radio Scoop...)" }),
+    defineField({ name: "programmeEsplanadeDesc2", title: "🏕️ Esplanade — Paragraphe 2 (partenaires)", type: "text", rows: 3, group: "programme", description: "Ex: Maison Pignol, Les Apprentis d'Auteuil..." }),
+
+    defineField({
+      name: "programmeEsplanade",
+      title: "🏕️ Programme détaillé de l'esplanade",
+      type: "array",
+      group: "programme",
+      description: "Chaque créneau horaire sur l'esplanade, dans l'ordre chronologique.",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "time", title: "Horaire", type: "string", validation: (r) => r.required(), description: "Ex: 13h – 14h" }),
+          defineField({ name: "label", title: "Nom du groupe / Activité", type: "string", validation: (r) => r.required() }),
+          defineField({ name: "detail", title: "Détail (optionnel)", type: "string", description: "Ex: dirigé par Rose Makamu" }),
+          defineField({ name: "type", title: "Type", type: "string", options: { list: [{ title: "Concert", value: "concert" }, { title: "Atelier", value: "atelier" }], layout: "radio" }, initialValue: "concert" }),
+        ],
+        preview: { select: { title: "time", subtitle: "label" } },
+      }],
+    }),
+
+    // --- Masterclasses ---
+    defineField({ name: "programmeMasterTitle", title: "🎤 Masterclasses — Titre", type: "string", group: "programme", initialValue: "Les Masterclasses" }),
+    defineField({ name: "programmeMasterDesc", title: "🎤 Masterclasses — Description", type: "text", rows: 4, group: "programme", description: "Description générale (lieu, public, animateurs...)" }),
+    defineField({ name: "programmeMasterDesc2", title: "🎤 Masterclasses — Opportunité (résultat des formations)", type: "text", rows: 3, group: "programme", description: "Ex: À l'issue des formations, les participants pourront se produire en 1ère partie de One Step Gospel." }),
+
+    defineField({
+      name: "programmeMasterSessions",
+      title: "🎤 Masterclasses — Sessions",
+      type: "array",
+      group: "programme",
+      description: "Les créneaux de masterclasses (ex: samedi 10h–17h, dimanche 10h–16h).",
+      of: [{
+        type: "object",
+        fields: [
+          defineField({ name: "day", title: "Jour", type: "string", validation: (r) => r.required(), description: "Ex: Samedi 25 avril" }),
+          defineField({ name: "time", title: "Horaire", type: "string", validation: (r) => r.required(), description: "Ex: 10h – 17h" }),
+          defineField({ name: "icon", title: "Icône (emoji)", type: "string", initialValue: "🎵" }),
+        ],
+        preview: { select: { title: "day", subtitle: "time" } },
+      }],
+    }),
+
+    // --- CTA programme ---
+    defineField({ name: "programmeCtaTitle", title: "🔔 CTA — Titre", type: "string", group: "programme", initialValue: "Ne manquez pas la 3ème édition" }),
+    defineField({ name: "programmeCtaDesc", title: "🔔 CTA — Description", type: "string", group: "programme", initialValue: "Crypte de la Basilique de Fourvière · 800 places · Lyon 5ème" }),
+
+    // ═══════════════════════════════════════
+    // ⑦ PAGE ÉCOLE GEI
     // ═══════════════════════════════════════
     defineField({ name: "ecoleHeroImage", title: "🖼️ Hero — Image", type: "image", group: "ecole", options: { hotspot: true } }),
     defineField({ name: "ecoleHeroTag", title: "🖼️ Hero — Étiquette", type: "string", group: "ecole", initialValue: "Atelier chœur gospel" }),
@@ -246,7 +338,7 @@ export const siteSettings = defineType({
     faqArrayField("ecoleFaqs", "❓ FAQ École", "ecole"),
 
     // ═══════════════════════════════════════
-    // ⑦ PAGE À PROPOS
+    // ⑧ PAGE À PROPOS
     // ═══════════════════════════════════════
     defineField({ name: "aboutIntro", title: "📝 Introduction", type: "text", rows: 4, group: "about" }),
     defineField({ name: "aboutHistoryTitle", title: "📜 Histoire — Titre", type: "string", group: "about", initialValue: "Du rêve à la scène" }),
@@ -272,7 +364,7 @@ export const siteSettings = defineType({
     defineField({ name: "aboutCtaDescription", title: "🔔 CTA — Description", type: "text", rows: 2, group: "about" }),
 
     // ═══════════════════════════════════════
-    // ⑧ CONTACT
+    // ⑨ CONTACT
     // ═══════════════════════════════════════
     defineField({ name: "contactEmail", title: "Email", type: "string", group: "contact", initialValue: "goslym69@gmail.com" }),
     defineField({ name: "contactPhone", title: "Téléphone", type: "string", group: "contact", initialValue: "07 88 51 96 52" }),
