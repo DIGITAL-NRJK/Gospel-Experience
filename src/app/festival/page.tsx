@@ -4,18 +4,52 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
 import FaqAccordion from "@/components/FaqAccordion";
-import VillageGospelSection from "@/components/VillageGospelSection";
 import type { Metadata } from "next";
 
 export const revalidate = 60;
 
 // ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {
-  title: "Fourvière Gospel Expérience — Festival, Lyon",
-  description: "Fourvière Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts professionnels, Masterclasses ouvertes à tous, ateliers gratuits le week-end. Réservez vos places.",
+  title: "Festival Gospel Expérience — Fourvière, Lyon",
+  description: "Festival Gospel Expérience — 23 au 26 avril 2026, Crypte de la Basilique de Fourvière, Lyon. Concerts professionnels, Masterclasses ouvertes à tous, ateliers gratuits le week-end. Réservez vos places.",
 };
 
-interface Event { _id: string; title: string; dateStart: string; venue: string; timeStart?: string; timeEnd?: string; eventType: string[]; ticketUrl?: string }
+interface Event {
+  _id: string;
+  title: string;
+  dateStart: string;
+  dateEnd?: string;
+  venue: string;
+  timeStart?: string;
+  timeEnd?: string;
+  eventType: string[];
+  ticketUrl?: string;
+  artistNames?: string;
+  artists?: { _id: string; name: string }[];
+}
+
+function formatEventDate(dateStart: string, dateEnd?: string) {
+  const start = new Date(dateStart);
+  const startDay = start.getDate();
+  const startMonth = start.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (!dateEnd) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
+  const end = new Date(dateEnd);
+  const endDay = end.getDate();
+  const endMonth = end.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth()
+  ) {
+    return { dayLabel: `${startDay}–${endDay}`, monthLabel: startMonth };
+  }
+
+  return { dayLabel: `${startDay}–${endDay}`, monthLabel: `${startMonth}–${endMonth}` };
+}
 interface VenueStat { value: string; label: string }
 interface Settings {
   festivalHeroImage?: { asset: { _ref: string } };
@@ -109,13 +143,13 @@ export default async function FestivalPage() {
         )}
         <div className="absolute inset-0 bg-gradient-to-br from-[rgba(61,30,16,0.8)] to-[rgba(43,27,94,0.85)]" />
         <div className="site-container relative z-10 py-16 md:py-20">
-          <div className="max-w-[565px]">
+          <div className="max-w-[560px]">
             <div className="font-display text-[12px] tracking-[3px] uppercase text-[var(--color-gold)] mb-3">
               {s?.festivalHeroTag || "Festival biennal · 23–26 avril 2026"}
             </div>
             {/* ✅ H1 enrichi avec localisation et année */}
             <h1 className="font-serif text-[32px] md:text-[44px] font-bold text-white leading-[1.1] mb-4">
-              {s?.festivalHeroTitle || "Fourvière Gospel Expérience — Festival, Lyon"}
+              {s?.festivalHeroTitle || "Festival Gospel Expérience — Fourvière, Lyon"}
             </h1>
             <p className="text-[16px] text-white/65 leading-relaxed mb-3">
               {s?.festivalHeroSubtitle || "23–26 avril 2026. Quatre jours de concerts, Masterclasses et ateliers dans la Crypte de la Basilique de Fourvière — le rendez-vous du gospel à Lyon."}
@@ -186,7 +220,7 @@ export default async function FestivalPage() {
           </div>
         </div>
       </section>
-            
+
       {/* PROGRAMMATION */}
       <section id="programmation" className="py-12 md:py-16 bg-gradient-to-b from-[var(--color-cream)] to-[#FFF3E8]">
         <div className="site-container">
@@ -195,17 +229,19 @@ export default async function FestivalPage() {
           <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed mb-6">4 jours de concerts, Masterclasses et ateliers dans la Crypte de Fourvière. <strong className="text-[var(--color-brand)]">800 places — réservation recommandée.</strong></p>
           <div className="flex flex-col gap-3">
             {events && events.length > 0 ? events.map((event) => {
-              const date = new Date(event.dateStart);
-              const day = date.getDate().toString().padStart(2, "0");
-              const month = date.toLocaleDateString("fr-FR", { month: "short" });
+              const { dayLabel, monthLabel } = formatEventDate(event.dateStart, event.dateEnd);
+              const artistDisplay = event.artistNames || (event.artists?.map((a) => a.name).join(", ")) || null;
               return (
                 <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 bg-white rounded-2xl border border-[rgba(43,27,94,0.06)]">
-                  <div className="rounded-xl px-3.5 py-2.5 text-center min-w-[56px] bg-[var(--color-coral-light)]">
-                    <div className="font-serif text-xl font-bold leading-none text-[var(--color-brand)]">{day}</div>
-                    <div className="text-[11px] tracking-[1px] uppercase text-[var(--color-coral)]">{month}</div>
+                  <div className="rounded-xl px-3.5 py-2.5 text-center min-w-[64px] bg-[var(--color-coral-light)]">
+                    <div className="font-serif text-xl font-bold leading-none text-[var(--color-brand)]">{dayLabel}</div>
+                    <div className="text-[11px] tracking-[1px] uppercase text-[var(--color-coral)]">{monthLabel}</div>
                   </div>
                   <div className="flex-1">
                     <h4 className="text-[15px] font-bold text-[var(--color-indigo)] mb-0.5">{event.title}</h4>
+                    {artistDisplay && (
+                      <p className="text-[13px] font-medium text-[var(--color-brand)] mb-0.5">{artistDisplay}</p>
+                    )}
                     <p className="text-[13px] text-[var(--color-text-light)]">{event.venue}{event.timeStart && ` · ${event.timeStart}`}{event.timeEnd && ` - ${event.timeEnd}`}</p>
                   </div>
                   <div className="flex items-center gap-3">
