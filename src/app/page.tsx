@@ -8,14 +8,35 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroVideo from "@/components/HeroVideo";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
-import FlyerSection from "@/components/FlyerSection";
-import VillageGospelSection from "@/components/VillageGospelSection";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type S = Record<string, any>;
+
+function formatEventDate(dateStart: string, dateEnd?: string) {
+  const start = new Date(dateStart);
+  const startDay = start.getDate();
+  const startMonth = start.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (!dateEnd) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
+  const end = new Date(dateEnd);
+  const endDay = end.getDate();
+  const endMonth = end.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth()
+  ) {
+    return { dayLabel: `${startDay}–${endDay}`, monthLabel: startMonth };
+  }
+
+  return { dayLabel: `${startDay}–${endDay}`, monthLabel: `${startMonth}–${endMonth}` };
+}
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
   festival: { bg: "#413485", text: "Festival" },
@@ -124,13 +145,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      
-      {/* ===== 1.2. VILLAGE GOSPEL ===== */}
-          <VillageGospelSection
-        title={settings?.villageGospelTitle}
-        text={settings?.villageGospelText}
-        active={settings?.villageGospelActive ?? true}
-      />
 
       {/* ===== 2. ÉVÉNEMENTS ===== */}
       <section className="py-12 md:py-16 bg-white">
@@ -144,17 +158,15 @@ export default async function HomePage() {
           </div>
           <div className="flex flex-col gap-3">
             {events?.map((event: any) => {
-              const date = new Date(event.dateStart);
-              const day = date.getDate().toString().padStart(2, "0");
-              const month = date.toLocaleDateString("fr-FR", { month: "short" });
+              const { dayLabel, monthLabel } = formatEventDate(event.dateStart, event.dateEnd);
               const types = Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean);
               const isFestival = types.some((t: string) => ["festival", "concert", "masterclass"].includes(t));
               const artistDisplay = event.artistNames || event.artists?.map((a: any) => a.name).join(", ");
               return (
                 <div key={event._id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 px-4 md:px-5 bg-[var(--color-cream)] rounded-2xl border border-[rgba(30,21,53,0.06)]">
-                  <div className={`rounded-xl px-3.5 py-2.5 text-center min-w-[56px] ${isFestival ? "bg-[var(--color-brand-light)]" : "bg-[var(--color-gold-light)]"}`}>
-                    <div className={`font-serif text-xl font-bold leading-none ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold-dark)]"}`}>{day}</div>
-                    <div className={`font-display text-[11px] tracking-[1px] uppercase ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold)]"}`}>{month}</div>
+                  <div className={`rounded-xl px-3.5 py-2.5 text-center min-w-[64px] ${isFestival ? "bg-[var(--color-brand-light)]" : "bg-[var(--color-gold-light)]"}`}>
+                    <div className={`font-serif text-xl font-bold leading-none ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold-dark)]"}`}>{dayLabel}</div>
+                    <div className={`font-display text-[11px] tracking-[1px] uppercase ${isFestival ? "text-[var(--color-brand)]" : "text-[var(--color-gold)]"}`}>{monthLabel}</div>
                   </div>
                   <div className="flex-1">
                     <h4 className="text-[15px] font-bold text-[var(--color-brand)] mb-0.5">{event.title}</h4>
@@ -175,42 +187,29 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== 3. FLYER(S) ===== */}
-      {(settings?.flyerImage || settings?.festivalFlyerImage) && (() => {
-        const flyers = [];
-
-        if (settings?.festivalFlyerImage) {
-          flyers.push({
-            imageUrl:     urlFor(settings.festivalFlyerImage).width(560).url(),
-            fullImageUrl: urlFor(settings.festivalFlyerImage).width(1600).url(),
-            title:        settings.festivalFlyerTitle || "Fourvière Gospel Expérience 2026",
-            description:  settings.festivalFlyerDesc  || "23 – 26 avril 2026 · Dans la Crypte de la Basilique de Fourvière · 3ème édition",
-            tag:          "Festival",
-            tagColor:     "var(--color-brand)",
-            link:         "/festival/programme",
-            linkText:     "Voir le programme →",
-          });
-        }
-
-        if (settings?.flyerImage) {
-          flyers.push({
-            imageUrl:     urlFor(settings.flyerImage).width(560).url(),
-            fullImageUrl: urlFor(settings.flyerImage).width(1600).url(),
-            title:        settings.flyerTitle       || "Rejoignez l'école de gospel",
-            description:  settings.flyerDescription || undefined,
-            tag:          settings.flyerTagline     || "École de gospel",
-            tagColor:     "var(--color-gold)",
-            link:         settings.flyerButton?.url || "/ecole",
-            linkText:     settings.flyerButton?.text || "S'inscrire →",
-          });
-        }
-
-        return (
-          <section className="py-12 md:py-16">
-            <FlyerSection flyers={flyers} />
-          </section>
-        );
-      })()}
+      {/* ===== 3. FLYER ===== */}
+      {settings?.flyerImage && (
+        <section className="py-12 md:py-16">
+          <div className="site-container">
+            <div className="bg-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center border border-[rgba(30,21,53,0.06)]">
+              <div className="w-full md:w-[280px] shrink-0">
+                <img src={urlFor(settings.flyerImage).width(560).url()} alt={settings.flyerTitle || "Flyer école gospel GEI Lyon"} className="w-full max-w-[320px] mx-auto md:max-w-none rounded-2xl shadow-lg" loading="lazy" />
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <div className="section-tag text-[var(--color-gold)]">{settings.flyerTagline || "École de gospel"}</div>
+                <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[var(--color-brand)] mb-3">{settings.flyerTitle || "Rejoignez l'école de gospel"}</h2>
+                {settings.flyerDescription && <p className="text-[15px] text-[var(--color-text-muted)] leading-relaxed mb-5">{settings.flyerDescription}</p>}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                  {settings.flyerButton?.text && <a href={settings.flyerButton.url || "/ecole"} className="btn-teal no-underline text-center">{settings.flyerButton.text}</a>}
+                  {settings.flyerButton2?.text && (
+                    <a href={urlFor(settings.flyerImage).width(1600).url()} target="_blank" rel="noopener noreferrer" className="btn-outline text-[13px] px-5 py-2 no-underline text-center">{settings.flyerButton2.text}</a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ===== 4. ARTICLES ===== */}
       {articles && articles.length > 0 && (
@@ -328,7 +327,7 @@ export default async function HomePage() {
         <div className="site-container py-10 md:py-12 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
           <div className="flex-1">
             <h3 className="font-serif text-[20px] md:text-[22px] font-bold text-white mb-2">
-              Fourvière Gospel Expérience — 23 au 26 avril 2026
+              Festival Gospel Expérience — 23 au 26 avril 2026
             </h3>
             <p className="text-[14px] text-white/60">
               Crypte de la Basilique de Fourvière · Lyon · 800 places — réservez avant complet
