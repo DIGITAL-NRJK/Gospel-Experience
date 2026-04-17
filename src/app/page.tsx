@@ -10,7 +10,7 @@ import HeroVideo from "@/components/HeroVideo";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import Link from "next/link";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type S = Record<string, any>;
@@ -44,6 +44,39 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   interview: { bg: "#6B4DAE", text: "Interview" },
   coulisses: { bg: "#8D83A5", text: "Coulisses" },
 };
+
+function formatEventDate(dateStart: string, dateEnd?: string) {
+  const start = new Date(dateStart);
+  const startDay = start.getDate();
+  const startMonth = start.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (!dateEnd) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
+  const end = new Date(dateEnd);
+
+  // Même jour — pas de plage à afficher
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth() &&
+    start.getDate() === end.getDate()
+  ) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
+  const endDay = end.getDate();
+  const endMonth = end.toLocaleDateString("fr-FR", { month: "short" });
+
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth()
+  ) {
+    return { dayLabel: `${startDay}–${endDay}`, monthLabel: startMonth };
+  }
+
+  return { dayLabel: `${startDay}–${endDay}`, monthLabel: `${startMonth}–${endMonth}` };
+}
 
 export default async function HomePage() {
   const [settings, events, testimonials, partners, articles, gallery] = await Promise.all([
@@ -145,6 +178,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ===== 1.2. VILLAGE GOSPEL ===== */}
+      <VillageGospelSection
+        title={settings?.villageGospelTitle}
+        text={settings?.villageGospelText}
+        active={settings?.villageGospelActive ?? true}
+      />
 
       {/* ===== 2. ÉVÉNEMENTS ===== */}
       <section className="py-12 md:py-16 bg-white">

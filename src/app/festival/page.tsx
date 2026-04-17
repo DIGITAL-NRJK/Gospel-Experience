@@ -6,7 +6,7 @@ import GoogleMap from "@/components/GoogleMap";
 import FaqAccordion from "@/components/FaqAccordion";
 import type { Metadata } from "next";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 // ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {

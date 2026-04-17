@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import FaqAccordion from "@/components/FaqAccordion";
 import type { Metadata } from "next";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 // ✅ Meta description enrichie avec mots-clés locaux et bénéfices
 export const metadata: Metadata = {
