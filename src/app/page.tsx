@@ -194,9 +194,18 @@ export default async function HomePage() {
                       {artistDisplay && <span className="block mt-0.5 text-[var(--color-text-muted)] italic">{artistDisplay}</span>}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap justify-end">
+                    {event.soldOut && (
+                      <span className="font-display text-[10px] tracking-[1.5px] uppercase bg-[#D93025] text-white px-2.5 py-1 rounded-full font-bold">
+                        Complet
+                      </span>
+                    )}
                     <span className={isFestival ? "tag-festival" : "tag-ecole"}>{types.join(" · ") || "Événement"}</span>
-                    {event.ticketUrl && <a href={event.ticketUrl} className="font-display text-[13px] no-underline" style={{ color: isFestival ? "var(--color-brand)" : "var(--color-gold-dark)" }}>Réserver →</a>}
+                    {event.ticketUrl && (
+                      event.soldOut
+                        ? <span className="font-display text-[13px] text-[var(--color-text-light)] opacity-40 cursor-not-allowed select-none">Réserver →</span>
+                        : <a href={event.ticketUrl} className="font-display text-[13px] no-underline" style={{ color: isFestival ? "var(--color-brand)" : "var(--color-gold-dark)" }}>Réserver →</a>
+                    )}
                   </div>
                 </div>
               );

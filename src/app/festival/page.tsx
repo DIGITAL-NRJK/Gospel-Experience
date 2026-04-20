@@ -6,7 +6,7 @@ import GoogleMap from "@/components/GoogleMap";
 import FaqAccordion from "@/components/FaqAccordion";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 // ✅ Meta description enrichie avec les dates 2026
 export const metadata: Metadata = {
@@ -26,6 +26,7 @@ interface Event {
   ticketUrl?: string;
   artistNames?: string;
   artists?: { _id: string; name: string }[];
+  soldOut?: boolean;
 }
 
 function formatEventDate(dateStart: string, dateEnd?: string) {
@@ -38,6 +39,16 @@ function formatEventDate(dateStart: string, dateEnd?: string) {
   }
 
   const end = new Date(dateEnd);
+
+  // Même jour — pas de plage à afficher
+  if (
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth() &&
+    start.getDate() === end.getDate()
+  ) {
+    return { dayLabel: startDay.toString().padStart(2, "0"), monthLabel: startMonth };
+  }
+
   const endDay = end.getDate();
   const endMonth = end.toLocaleDateString("fr-FR", { month: "short" });
 
@@ -244,9 +255,18 @@ export default async function FestivalPage() {
                     )}
                     <p className="text-[13px] text-[var(--color-text-light)]">{event.venue}{event.timeStart && ` · ${event.timeStart}`}{event.timeEnd && ` - ${event.timeEnd}`}</p>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap justify-end">
+                    {event.soldOut && (
+                      <span className="font-display text-[10px] tracking-[1.5px] uppercase bg-[#D93025] text-white px-2.5 py-1 rounded-full font-bold">
+                        Complet
+                      </span>
+                    )}
                     <span className="tag-festival">{(Array.isArray(event.eventType) ? event.eventType : [event.eventType].filter(Boolean)).join(" · ") || "Concert"}</span>
-                    {event.ticketUrl && <a href={event.ticketUrl} className="text-[13px] font-bold text-[var(--color-brand)] no-underline">Réserver →</a>}
+                    {event.ticketUrl && (
+                      event.soldOut
+                        ? <span className="text-[13px] font-bold text-[var(--color-text-light)] opacity-40 cursor-not-allowed select-none">Réserver →</span>
+                        : <a href={event.ticketUrl} className="text-[13px] font-bold text-[var(--color-brand)] no-underline">Réserver →</a>
+                    )}
                   </div>
                 </div>
               );

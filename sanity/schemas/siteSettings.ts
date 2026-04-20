@@ -123,7 +123,7 @@ export const siteSettings = defineType({
     defineField({ name: "flyerTitle", title: "📄 Flyer École — Titre", type: "string", group: "homepage" }),
     defineField({ name: "flyerDescription", title: "📄 Flyer École — Description", type: "text", rows: 2, group: "homepage" }),
     defineField({ name: "flyerButton", title: "📄 Flyer École — Bouton principal", type: "object", group: "homepage", fields: buttonFields("S'inscrire →", "/ecole") }),
-    //defineField({ name: "flyerButton2", title: "📄 Flyer École — Bouton secondaire", type: "object", group: "homepage", fields: buttonFields("Voir le flyer en grand", "") }),
+    defineField({ name: "flyerButton2", title: "📄 Flyer École — Bouton secondaire", type: "object", group: "homepage", fields: buttonFields("Voir le flyer en grand", "") }),
 
     // --- Flyer Festival ---
     defineField({ name: "festivalFlyerImage", title: "🎪 Flyer Festival — Image", type: "image", group: "homepage", options: { hotspot: true } }),
@@ -237,6 +237,7 @@ export const siteSettings = defineType({
           defineField({ name: "director", title: "Directeur artistique", type: "string" }),
           defineField({ name: "description", title: "Description", type: "text", rows: 4 }),
           defineField({ name: "firstPart", title: "1ère partie (laisser vide si aucune)", type: "string" }),
+          defineField({ name: "soldOut", title: "🔴 Complet / Sold out", type: "boolean", initialValue: false, description: "Cocher si toutes les places sont vendues pour ce concert." }),
         ],
         preview: { select: { title: "ensemble", subtitle: "date" } },
       }],

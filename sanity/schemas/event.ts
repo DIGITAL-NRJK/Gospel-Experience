@@ -120,6 +120,13 @@ export const event = defineType({
       initialValue: false,
       description: "Les événements archivés n'apparaissent pas sur la homepage ni dans la liste principale, mais restent visibles sur la page Archives.",
     }),
+    defineField({
+      name: "soldOut",
+      title: "🔴 Complet / Sold out",
+      type: "boolean",
+      initialValue: false,
+      description: "Cocher si toutes les places sont vendues.",
+}),
   ],
   preview: {
     select: {

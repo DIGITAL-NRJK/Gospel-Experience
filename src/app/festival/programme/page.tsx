@@ -25,7 +25,7 @@ const PROGRAMME_QUERY = `*[_type == "siteSettings"][0]{
   programmeHeroSubtitle,
   programmeBilletterieUrl,
   programmeConcerts[] {
-    day, date, time, ensemble, director, description, firstPart
+    day, date, time, ensemble, director, description, firstPart, soldOut
   },
   programmeEsplanadeTitle,
   programmeEsplanadeSubtitle,
@@ -56,6 +56,7 @@ const CONCERTS_DEFAULT = [
     description:
       "La Gospel Academy réunit une soixantaine de choristes amateurs passionnés, issus de l'association lyonnaise Oxygène. Le groupe s'engageant en faveur de l'inclusion et de la solidarité au service des familles. Sous la direction de Christelle Doy Edha, cheffe de chœur, la formation propose un concert à cappella spécialement conçu pour le festival Fourvière Gospel Expérience.",
     firstPart: null,
+    soldOut: false,
   },
   {
     day: "Vendredi",
@@ -66,6 +67,7 @@ const CONCERTS_DEFAULT = [
     description:
       "Le grand Chœur du gospel philharmonique experience rassemble entre 50 et 500 choristes amateurs. Il associe l'expérience du chant classique à l'énergie du gospel afin de transmettre un message de paix, de joie et d'espoir. Dirigé par Pascal Horecka, professeur de musicologie à l'Université de Lyon 2 et à l'ENS, ce chœur bénéficie d'une direction artistique reconnue à l'international (Prague, Budapest, Lyon).",
     firstPart: "Silowe gospel dirigé par Rose Makamu",
+    soldOut: false,
   },
   {
     day: "Samedi",
@@ -76,6 +78,7 @@ const CONCERTS_DEFAULT = [
     description:
       "Le Chœur Gospel de Paris est composé d'une centaine de chanteurs venus des quatre coins du monde. Cette formation métisse incarne pleinement l'universalité du message d'espérance porté par le gospel. Le chœur revisite les racines de cette musique spirituelle, née dans le Mississippi rural et héritière de l'Afrique, autrefois marquée par l'histoire des champs de coton. Fondée et dirigée par Georges Seba, surnommé le King du Blues, la formation promet une soirée intense et vibrante.",
     firstPart: null,
+    soldOut: false,
   },
   {
     day: "Dimanche",
@@ -86,6 +89,7 @@ const CONCERTS_DEFAULT = [
     description:
       "Basé à Lausanne, One Step Gospel réunit une quarantaine de chanteurs sélectionnés sur audition. Ensemble, ils proposent des performances puissantes, mêlant authenticité, modernité et émotion. Dirigé par Pascal Horecka, le chœur clôturera le festival avec un concert fédérateur et inspirant.",
     firstPart: "Masterclass et Gospel Experience Institut",
+    soldOut: false,
   },
 ];
 
@@ -201,6 +205,11 @@ export default async function ProgrammePage() {
                     <div className="font-serif text-[28px] font-bold leading-none mb-1">{c.date?.split(" ")[0]}</div>
                     <div className="font-display text-[13px] uppercase tracking-[1px] opacity-80 mb-3">{c.date?.split(" ")[1]}</div>
                     <div className="font-display text-[12px] bg-white/20 px-3 py-1 rounded-full">{c.time}</div>
+                    {c.soldOut && (
+                      <div className="mt-3 font-display text-[10px] tracking-[1.5px] uppercase bg-[#D93025] text-white px-3 py-1 rounded-full font-bold">
+                        Complet
+                      </div>
+                    )}
                   </div>
 
                   {/* Contenu */}

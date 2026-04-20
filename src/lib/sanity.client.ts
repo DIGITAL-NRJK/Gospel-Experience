@@ -20,7 +20,7 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
 export const UPCOMING_EVENTS_QUERY = `
   *[_type == "event" && dateStart >= now() && archived != true] | order(dateStart asc) [0...4] {
     _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, price, ticketUrl,
+    timeStart, timeEnd, venue, price, ticketUrl, soldOut,
     image, featured, artistNames,
     "artists": artists[]->{ _id, name, slug, role, photo }
   }
@@ -46,7 +46,7 @@ export const ARCHIVED_EVENTS_QUERY = `
 export const FESTIVAL_EVENTS_QUERY = `
   *[_type == "event" && count(eventType[@ in ["festival", "concert", "masterclass"]]) > 0 && archived != true] | order(dateStart asc) {
     _id, title, slug, eventType, dateStart, dateEnd,
-    timeStart, timeEnd, venue, price, ticketUrl, image, featured, artistNames,
+    timeStart, timeEnd, venue, price, ticketUrl, soldOut, image, featured, artistNames,
     "artists": artists[]->{ _id, name, slug, role, photo }
   }
 `;
